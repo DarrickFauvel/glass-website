@@ -5,67 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GLASS — Greater Lowell Area Science-based Skeptics</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="https://cdn.jsdelivr.net/npm/@starfederation/datastar@1.0.0-beta.11/dist/datastar.js"></script>
   </head>
   <body>
+
     <header>
-      <h1>GLASS</h1>
-      <p>Greater Lowell Area Science-based Skeptics</p>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#events">Events</a>
-        <a href="#">Contact</a>
-      </nav>
+      <div class="header-inner">
+        <div class="header-brand">
+          <span class="header-logo">GLASS</span>
+          <span class="header-tagline">Greater Lowell Area Science-based Skeptics</span>
+        </div>
+        <nav>
+          <a href="#">Home</a>
+          <a href="#about">About</a>
+          <a href="#events">Events</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
     </header>
 
     <section class="hero">
-      <h2>Think Critically. Question Everything.</h2>
-      <p>A community dedicated to science, reason, and evidence-based thinking in the Greater Lowell area.</p>
-      <a href="#" class="hero-btn">Join Us</a>
+      <div class="hero-bg-grid"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Lowell, MA · Est. Since Curiosity</p>
+        <h2 class="hero-headline">
+          <span class="hero-line">Think Critically.</span>
+          <span class="hero-line hero-line--italic">Question Everything.</span>
+        </h2>
+        <p class="hero-sub">A community dedicated to science, reason, and evidence-based thinking in the Greater Lowell area.</p>
+        <a href="#events" class="hero-btn">Join the Meetup</a>
+      </div>
+      <div class="hero-eyepiece" aria-hidden="true">
+        <div class="hero-lens hero-lens--1"></div>
+        <div class="hero-lens hero-lens--2"></div>
+        <div class="hero-lens hero-lens--3"></div>
+        <div class="hero-lens hero-lens--4"></div>
+      </div>
+    </section>
+
+    <section class="quote-band">
+      <div class="quote-band-inner reveal">
+        <blockquote class="pull-quote">"Extraordinary claims require extraordinary evidence."</blockquote>
+        <cite class="pull-cite">— Carl Sagan</cite>
+      </div>
     </section>
 
     <main>
-      <section>
-        <h2>Welcome</h2>
-        <p>We are a community of skeptics promoting science, critical thinking, and evidence-based reasoning in the Greater Lowell area.</p>
+      <section id="about" class="about">
+        <div class="section-header reveal">
+          <span class="section-label">About</span>
+        </div>
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <h2>We Are<br>GLASS</h2>
+            <p>The Greater Lowell Area Science-based Skeptics (GLASS) is a group of curious, open-minded individuals who value evidence, reason, and the scientific method. We meet regularly to discuss topics ranging from pseudoscience and the paranormal to medical myths and critical thinking skills.</p>
+            <p>Whether you're a lifelong skeptic or just starting to question the world around you, GLASS is a welcoming community for anyone who believes that good thinking matters.</p>
+          </div>
+          <ul class="about-values">
+            <li class="reveal">
+              <span class="value-num">01</span>
+              <strong>Science</strong>
+              <span>We trust the scientific method as the best tool for understanding the world.</span>
+            </li>
+            <li class="reveal" style="transition-delay: 0.1s">
+              <span class="value-num">02</span>
+              <strong>Reason</strong>
+              <span>We apply logic and critical thinking to evaluate claims and evidence.</span>
+            </li>
+            <li class="reveal" style="transition-delay: 0.2s">
+              <span class="value-num">03</span>
+              <strong>Community</strong>
+              <span>We foster a welcoming space for curious minds of all backgrounds.</span>
+            </li>
+          </ul>
+        </div>
       </section>
 
-      <section id="about" class="about">
-        <h2>About GLASS</h2>
-        <p>The Greater Lowell Area Science-based Skeptics (GLASS) is a group of curious, open-minded individuals who value evidence, reason, and the scientific method. We meet regularly to discuss topics ranging from pseudoscience and the paranormal to medical myths and critical thinking skills.</p>
-        <p>Whether you're a lifelong skeptic or just starting to question the world around you, GLASS is a welcoming community for anyone who believes that good thinking matters.</p>
-        <ul class="about-values">
-          <li>
-            <strong>Science</strong>
-            <span>We trust the scientific method as the best tool for understanding the world.</span>
-          </li>
-          <li>
-            <strong>Reason</strong>
-            <span>We apply logic and critical thinking to evaluate claims and evidence.</span>
-          </li>
-          <li>
-            <strong>Community</strong>
-            <span>We foster a welcoming space for curious minds of all backgrounds.</span>
-          </li>
-        </ul>
-      </section>
       <section id="events" class="events">
-        <h2>Monthly Meetup</h2>
-        <p>Join us in person every month on the <strong>2nd Wednesday</strong> for an evening of science, skepticism, and good conversation.</p>
-        <div class="event-card">
-          <div class="event-recurring-badge">Monthly — 2nd Wednesday</div>
-          <h3>GLASS In-Person Meetup</h3>
+        <div class="section-header reveal">
+          <span class="section-label">Events</span>
+        </div>
+        <div class="events-intro-row reveal">
+          <h2>Monthly<br><em>Meetup</em></h2>
+          <p class="events-intro">Join us in person every month on the <strong>2nd Wednesday</strong> for an evening of science, skepticism, and good conversation.</p>
+        </div>
+        <div class="event-card reveal">
+          <div class="event-card-header">
+            <span class="event-recurring-badge">Monthly — 2nd Wednesday</span>
+            <h3>GLASS In-Person Meetup</h3>
+          </div>
           <ul class="event-details">
-            <li><span class="event-label">Time</span> 7:00 PM – 9:30 PM</li>
-            <li><span class="event-label">Location</span> Panera Bread — 188 Boston Rd, Billerica, MA 01862</li>
+            <li>
+              <span class="event-label">Time</span>
+              <span>7:00 PM – 9:30 PM</span>
+            </li>
+            <li>
+              <span class="event-label">Location</span>
+              <span>Panera Bread — 188 Boston Rd, Billerica, MA 01862</span>
+            </li>
           </ul>
           <div class="event-map">
             <iframe
               src="https://maps.google.com/maps?q=188+Boston+Rd,+Billerica,+MA+01862&output=embed"
               width="100%"
-              height="250"
+              height="280"
               style="border:0;"
               allowfullscreen=""
               loading="lazy"
@@ -73,14 +120,19 @@
               title="Panera Bread, 188 Boston Rd, Billerica, MA"
             ></iframe>
           </div>
-          <h4>Upcoming Dates</h4>
-          <ul id="upcoming-dates" class="upcoming-dates"></ul>
+          <div class="upcoming-section">
+            <h4>Upcoming Dates</h4>
+            <ul id="upcoming-dates" class="upcoming-dates"></ul>
+          </div>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2026 GLASS. All rights reserved.</p>
+      <div class="footer-inner">
+        <span class="footer-brand">GLASS</span>
+        <p>&copy; 2026 Greater Lowell Area Science-based Skeptics. All rights reserved.</p>
+      </div>
     </footer>
 
     <script src="js/main.js"></script>

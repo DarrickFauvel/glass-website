@@ -1,12 +1,24 @@
 // GLASS website — main.js
-// Datastar is loaded via CDN in index.html
 
-// Populate upcoming 2nd-Wednesday-of-the-month meetup dates
+// ===== Scroll Reveal =====
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+);
+
+document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+// ===== Upcoming 2nd-Wednesday meetup dates =====
 (function () {
   function secondWednesday(year, month) {
     // month is 0-indexed
     const d = new Date(year, month, 1);
-    // day 3 = Wednesday (0=Sun, 3=Wed)
     const dayOfWeek = d.getDay();
     const firstWed = 1 + ((3 - dayOfWeek + 7) % 7);
     return new Date(year, month, firstWed + 7);
@@ -17,7 +29,12 @@
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const formatter = new Intl.DateTimeFormat('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   let shown = 0;
   let year = today.getFullYear();
