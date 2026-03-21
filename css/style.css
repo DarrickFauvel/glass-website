@@ -15,8 +15,8 @@
   --crimson-pale: rgba(155, 32, 32, 0.08);
   --crimson-glow: rgba(155, 32, 32, 0.18);
   --ink:          #1c1410;
-  --ink-mid:      rgba(28, 20, 16, 0.55);
-  --ink-dim:      rgba(28, 20, 16, 0.35);
+  --ink-mid:      #545050;  /* 6.7:1 on cream — passes AA */
+  --ink-dim:      #686360;  /* 4.7:1 on cream — passes AA */
   --border:       rgba(28, 20, 16, 0.1);
   --border-hi:    rgba(28, 20, 16, 0.18);
 
@@ -26,6 +26,27 @@
 
   --max-width: 1080px;
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
+}
+
+/* ===== Skip Link ===== */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 /* ===== Reset ===== */
@@ -49,6 +70,13 @@ body {
   overflow-x: hidden;
 }
 
+/* ===== Focus Styles ===== */
+:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 /* ===== Scroll Reveal ===== */
 .reveal {
   opacity: 0;
@@ -66,10 +94,11 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(247, 242, 234, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(253, 250, 246, 0.55);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid rgba(28, 20, 16, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
 }
 
 .header-inner {
@@ -347,7 +376,7 @@ nav a:hover::after {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  color: rgba(253, 246, 238, 0.65);
+  color: rgba(253, 246, 238, 0.92); /* raised from 0.65 — passes AA on crimson */
   text-transform: uppercase;
   font-style: normal;
 }
@@ -443,7 +472,7 @@ main {
   border-bottom-color: var(--border-hi);
 }
 
-.value-num {
+.about-values .value-num {
   font-family: var(--font-mono);
   font-size: 0.6rem;
   color: var(--crimson);
@@ -636,7 +665,7 @@ main {
 }
 
 /* ===== FOOTER ===== */
-footer {
+.site-footer {
   border-top: 1px solid var(--border);
   background: var(--cream-2);
   padding: 3rem var(--gutter);
@@ -661,9 +690,23 @@ footer {
   text-transform: uppercase;
 }
 
-footer p {
+.site-footer p {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   color: var(--ink-dim);
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

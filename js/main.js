@@ -1,18 +1,24 @@
 // GLASS website — main.js
 
 // ===== Scroll Reveal =====
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
-  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-);
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+if (prefersReducedMotion) {
+  // Show all elements immediately — no animation
+  document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+} else {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+}
 
 // ===== Upcoming 2nd-Wednesday meetup dates =====
 (function () {
