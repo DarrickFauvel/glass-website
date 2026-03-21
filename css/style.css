@@ -59,6 +59,7 @@
 /* ===== Base ===== */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -67,7 +68,6 @@ body {
   line-height: 1.75;
   color: var(--ink);
   background-color: var(--cream);
-  overflow-x: hidden;
 }
 
 /* ===== Focus Styles ===== */
