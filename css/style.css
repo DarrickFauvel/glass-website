@@ -174,11 +174,13 @@ nav a::after {
   transition: width 0.25s ease;
 }
 
-nav a:hover {
+nav a:hover,
+nav a.nav-active {
   color: var(--crimson);
 }
 
-nav a:hover::after {
+nav a:hover::after,
+nav a.nav-active::after {
   width: 100%;
 }
 
@@ -286,7 +288,8 @@ nav a:hover::after {
     display: none;
   }
 
-  #primary-nav a:hover {
+  #primary-nav a:hover,
+  #primary-nav a.nav-active {
     color: var(--crimson);
     padding-left: calc(var(--gutter) + 0.5rem);
   }
