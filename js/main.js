@@ -23,10 +23,11 @@
     header.classList.contains('nav-open') ? closeMenu() : openMenu();
   });
 
-  // Close when a nav link is clicked
+  // Close when a nav link or the logo is clicked
   nav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeMenu);
   });
+  document.querySelector('.header-logo').addEventListener('click', closeMenu);
 
   // Close on outside click
   document.addEventListener('click', (e) => {

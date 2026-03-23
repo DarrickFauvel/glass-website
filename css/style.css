@@ -125,6 +125,12 @@ header {
   color: var(--ink);
   line-height: 1;
   text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.header-logo:hover {
+  color: var(--crimson);
 }
 
 .header-tagline {
