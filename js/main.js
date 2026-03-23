@@ -1,5 +1,49 @@
 // GLASS website — main.js
 
+// ===== Mobile Nav Toggle =====
+(function () {
+  const toggle = document.querySelector('.nav-toggle');
+  const header = document.querySelector('header');
+  const nav = document.getElementById('primary-nav');
+  if (!toggle || !header || !nav) return;
+
+  function openMenu() {
+    header.classList.add('nav-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+  }
+
+  function closeMenu() {
+    header.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+  }
+
+  toggle.addEventListener('click', () => {
+    header.classList.contains('nav-open') ? closeMenu() : openMenu();
+  });
+
+  // Close when a nav link is clicked
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (header.classList.contains('nav-open') && !header.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header.classList.contains('nav-open')) {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+}());
+
 // ===== Scroll Reveal =====
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
