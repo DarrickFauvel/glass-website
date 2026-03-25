@@ -439,8 +439,25 @@ nav a.nav-active::after {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
   animation: fadeUp 0.9s ease 0.85s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  transform: scale(0);
+  pointer-events: none;
+  animation: btn-ripple 0.6s ease-out forwards;
+}
+
+@keyframes btn-ripple {
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
 }
 
 .hero-btn::after {
@@ -838,15 +855,18 @@ main {
 }
 
 .join-card {
-  border: 1px solid var(--border-hi);
-  background: var(--cream);
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--cream), var(--cream)),
+    radial-gradient(circle at var(--mx, 50%) var(--my, -50%), rgba(155, 32, 32, 0.9) 0%, var(--border-hi) 50%);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
   padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 }
 
 .join-card::before {
@@ -859,13 +879,13 @@ main {
 }
 
 .join-card:hover {
-  border-color: rgba(155, 32, 32, 0.35);
   box-shadow: 0 4px 24px rgba(155, 32, 32, 0.08);
 }
 
 .join-card:hover::before {
   opacity: 1;
 }
+
 
 .join-card-icon {
   font-family: var(--font-display);
@@ -910,8 +930,9 @@ main {
   align-self: flex-start;
   position: relative;
   z-index: 1;
+  overflow: hidden;
   border-radius: 4px;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 .join-card-btn:hover {
@@ -1040,6 +1061,8 @@ main {
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
 .form-submit:hover {
