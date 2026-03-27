@@ -206,17 +206,24 @@ if (prefersReducedMotion) {
 // ===== Header Sheen =====
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const sheenEl = document.querySelector('.header-sheen');
   const headerEl = document.querySelector('header');
-  if (!headerEl) return;
+  if (!sheenEl || !headerEl) return;
+
+  function syncHeight() {
+    sheenEl.style.height = headerEl.getBoundingClientRect().height + 'px';
+  }
+  syncHeight();
+  window.addEventListener('resize', syncHeight, { passive: true });
+
   function triggerSheen() {
-    headerEl.classList.remove('sheen');
-    void headerEl.offsetWidth;
-    headerEl.classList.add('sheen');
-    setTimeout(() => headerEl.classList.remove('sheen'), 800);
+    sheenEl.classList.remove('sheen');
+    void sheenEl.offsetWidth;
+    sheenEl.classList.add('sheen');
+    setTimeout(() => sheenEl.classList.remove('sheen'), 800);
   }
 
   setTimeout(triggerSheen, 2000);
-
   headerEl.addEventListener('mouseenter', triggerSheen);
 }());
 
