@@ -190,9 +190,9 @@ nav a.nav-active::after {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  width: 2.4rem;
-  height: 2.4rem;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
   cursor: pointer;
@@ -209,7 +209,7 @@ nav a.nav-active::after {
 .nav-toggle-bar {
   display: block;
   width: 22px;
-  height: 1.5px;
+  height: 2px;
   background: var(--ink);
   border-radius: 1px;
   transform-origin: center;
@@ -220,14 +220,14 @@ nav a.nav-active::after {
 
 /* Animate hamburger → X */
 .nav-open .nav-toggle .nav-toggle-bar:nth-child(1) {
-  transform: translateY(6.5px) rotate(45deg);
+  transform: translateY(8px) rotate(45deg);
 }
 .nav-open .nav-toggle .nav-toggle-bar:nth-child(2) {
   opacity: 0;
   width: 0;
 }
 .nav-open .nav-toggle .nav-toggle-bar:nth-child(3) {
-  transform: translateY(-6.5px) rotate(-45deg);
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ===== MOBILE NAV DROPDOWN ===== */
