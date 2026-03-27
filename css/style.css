@@ -482,9 +482,45 @@ nav a.nav-active::after {
 
 /* ===== QUOTE BAND ===== */
 .quote-band {
-  background: var(--crimson);
-  border-top: 1px solid rgba(155, 32, 32, 0.3);
-  border-bottom: 1px solid rgba(155, 32, 32, 0.3);
+  background:
+    radial-gradient(ellipse 110% 90% at 50% 0%, rgba(196, 43, 43, 0.45) 0%, transparent 65%),
+    linear-gradient(160deg, #4d0d0d 0%, #851a1a 35%, #9b2020 60%, #6e1414 100%);
+  border-top: 1px solid rgba(255, 100, 100, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../images/carlsagan.jpg') center 20% / cover no-repeat;
+  opacity: 0.18;
+  mix-blend-mode: luminosity;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.quote-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../images/carlsagan.jpg') center 20% / cover no-repeat;
+  opacity: 0;
+  mix-blend-mode: normal;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.quote-band:hover::before {
+  opacity: 0;
+}
+
+.quote-band:hover::after {
+  opacity: 1;
 }
 
 .quote-band-inner {
@@ -493,6 +529,7 @@ nav a.nav-active::after {
   padding: 5rem var(--gutter);
   text-align: center;
   position: relative;
+  z-index: 1;
 }
 
 .pull-quote {
@@ -505,6 +542,17 @@ nav a.nav-active::after {
   max-width: 750px;
   margin: 0 auto 1.25rem;
   position: relative;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+              color 1s ease;
+}
+
+.quote-band:hover .pull-quote {
+  transform: translateY(4.5rem);
+  color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pull-quote { transition: none; }
 }
 
 .pull-quote::before {
@@ -523,9 +571,14 @@ nav a.nav-active::after {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  color: rgba(253, 246, 238, 0.92); /* raised from 0.65 — passes AA on crimson */
+  color: rgba(253, 246, 238, 0.92);
   text-transform: uppercase;
   font-style: normal;
+  transition: color 1s ease;
+}
+
+.quote-band:hover .pull-cite {
+  color: #ffffff;
 }
 
 /* ===== SECTION LABEL ===== */
