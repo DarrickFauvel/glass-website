@@ -203,6 +203,23 @@ if (prefersReducedMotion) {
   }, { passive: true });
 }());
 
+// ===== Header Sheen =====
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const headerEl = document.querySelector('header');
+  if (!headerEl) return;
+  function triggerSheen() {
+    headerEl.classList.remove('sheen');
+    void headerEl.offsetWidth;
+    headerEl.classList.add('sheen');
+    setTimeout(() => headerEl.classList.remove('sheen'), 800);
+  }
+
+  setTimeout(triggerSheen, 2000);
+
+  headerEl.addEventListener('mouseenter', triggerSheen);
+}());
+
 // ===== Card Border Spotlight =====
 (function () {
   document.querySelectorAll('.join-card').forEach((card) => {
