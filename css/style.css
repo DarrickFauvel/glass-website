@@ -102,13 +102,13 @@ header {
 }
 
 .scroll-progress {
-  position: absolute;
-  bottom: -1px;
+  position: fixed;
+  top: 0;
   left: 0;
-  height: 2px;
-  width: calc(var(--scroll-pct, 0) * 1%);
+  height: 3px;
+  width: 0%;
   background: #e00000;
-  transition: width 0.1s linear;
+  z-index: 200;
   pointer-events: none;
 }
 

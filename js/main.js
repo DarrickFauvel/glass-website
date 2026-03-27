@@ -196,10 +196,10 @@ if (prefersReducedMotion) {
 (function () {
   const bar = document.querySelector('.scroll-progress');
   if (!bar) return;
-  document.addEventListener('scroll', () => {
-    const scrolled = document.documentElement.scrollTop;
-    const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    bar.style.setProperty('--scroll-pct', total > 0 ? (scrolled / total) * 100 : 0);
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = total > 0 ? (scrolled / total) * 100 + '%' : '0%';
   }, { passive: true });
 }());
 
