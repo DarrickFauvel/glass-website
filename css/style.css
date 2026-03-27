@@ -101,6 +101,17 @@ header {
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
 }
 
+.scroll-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  width: calc(var(--scroll-pct, 0) * 1%);
+  background: #e00000;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
 .header-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -899,6 +910,7 @@ main {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+
 }
 
 @media (min-width: 640px) {

@@ -192,6 +192,17 @@ if (prefersReducedMotion) {
   });
 }());
 
+// ===== Scroll Progress =====
+(function () {
+  const bar = document.querySelector('.scroll-progress');
+  if (!bar) return;
+  document.addEventListener('scroll', () => {
+    const scrolled = document.documentElement.scrollTop;
+    const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    bar.style.setProperty('--scroll-pct', total > 0 ? (scrolled / total) * 100 : 0);
+  }, { passive: true });
+}());
+
 // ===== Card Border Spotlight =====
 (function () {
   document.querySelectorAll('.join-card').forEach((card) => {
