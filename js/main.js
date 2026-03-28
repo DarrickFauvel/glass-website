@@ -105,7 +105,8 @@ if (prefersReducedMotion) {
   };
 
   function getError(field) {
-    return field.closest('.form-group').querySelector('.field-error');
+    const group = field.closest('.form-group');
+    return group ? group.querySelector('.field-error') : null;
   }
 
   function showError(field, msg) {
