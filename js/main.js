@@ -141,7 +141,7 @@ if (prefersReducedMotion) {
 
     // Mark all fields as touched and validate
     let valid = true;
-    form.querySelectorAll('input[name], textarea[name]').forEach((field) => {
+    form.querySelectorAll('input[name]:not([type="hidden"]), textarea[name]').forEach((field) => {
       field.dataset.touched = '1';
       if (!validateField(field)) valid = false;
     });
