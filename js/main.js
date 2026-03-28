@@ -182,8 +182,9 @@ if (prefersReducedMotion) {
       } else {
         throw new Error(data.message || 'Submission failed');
       }
-    } catch {
-      status.textContent = 'Something went wrong. Please try again.';
+    } catch (err) {
+      console.error('Form submission error:', err);
+      status.textContent = err?.message || 'Something went wrong. Please try again.';
       status.classList.add('form-status--error');
       submit.disabled = false;
     }
