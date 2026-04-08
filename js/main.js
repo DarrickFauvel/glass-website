@@ -267,6 +267,347 @@ if (prefersReducedMotion) {
   });
 }());
 
+// ===== QR Code Modal =====
+(function () {
+  const openBtn  = document.getElementById('qr-open');
+  const modal    = document.getElementById('qr-modal');
+  const closeBtn = document.getElementById('qr-close');
+  const backdrop = document.getElementById('qr-backdrop');
+  const canvas   = document.getElementById('qr-canvas');
+  const urlEl    = document.getElementById('qr-url');
+  if (!openBtn || !modal) return;
+
+  let generated = false;
+
+  function openModal() {
+    modal.hidden = false;
+    closeBtn.focus();
+
+    if (!generated) {
+      const url = window.location.href;
+      urlEl.textContent = url;
+      /* global QRCode */
+      new QRCode(canvas, {
+        text: url,
+        width: 200,
+        height: 200,
+        colorDark: '#1c1410',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+      generated = true;
+    }
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    openBtn.focus();
+  }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+}());
+
+
+// ===== Hero Lens Magnifier =====
+(function () {
+  if (window.matchMedia('(hover: none)').matches) return;
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  const eyepiece = hero.querySelector('.hero-eyepiece');
+
+  const SCALE  = 1.55;
+  const LENS_R = 45;
+
+  // Compute resting lens center before CSS hides the eyepiece
+  const hr0 = hero.getBoundingClientRect();
+  const er0 = eyepiece.getBoundingClientRect();
+  const REST = {
+    x: Math.min(er0.left - hr0.left + er0.width  / 2, hr0.width  - LENS_R - 8),
+    y: er0.top  - hr0.top  + er0.height / 2,
+  };
+
+  // Scatter hidden secret texts across the hero
+  const secrets = hero.querySelector('.hero-secrets');
+  const clues = [
+      {
+        text: 'bigfoot?',
+        belief: 'Many believe Bigfoot is an undiscovered great ape roaming remote North American forests, supported by alleged footprints and blurry footage like the Patterson–Gimlin film.',
+        question: 'If a large primate exists in North America, why has no confirmed physical evidence — bones, tissue, or definitive DNA — ever been recovered despite millions of acres under constant surveillance by hunters and cameras?',
+      },
+      {
+        text: 'chemtrails?',
+        belief: 'Some believe the white trails left by aircraft are chemical or biological agents deliberately sprayed by governments for population control, weather manipulation, or mass sedation.',
+        question: 'Contrails are well-understood water vapor condensation. How would a program requiring the silence of hundreds of thousands of pilots, engineers, and ground crews across competing nations remain secret?',
+      },
+      {
+        text: 'GMOs?',
+        belief: 'Some believe genetically modified organisms pose unique dangers to human health, biodiversity, and ecosystems, and that safety data is suppressed by corporations.',
+        question: 'Over 2,000 peer-reviewed studies and scientific consensus from WHO, NAS, and the EU find no evidence of GMO-specific health risks. What specific biological mechanism would make a gene-edited crop inherently harmful?',
+      },
+      {
+        text: 'psychics?',
+        belief: 'Many believe certain individuals possess extrasensory abilities — reading minds, predicting futures, or communicating with the deceased — often demonstrated in readings.',
+        question: 'The JREF offered $1 million for demonstrated psychic ability under controlled conditions for over a decade. No one claimed it. Why do psychic powers vanish when double-blind testing eliminates cold reading and confirmation bias?',
+      },
+      {
+        text: 'ufo?',
+        belief: 'Many believe unidentified aerial phenomena are evidence of extraterrestrial spacecraft visiting Earth, sometimes citing government cover-ups of recovered craft and bodies.',
+        question: '"We don\'t know what this is" is a legitimate scientific position — but what specific evidence distinguishes an unexplained atmospheric phenomenon from an alien spacecraft?',
+      },
+      {
+        text: 'astrology?',
+        belief: 'Millions believe the positions of celestial bodies at birth shape personality, compatibility, and destiny through the twelve zodiac signs.',
+        question: 'Controlled studies find no correlation between birth date and personality traits. If astrology is valid, why do identical twins — born minutes apart under the same sky — often lead strikingly different lives?',
+      },
+      {
+        text: 'spirits?',
+        belief: 'Many cultures believe spirits of the deceased can interact with the living, haunt locations, or communicate through mediums and séances.',
+        question: 'In controlled studies, mediums perform at chance level when verifiable specifics are required. What physical mechanism allows a non-corporeal entity to move objects, affect EMF readings, or produce sound?',
+      },
+      {
+        text: 'aliens?',
+        belief: 'Some believe extraterrestrial beings have visited Earth, made contact with governments, and that evidence is actively suppressed at the highest levels.',
+        question: 'The universe almost certainly harbors other life — but what testable, reproducible evidence supports the claim that intelligent aliens have specifically visited Earth rather than any of the billions of other planets?',
+      },
+      {
+        text: 'ghosts?',
+        belief: 'Many believe ghosts are spirits of the deceased that linger in the physical world, detectable by temperature drops, EVP recordings, or visual apparitions.',
+        question: 'EMF detectors measure electromagnetic fields from electrical appliances — they were never designed for spirit detection. What peer-reviewed evidence links EMF fluctuations to anything other than wiring and electronics?',
+      },
+      {
+        text: 'flat earth?',
+        belief: 'Some believe Earth is a flat disc enclosed by a dome, and that space agencies worldwide collaborate in an elaborate deception to hide its true shape.',
+        question: 'GPS, satellite imagery, circumnavigation, eclipses, and the physics of gravity all depend on a spherical Earth and make accurate predictions. What model of a flat Earth makes equally precise, testable predictions?',
+      },
+  ];
+
+  let openSecretModal = () => {};
+
+  if (secrets) {
+    const heroW  = hero.offsetWidth;
+    const heroH  = hero.offsetHeight;
+    const placed = [];
+    const MIN_DIST = 16; // % — minimum gap between secret centers
+
+    clues.forEach(({ text }, i) => {
+      let x, y, tries = 0;
+
+      if (i === 0) {
+        // Tease: place first secret so it's partially revealed by the resting lens
+        x = ((REST.x + LENS_R * 0.75) / heroW) * 100;
+        y = ((REST.y - LENS_R * 0.35) / heroH) * 100;
+      } else {
+        do {
+          x = 5 + Math.random() * 90;
+          y = 5 + Math.random() * 90;
+          tries++;
+        } while (tries < 60 && placed.some(p => Math.hypot(x - p.x, y - p.y) < MIN_DIST));
+      }
+
+      placed.push({ x, y });
+
+      const el = document.createElement('span');
+      el.className = 'hero-secret';
+      el.textContent = text;
+      el.style.left = x + '%';
+      el.style.top  = y + '%';
+      el.dataset.clue = text;
+      el.style.setProperty('--tape-angle', (Math.random() * 8 - 4).toFixed(1) + 'deg');
+      secrets.appendChild(el);
+    });
+
+    // Build secrets modal
+    const sModal = document.createElement('div');
+    sModal.className = 'secrets-modal';
+    sModal.setAttribute('role', 'dialog');
+    sModal.setAttribute('aria-modal', 'true');
+    sModal.setAttribute('aria-labelledby', 'secrets-modal-title');
+    sModal.hidden = true;
+    sModal.innerHTML = `
+      <div class="secrets-modal-backdrop"></div>
+      <div class="secrets-modal-inner">
+        <div class="secrets-modal-tape" aria-hidden="true"></div>
+        <div class="secrets-modal-body">
+          <button class="secrets-modal-close" aria-label="Close">&times;</button>
+          <p class="secrets-modal-eyebrow">⚠ Case File</p>
+          <h2 class="secrets-modal-title" id="secrets-modal-title"></h2>
+          <div class="secrets-modal-section">
+            <p class="secrets-modal-label">What some people believe</p>
+            <p class="secrets-modal-text" id="secrets-belief"></p>
+          </div>
+          <div class="secrets-modal-section">
+            <p class="secrets-modal-label">Scientific question</p>
+            <p class="secrets-modal-text secrets-modal-text--question" id="secrets-question"></p>
+          </div>
+        </div>
+        <div class="secrets-modal-tape" aria-hidden="true"></div>
+      </div>`;
+    document.body.appendChild(sModal);
+
+    const sClose    = sModal.querySelector('.secrets-modal-close');
+    const sBackdrop = sModal.querySelector('.secrets-modal-backdrop');
+    const sTitle    = sModal.querySelector('#secrets-modal-title');
+    const sBelief   = sModal.querySelector('#secrets-belief');
+    const sQuestion = sModal.querySelector('#secrets-question');
+
+    openSecretModal = function (clue) {
+      sTitle.textContent    = clue.text;
+      sBelief.textContent   = clue.belief;
+      sQuestion.textContent = clue.question;
+      sModal.hidden = false;
+      sClose.focus();
+    }
+    function closeSecretModal() { sModal.hidden = true; }
+
+    sClose.addEventListener('click', closeSecretModal);
+    sBackdrop.addEventListener('click', closeSecretModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !sModal.hidden) closeSecretModal();
+    });
+  }
+
+  // Build magnifier layer from cloned hero content
+
+  const mag = document.createElement('div');
+  mag.className = 'hero-mag';
+  mag.setAttribute('aria-hidden', 'true');
+  const heroRect = hero.getBoundingClientRect();
+  ['hero-bg-grid', 'hero-secrets', 'hero-content'].forEach(cls => {
+    const el = hero.querySelector('.' + cls);
+    if (!el) return;
+    const clone = el.cloneNode(true);
+    if (cls === 'hero-content') {
+      // flex-positioned — pin to exact pixel location so it aligns with the original
+      const r = el.getBoundingClientRect();
+      clone.style.cssText = `position:absolute;left:${r.left - heroRect.left}px;top:${r.top - heroRect.top}px;width:${r.width}px;margin:0`;
+    }
+    mag.appendChild(clone);
+  });
+  // Wire clicks on the cloned secrets in the mag layer
+  mag.querySelectorAll('.hero-secret').forEach(clone => {
+    const clue = clues.find(c => c.text === clone.dataset.clue);
+    if (clue) clone.addEventListener('click', () => openSecretModal(clue));
+  });
+  hero.insertBefore(mag, eyepiece);
+
+  // Lens glass-edge overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'hero-lens-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+
+  overlay.style.width  = LENS_R * 2 + 'px';
+  overlay.style.height = LENS_R * 2 + 'px';
+  overlay.style.left   = REST.x + 'px';
+  overlay.style.top    = REST.y + 'px';
+  hero.insertBefore(overlay, eyepiece);
+
+  function showRestLens() {
+    mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${REST.x.toFixed(1)}px ${REST.y.toFixed(1)}px)`;
+    mag.style.transformOrigin = `${REST.x.toFixed(1)}px ${REST.y.toFixed(1)}px`;
+    mag.style.transform       = `scale(${SCALE})`;
+  }
+
+  // Show tease clue immediately at resting position
+  showRestLens();
+
+  let targetX = REST.x, targetY = REST.y;
+  let lensX   = REST.x, lensY   = REST.y;
+  let rafId = null, following = false;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function applyLens(x, y) {
+    mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
+    mag.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+    mag.style.transform       = `scale(${SCALE})`;
+    overlay.style.left        = x + 'px';
+    overlay.style.top         = y + 'px';
+  }
+
+  function followTick() {
+    lensX = lerp(lensX, targetX, 0.1);
+    lensY = lerp(lensY, targetY, 0.1);
+    applyLens(lensX, lensY);
+    rafId = requestAnimationFrame(followTick);
+  }
+
+  function returnTick() {
+    lensX = lerp(lensX, REST.x, 0.08);
+    lensY = lerp(lensY, REST.y, 0.08);
+    overlay.style.left = lensX + 'px';
+    overlay.style.top  = lensY + 'px';
+    if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.5) {
+      rafId = requestAnimationFrame(returnTick);
+    } else {
+      showRestLens();
+    }
+  }
+
+  hero.addEventListener('mousemove', (e) => {
+    const hr = hero.getBoundingClientRect();
+    const mx = e.clientX - hr.left;
+    const my = e.clientY - hr.top;
+
+    if (!following) {
+      // Only start following when cursor is on the lens
+      if (Math.hypot(mx - lensX, my - lensY) <= LENS_R) {
+        following = true;
+        cancelAnimationFrame(rafId);
+        targetX = lensX = mx;
+        targetY = lensY = my;
+        rafId = requestAnimationFrame(followTick);
+      }
+      return;
+    }
+
+    targetX = mx;
+    targetY = my;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    following = false;
+    cancelAnimationFrame(rafId);
+    mag.style.clipPath  = `circle(0px at ${lensX}px ${lensY}px)`;
+    mag.style.transform = 'scale(1)';
+    rafId = requestAnimationFrame(returnTick);
+  });
+
+  window.addEventListener('resize', () => { orig = getOrigCenter(); }, { passive: true });
+}());
+
+// ===== Eyepiece Pulse Rings =====
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const eyepiece = document.querySelector('.hero-eyepiece');
+  if (!eyepiece) return;
+
+  function scheduleRing(ring) {
+    const delay = 800 + Math.random() * 5000;
+    setTimeout(() => {
+      ring.classList.add('hero-ring--pulse');
+      ring.addEventListener('animationend', function onEnd() {
+        ring.removeEventListener('animationend', onEnd);
+        ring.classList.remove('hero-ring--pulse');
+        scheduleRing(ring);
+      }, { once: true });
+    }, delay);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    const ring = document.createElement('div');
+    ring.className = 'hero-ring';
+    eyepiece.appendChild(ring);
+    scheduleRing(ring);
+  }
+}());
+
 // ===== Upcoming 2nd-Wednesday meetup dates =====
 (function () {
   function secondWednesday(year, month) {
