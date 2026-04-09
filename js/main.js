@@ -439,6 +439,15 @@ if (prefersReducedMotion) {
       shadow.style.top  = y + '%';
       shadow.style.setProperty('--tape-angle', angle);
       shadowLayer.appendChild(shadow);
+
+      // Crisp "?" marker centred on the shadow (separate from blur)
+      const q = document.createElement('span');
+      q.className = 'hero-secret-question';
+      q.textContent = '?';
+      q.style.left = x + '%';
+      q.style.top  = y + '%';
+      q.style.setProperty('--tape-angle', angle);
+      shadowLayer.appendChild(q);
     });
 
     // Build secrets modal

@@ -706,6 +706,19 @@ nav a.nav-active::after {
   transform: translate(-50%, -50%) rotate(var(--tape-angle, -2deg));
 }
 
+.hero-secret-question {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--crimson);
+  opacity: 0.14;
+  transform: translate(-50%, -50%) rotate(var(--tape-angle, -2deg));
+  pointer-events: none;
+  user-select: none;
+}
+
 /* Magnifier overlay layer */
 .hero-mag {
   position: absolute;
