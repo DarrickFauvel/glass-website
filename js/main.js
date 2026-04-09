@@ -550,6 +550,7 @@ if (prefersReducedMotion) {
   let rafId = null, following = false, attracting = false;
   let touchStartClientX = 0, touchStartClientY = 0;
   let touchStartElement = null;
+  let idleActive = false, idleVx = 0, idleVy = 0, idleTimer = null;
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -564,6 +565,7 @@ if (prefersReducedMotion) {
     mag.style.opacity     = '1';
     overlay.style.opacity = '1';
     applyLens(REST.x, REST.y);
+    resetIdleTimer();
   } else {
     setTimeout(() => {
       if (following || attracting) return;
@@ -583,6 +585,7 @@ if (prefersReducedMotion) {
           lensX = REST.x;
           lensY = REST.y;
           applyLens(REST.x, REST.y);
+          resetIdleTimer();
         }
       }
       rafId = requestAnimationFrame(introTick);
@@ -634,10 +637,74 @@ if (prefersReducedMotion) {
       lensY = REST.y;
       applyLens(REST.x, REST.y);
       rafId = null;
+      resetIdleTimer();
     }
   }
 
+  // ===== Idle drift =====
+  const IDLE_SPEED   = 1.1;
+  const IDLE_TIMEOUT = 3000;
+
+  function idleTick() {
+    if (!idleActive) return;
+    const heroW  = hero.offsetWidth;
+    const heroH  = hero.offsetHeight;
+    const margin = LENS_R + 6;
+
+    lensX += idleVx;
+    lensY += idleVy;
+
+    // Bounce off each border with a small random angle nudge
+    if (lensX < margin) {
+      lensX  = margin;
+      idleVx = Math.abs(idleVx);
+      idleVy += (Math.random() - 0.5) * 0.5;
+    } else if (lensX > heroW - margin) {
+      lensX  = heroW - margin;
+      idleVx = -Math.abs(idleVx);
+      idleVy += (Math.random() - 0.5) * 0.5;
+    }
+    if (lensY < margin) {
+      lensY  = margin;
+      idleVy = Math.abs(idleVy);
+      idleVx += (Math.random() - 0.5) * 0.5;
+    } else if (lensY > heroH - margin) {
+      lensY  = heroH - margin;
+      idleVy = -Math.abs(idleVy);
+      idleVx += (Math.random() - 0.5) * 0.5;
+    }
+
+    applyLens(lensX, lensY);
+    rafId = requestAnimationFrame(idleTick);
+  }
+
+  function startIdleDrift() {
+    if (following || attracting || mag.style.opacity !== '1') return;
+    idleActive = true;
+    // Random direction, biased away from purely horizontal/vertical
+    const angle = Math.random() * Math.PI * 2;
+    idleVx = Math.cos(angle) * IDLE_SPEED;
+    idleVy = Math.sin(angle) * IDLE_SPEED;
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(idleTick);
+  }
+
+  function stopIdleDrift() {
+    if (!idleActive) return;
+    idleActive = false;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  function resetIdleTimer() {
+    stopIdleDrift();
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(startIdleDrift, IDLE_TIMEOUT);
+  }
+
   hero.addEventListener('mousemove', (e) => {
+    if (idleActive) stopIdleDrift();
+    resetIdleTimer();
     const hr   = hero.getBoundingClientRect();
     const mx   = e.clientX - hr.left;
     const my   = e.clientY - hr.top;
@@ -701,6 +768,7 @@ if (prefersReducedMotion) {
     if (Math.hypot(tx - lensX, ty - lensY) > LENS_R * 1.8) return;
 
     e.preventDefault();
+    stopIdleDrift();
     touchStartClientX = touch.clientX;
     touchStartClientY = touch.clientY;
     // Capture hit element now, before the lift animation moves the lens
