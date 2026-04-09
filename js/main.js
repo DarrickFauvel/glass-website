@@ -321,9 +321,10 @@ if (prefersReducedMotion) {
 
   const eyepiece = hero.querySelector('.hero-eyepiece');
 
-  const SCALE     = 1.55;
-  const LENS_R    = 45;
-  const ATTRACT_R = 200;
+  const SCALE      = 1.55;
+  const LENS_R     = 45;
+  const ATTRACT_R  = 200;
+  const TOUCH_LIFT = -48; // px upward offset when finger is on lens
 
   // Compute resting lens center before CSS hides the eyepiece
   const hr0 = hero.getBoundingClientRect();
@@ -548,6 +549,7 @@ if (prefersReducedMotion) {
   let lensX   = REST.x, lensY   = REST.y;
   let rafId = null, following = false, attracting = false;
   let touchStartClientX = 0, touchStartClientY = 0;
+  let touchStartElement = null;
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -602,6 +604,14 @@ if (prefersReducedMotion) {
     lensY = lerp(lensY, targetY, 0.1);
     applyLens(lensX, lensY);
     rafId = requestAnimationFrame(followTick);
+  }
+
+  // Touch follow — faster lerp so lift and drag feel responsive
+  function touchFollowTick() {
+    lensX = lerp(lensX, targetX, 0.25);
+    lensY = lerp(lensY, targetY, 0.25);
+    applyLens(lensX, lensY);
+    rafId = requestAnimationFrame(touchFollowTick);
   }
 
   // Slowly drift toward cursor when nearby but not grabbed
@@ -693,19 +703,21 @@ if (prefersReducedMotion) {
     e.preventDefault();
     touchStartClientX = touch.clientX;
     touchStartClientY = touch.clientY;
+    // Capture hit element now, before the lift animation moves the lens
+    touchStartElement = document.elementFromPoint(touch.clientX, touch.clientY);
     attracting = false;
     following  = true;
     cancelAnimationFrame(rafId);
-    rafId = null;
 
     // Ensure lens is visible if intro hasn't fired yet
     if (mag.style.opacity !== '1') {
       mag.style.opacity     = '1';
       overlay.style.opacity = '1';
     }
-    lensX = tx;
-    lensY = ty;
-    applyLens(lensX, lensY);
+    // Target is finger position offset upward — lerp smoothly rises to it
+    targetX = tx;
+    targetY = ty + TOUCH_LIFT;
+    rafId = requestAnimationFrame(touchFollowTick);
   }, { passive: false });
 
   hero.addEventListener('touchmove', (e) => {
@@ -713,9 +725,8 @@ if (prefersReducedMotion) {
     e.preventDefault();
     const hr    = hero.getBoundingClientRect();
     const touch = e.touches[0];
-    lensX = touch.clientX - hr.left;
-    lensY = touch.clientY - hr.top;
-    applyLens(lensX, lensY);
+    targetX = touch.clientX - hr.left;
+    targetY = touch.clientY - hr.top + TOUCH_LIFT;
   }, { passive: false });
 
   function onTouchEnd(e) {
@@ -727,7 +738,7 @@ if (prefersReducedMotion) {
     // Detect tap (minimal movement) and fire secret modal if one was hit
     const t = e.changedTouches[0];
     if (Math.hypot(t.clientX - touchStartClientX, t.clientY - touchStartClientY) < 10) {
-      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const el = touchStartElement;
       if (el && el.classList.contains('hero-secret') && el.dataset.clue) {
         const clue = clues.find(c => c.text === el.dataset.clue);
         if (clue) openSecretModal(clue);
