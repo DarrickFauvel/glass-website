@@ -543,6 +543,7 @@ if (prefersReducedMotion) {
   overlay.style.top    = REST.y + 'px';
   hero.insertBefore(overlay, eyepiece);
 
+
   let targetX = REST.x, targetY = REST.y;
   let lensX   = REST.x, lensY   = REST.y;
   let rafId = null, following = false, attracting = false;
@@ -592,8 +593,8 @@ if (prefersReducedMotion) {
     mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
     mag.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
     mag.style.transform       = `scale(${SCALE})`;
-    overlay.style.left        = x + 'px';
-    overlay.style.top         = y + 'px';
+    overlay.style.left = x + 'px';
+    overlay.style.top  = y + 'px';
   }
 
   function followTick() {
