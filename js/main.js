@@ -546,6 +546,7 @@ if (prefersReducedMotion) {
   let targetX = REST.x, targetY = REST.y;
   let lensX   = REST.x, lensY   = REST.y;
   let rafId = null, following = false, attracting = false;
+  let touchStartClientX = 0, touchStartClientY = 0;
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -689,6 +690,8 @@ if (prefersReducedMotion) {
     if (Math.hypot(tx - lensX, ty - lensY) > LENS_R * 1.8) return;
 
     e.preventDefault();
+    touchStartClientX = touch.clientX;
+    touchStartClientY = touch.clientY;
     attracting = false;
     following  = true;
     cancelAnimationFrame(rafId);
@@ -714,11 +717,21 @@ if (prefersReducedMotion) {
     applyLens(lensX, lensY);
   }, { passive: false });
 
-  function onTouchEnd() {
+  function onTouchEnd(e) {
     if (!following || lensLocked) return;
     following = false;
     cancelAnimationFrame(rafId);
     rafId = null;
+
+    // Detect tap (minimal movement) and fire secret modal if one was hit
+    const t = e.changedTouches[0];
+    if (Math.hypot(t.clientX - touchStartClientX, t.clientY - touchStartClientY) < 10) {
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el && el.classList.contains('hero-secret') && el.dataset.clue) {
+        const clue = clues.find(c => c.text === el.dataset.clue);
+        if (clue) openSecretModal(clue);
+      }
+    }
   }
   hero.addEventListener('touchend',    onTouchEnd);
   hero.addEventListener('touchcancel', onTouchEnd);
