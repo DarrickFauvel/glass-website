@@ -316,7 +316,6 @@ if (prefersReducedMotion) {
 
 // ===== Hero Lens Magnifier =====
 (function () {
-  if (window.matchMedia('(hover: none)').matches) return;
   const hero = document.querySelector('.hero');
   if (!hero) return;
 
@@ -389,6 +388,7 @@ if (prefersReducedMotion) {
       },
   ];
 
+  let lensLocked = false;
   let openSecretModal = () => {};
 
   if (secrets) {
@@ -479,10 +479,18 @@ if (prefersReducedMotion) {
       sTitle.textContent    = clue.text;
       sBelief.textContent   = clue.belief;
       sQuestion.textContent = clue.question;
+      lensLocked = true;
       sModal.hidden = false;
       sClose.focus();
     }
-    function closeSecretModal() { sModal.hidden = true; }
+    function closeSecretModal() {
+      sModal.hidden = true;
+      lensLocked = false;
+      following  = false;
+      attracting = false;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(restoreTick);
+    }
 
     sClose.addEventListener('click', closeSecretModal);
     sBackdrop.addEventListener('click', closeSecretModal);
@@ -654,11 +662,57 @@ if (prefersReducedMotion) {
   });
 
   hero.addEventListener('mouseleave', () => {
+    if (lensLocked) return;
     following  = false;
     attracting = false;
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(restoreTick);
   });
+
+  // ===== Touch support =====
+  hero.addEventListener('touchstart', (e) => {
+    const hr    = hero.getBoundingClientRect();
+    const touch = e.touches[0];
+    const tx    = touch.clientX - hr.left;
+    const ty    = touch.clientY - hr.top;
+
+    // Generous grab radius for finger imprecision
+    if (Math.hypot(tx - lensX, ty - lensY) > LENS_R * 1.8) return;
+
+    e.preventDefault();
+    attracting = false;
+    following  = true;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+
+    // Ensure lens is visible if intro hasn't fired yet
+    if (mag.style.opacity !== '1') {
+      mag.style.opacity     = '1';
+      overlay.style.opacity = '1';
+    }
+    lensX = tx;
+    lensY = ty;
+    applyLens(lensX, lensY);
+  }, { passive: false });
+
+  hero.addEventListener('touchmove', (e) => {
+    if (!following) return;
+    e.preventDefault();
+    const hr    = hero.getBoundingClientRect();
+    const touch = e.touches[0];
+    lensX = touch.clientX - hr.left;
+    lensY = touch.clientY - hr.top;
+    applyLens(lensX, lensY);
+  }, { passive: false });
+
+  function onTouchEnd() {
+    if (!following || lensLocked) return;
+    following = false;
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(restoreTick);
+  }
+  hero.addEventListener('touchend',    onTouchEnd);
+  hero.addEventListener('touchcancel', onTouchEnd);
 
   window.addEventListener('resize', () => { orig = getOrigCenter(); }, { passive: true });
 }());
