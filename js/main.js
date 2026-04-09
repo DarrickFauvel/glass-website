@@ -322,8 +322,9 @@ if (prefersReducedMotion) {
 
   const eyepiece = hero.querySelector('.hero-eyepiece');
 
-  const SCALE  = 1.55;
-  const LENS_R = 45;
+  const SCALE     = 1.55;
+  const LENS_R    = 45;
+  const ATTRACT_R = 200;
 
   // Compute resting lens center before CSS hides the eyepiece
   const hr0 = hero.getBoundingClientRect();
@@ -396,6 +397,12 @@ if (prefersReducedMotion) {
     const placed = [];
     const MIN_DIST = 16; // % — minimum gap between secret centers
 
+    // Shadow hint layer — sits below hero-content, shows faint blobs at each secret position
+    const shadowLayer = document.createElement('div');
+    shadowLayer.className = 'hero-secret-shadows';
+    shadowLayer.setAttribute('aria-hidden', 'true');
+    hero.insertBefore(shadowLayer, secrets);
+
     clues.forEach(({ text }, i) => {
       let x, y, tries = 0;
 
@@ -413,14 +420,25 @@ if (prefersReducedMotion) {
 
       placed.push({ x, y });
 
+      const angle = (Math.random() * 8 - 4).toFixed(1) + 'deg';
+
       const el = document.createElement('span');
       el.className = 'hero-secret';
       el.textContent = text;
       el.style.left = x + '%';
       el.style.top  = y + '%';
       el.dataset.clue = text;
-      el.style.setProperty('--tape-angle', (Math.random() * 8 - 4).toFixed(1) + 'deg');
+      el.style.setProperty('--tape-angle', angle);
       secrets.appendChild(el);
+
+      // Matching faint shadow blob at the same position
+      const shadow = document.createElement('span');
+      shadow.className = 'hero-secret-shadow';
+      shadow.textContent = text;
+      shadow.style.left = x + '%';
+      shadow.style.top  = y + '%';
+      shadow.style.setProperty('--tape-angle', angle);
+      shadowLayer.appendChild(shadow);
     });
 
     // Build secrets modal
@@ -479,7 +497,7 @@ if (prefersReducedMotion) {
   mag.className = 'hero-mag';
   mag.setAttribute('aria-hidden', 'true');
   const heroRect = hero.getBoundingClientRect();
-  ['hero-bg-grid', 'hero-secrets', 'hero-content'].forEach(cls => {
+  ['hero-bg-grid', 'hero-content', 'hero-secrets'].forEach(cls => {
     const el = hero.querySelector('.' + cls);
     if (!el) return;
     const clone = el.cloneNode(true);
@@ -508,18 +526,47 @@ if (prefersReducedMotion) {
   overlay.style.top    = REST.y + 'px';
   hero.insertBefore(overlay, eyepiece);
 
-  function showRestLens() {
-    mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${REST.x.toFixed(1)}px ${REST.y.toFixed(1)}px)`;
-    mag.style.transformOrigin = `${REST.x.toFixed(1)}px ${REST.y.toFixed(1)}px`;
-    mag.style.transform       = `scale(${SCALE})`;
-  }
-
-  // Show tease clue immediately at resting position
-  showRestLens();
-
   let targetX = REST.x, targetY = REST.y;
   let lensX   = REST.x, lensY   = REST.y;
-  let rafId = null, following = false;
+  let rafId = null, following = false, attracting = false;
+
+  // Hide lens and overlay until intro sweep fires
+  mag.style.opacity        = '0';
+  mag.style.transition     = 'opacity 0.6s';
+  overlay.style.opacity    = '0';
+  overlay.style.transition = 'opacity 0.6s';
+
+  // Intro sweep: appear at lower-left, glide to resting position
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    lensX = REST.x;
+    lensY = REST.y;
+    mag.style.opacity     = '1';
+    overlay.style.opacity = '1';
+    applyLens(REST.x, REST.y);
+  } else {
+    setTimeout(() => {
+      if (following || attracting) return;
+      lensX = hero.offsetWidth  * 0.12;
+      lensY = hero.offsetHeight * 0.78;
+      applyLens(lensX, lensY);
+      mag.style.opacity     = '1';
+      overlay.style.opacity = '1';
+
+      function introTick() {
+        lensX = lerp(lensX, REST.x, 0.04);
+        lensY = lerp(lensY, REST.y, 0.04);
+        applyLens(lensX, lensY);
+        if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.8) {
+          rafId = requestAnimationFrame(introTick);
+        } else {
+          lensX = REST.x;
+          lensY = REST.y;
+          applyLens(REST.x, REST.y);
+        }
+      }
+      rafId = requestAnimationFrame(introTick);
+    }, 1600);
+  }
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -538,45 +585,79 @@ if (prefersReducedMotion) {
     rafId = requestAnimationFrame(followTick);
   }
 
-  function returnTick() {
-    lensX = lerp(lensX, REST.x, 0.08);
-    lensY = lerp(lensY, REST.y, 0.08);
-    overlay.style.left = lensX + 'px';
-    overlay.style.top  = lensY + 'px';
-    if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.5) {
-      rafId = requestAnimationFrame(returnTick);
+  // Slowly drift toward cursor when nearby but not grabbed
+  function attractTick() {
+    lensX = lerp(lensX, targetX, 0.03);
+    lensY = lerp(lensY, targetY, 0.03);
+    applyLens(lensX, lensY);
+    rafId = requestAnimationFrame(attractTick);
+  }
+
+  // Glide back to REST after attraction ends (mag stays visible)
+  function restoreTick() {
+    lensX = lerp(lensX, REST.x, 0.06);
+    lensY = lerp(lensY, REST.y, 0.06);
+    applyLens(lensX, lensY);
+    if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.8) {
+      rafId = requestAnimationFrame(restoreTick);
     } else {
-      showRestLens();
+      lensX = REST.x;
+      lensY = REST.y;
+      applyLens(REST.x, REST.y);
+      rafId = null;
     }
   }
 
   hero.addEventListener('mousemove', (e) => {
-    const hr = hero.getBoundingClientRect();
-    const mx = e.clientX - hr.left;
-    const my = e.clientY - hr.top;
+    const hr   = hero.getBoundingClientRect();
+    const mx   = e.clientX - hr.left;
+    const my   = e.clientY - hr.top;
+    const dist = Math.hypot(mx - lensX, my - lensY);
 
-    if (!following) {
-      // Only start following when cursor is on the lens
-      if (Math.hypot(mx - lensX, my - lensY) <= LENS_R) {
-        following = true;
-        cancelAnimationFrame(rafId);
-        targetX = lensX = mx;
-        targetY = lensY = my;
-        rafId = requestAnimationFrame(followTick);
-      }
+    if (following) {
+      targetX = mx;
+      targetY = my;
       return;
     }
 
-    targetX = mx;
-    targetY = my;
+    if (dist <= LENS_R) {
+      // Grab the lens — switch to full follow
+      attracting = false;
+      following  = true;
+      cancelAnimationFrame(rafId);
+      targetX = lensX = mx;
+      targetY = lensY = my;
+      rafId = requestAnimationFrame(followTick);
+      return;
+    }
+
+    if (dist <= ATTRACT_R) {
+      targetX = mx;
+      targetY = my;
+      if (!attracting) {
+        attracting = true;
+        cancelAnimationFrame(rafId);
+        // Ensure lens is visible if intro hasn't fired yet
+        if (mag.style.opacity !== '1') {
+          mag.style.opacity     = '1';
+          overlay.style.opacity = '1';
+          applyLens(lensX, lensY);
+        }
+        rafId = requestAnimationFrame(attractTick);
+      }
+    } else if (attracting) {
+      // Mouse drifted outside attraction zone — glide back to rest
+      attracting = false;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(restoreTick);
+    }
   });
 
   hero.addEventListener('mouseleave', () => {
-    following = false;
+    following  = false;
+    attracting = false;
     cancelAnimationFrame(rafId);
-    mag.style.clipPath  = `circle(0px at ${lensX}px ${lensY}px)`;
-    mag.style.transform = 'scale(1)';
-    rafId = requestAnimationFrame(returnTick);
+    rafId = requestAnimationFrame(restoreTick);
   });
 
   window.addEventListener('resize', () => { orig = getOrigCenter(); }, { passive: true });
