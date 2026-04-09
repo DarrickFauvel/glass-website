@@ -718,7 +718,7 @@ if (prefersReducedMotion) {
     if (!following || lensLocked) return;
     following = false;
     cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(restoreTick);
+    rafId = null;
   }
   hero.addEventListener('touchend',    onTouchEnd);
   hero.addEventListener('touchcancel', onTouchEnd);
