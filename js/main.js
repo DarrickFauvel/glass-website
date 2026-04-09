@@ -551,6 +551,7 @@ if (prefersReducedMotion) {
   let touchStartClientX = 0, touchStartClientY = 0;
   let touchStartElement = null;
   let idleActive = false, idleVx = 0, idleVy = 0, idleTimer = null;
+  let idleCurVx  = 0, idleCurVy = 0; // actual velocity, eases toward idleVx/Vy
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -651,27 +652,42 @@ if (prefersReducedMotion) {
     const heroH  = hero.offsetHeight;
     const margin = LENS_R + 6;
 
-    lensX += idleVx;
-    lensY += idleVy;
+    // Ease actual velocity toward target (smooth general movement + eased start)
+    idleCurVx = lerp(idleCurVx, idleVx, 0.07);
+    idleCurVy = lerp(idleCurVy, idleVy, 0.07);
 
-    // Bounce off each border with a small random angle nudge
+    lensX += idleCurVx;
+    lensY += idleCurVy;
+
+    // On border contact: snap the perpendicular velocity component for an immediate
+    // physical bounce, apply slight damping, then set a new reflected target angle
+    // with variation so paths never repeat.
+    let a;
     if (lensX < margin) {
-      lensX  = margin;
-      idleVx = Math.abs(idleVx);
-      idleVy += (Math.random() - 0.5) * 0.5;
+      lensX     = margin;
+      idleCurVx = Math.abs(idleCurVx) * 0.82;          // snap + dampen
+      a = Math.atan2(idleVy, Math.abs(idleVx)) + (Math.random() - 0.5) * 0.5;
+      idleVx = Math.cos(a) * IDLE_SPEED;
+      idleVy = Math.sin(a) * IDLE_SPEED;
     } else if (lensX > heroW - margin) {
-      lensX  = heroW - margin;
-      idleVx = -Math.abs(idleVx);
-      idleVy += (Math.random() - 0.5) * 0.5;
+      lensX     = heroW - margin;
+      idleCurVx = -Math.abs(idleCurVx) * 0.82;
+      a = Math.atan2(idleVy, -Math.abs(idleVx)) + (Math.random() - 0.5) * 0.5;
+      idleVx = Math.cos(a) * IDLE_SPEED;
+      idleVy = Math.sin(a) * IDLE_SPEED;
     }
     if (lensY < margin) {
-      lensY  = margin;
-      idleVy = Math.abs(idleVy);
-      idleVx += (Math.random() - 0.5) * 0.5;
+      lensY     = margin;
+      idleCurVy = Math.abs(idleCurVy) * 0.82;
+      a = Math.atan2(Math.abs(idleVy), idleVx) + (Math.random() - 0.5) * 0.5;
+      idleVx = Math.cos(a) * IDLE_SPEED;
+      idleVy = Math.sin(a) * IDLE_SPEED;
     } else if (lensY > heroH - margin) {
-      lensY  = heroH - margin;
-      idleVy = -Math.abs(idleVy);
-      idleVx += (Math.random() - 0.5) * 0.5;
+      lensY     = heroH - margin;
+      idleCurVy = -Math.abs(idleCurVy) * 0.82;
+      a = Math.atan2(-Math.abs(idleVy), idleVx) + (Math.random() - 0.5) * 0.5;
+      idleVx = Math.cos(a) * IDLE_SPEED;
+      idleVy = Math.sin(a) * IDLE_SPEED;
     }
 
     applyLens(lensX, lensY);
@@ -680,8 +696,9 @@ if (prefersReducedMotion) {
 
   function startIdleDrift() {
     if (following || attracting || mag.style.opacity !== '1') return;
-    idleActive = true;
-    // Random direction, biased away from purely horizontal/vertical
+    idleActive  = true;
+    idleCurVx   = 0;
+    idleCurVy   = 0;
     const angle = Math.random() * Math.PI * 2;
     idleVx = Math.cos(angle) * IDLE_SPEED;
     idleVy = Math.sin(angle) * IDLE_SPEED;
@@ -704,7 +721,6 @@ if (prefersReducedMotion) {
 
   hero.addEventListener('mousemove', (e) => {
     if (idleActive) stopIdleDrift();
-    resetIdleTimer();
     const hr   = hero.getBoundingClientRect();
     const mx   = e.clientX - hr.left;
     const my   = e.clientY - hr.top;
@@ -751,6 +767,7 @@ if (prefersReducedMotion) {
 
   hero.addEventListener('mouseleave', () => {
     if (lensLocked) return;
+    stopIdleDrift();
     following  = false;
     attracting = false;
     cancelAnimationFrame(rafId);
@@ -802,6 +819,7 @@ if (prefersReducedMotion) {
     following = false;
     cancelAnimationFrame(rafId);
     rafId = null;
+    resetIdleTimer();
 
     // Detect tap (minimal movement) and fire secret modal if one was hit
     const t = e.changedTouches[0];
