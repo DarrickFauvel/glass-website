@@ -643,7 +643,7 @@ if (prefersReducedMotion) {
   }
 
   // ===== Idle drift =====
-  const IDLE_SPEED   = 1.1;
+  const IDLE_SPEED   = 0.65;
   const IDLE_TIMEOUT = 3000;
 
   function idleTick() {
