@@ -507,6 +507,47 @@ if (prefersReducedMotion) {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !sModal.hidden) closeSecretModal();
     });
+
+    // Accessible keyboard hotspots — one visually-hidden button per secret.
+    // Tab to focus → lens jumps to reveal it; activate → opens the modal.
+    const accessLayer = document.createElement('div');
+    accessLayer.className = 'hero-secret-access';
+    accessLayer.setAttribute('aria-label', 'Hidden secrets');
+    hero.appendChild(accessLayer);
+
+    clues.forEach((clue, i) => {
+      const pos = placed[i];
+      const btn = document.createElement('button');
+      btn.className = 'lens-secret-btn';
+      btn.setAttribute('aria-label', 'Reveal hidden secret');
+      btn.style.left = pos.x + '%';
+      btn.style.top  = pos.y + '%';
+
+      btn.addEventListener('focus', () => {
+        const px = (pos.x / 100) * hero.offsetWidth;
+        const py = (pos.y / 100) * hero.offsetHeight;
+        stopIdleDrift();
+        clearTimeout(idleTimer);
+        following  = false;
+        attracting = false;
+        cancelAnimationFrame(rafId);
+        lensX = px;
+        lensY = py;
+        if (mag.style.opacity !== '1') {
+          mag.style.opacity     = '1';
+          overlay.style.opacity = '1';
+        }
+        applyLens(px, py);
+      });
+
+      btn.addEventListener('blur', () => {
+        if (!lensLocked) resetIdleTimer();
+      });
+
+      btn.addEventListener('click', () => openSecretModal(clue));
+
+      accessLayer.appendChild(btn);
+    });
   }
 
   // Build magnifier layer from cloned hero content
@@ -552,6 +593,7 @@ if (prefersReducedMotion) {
   let touchStartElement = null;
   let idleActive = false, idleVx = 0, idleVy = 0, idleTimer = null;
   let idleCurVx  = 0, idleCurVy = 0; // actual velocity, eases toward idleVx/Vy
+  let motionPaused = false;
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -716,7 +758,9 @@ if (prefersReducedMotion) {
   function resetIdleTimer() {
     stopIdleDrift();
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(startIdleDrift, IDLE_TIMEOUT);
+    if (!prefersReducedMotion && !motionPaused) {
+      idleTimer = setTimeout(startIdleDrift, IDLE_TIMEOUT);
+    }
   }
 
   hero.addEventListener('mousemove', (e) => {
@@ -835,6 +879,27 @@ if (prefersReducedMotion) {
   hero.addEventListener('touchcancel', onTouchEnd);
 
   window.addEventListener('resize', () => { orig = getOrigCenter(); }, { passive: true });
+
+  // Pause/resume button for lens idle motion (hidden when OS reduced-motion is on)
+  if (!prefersReducedMotion) {
+    const pauseBtn = document.createElement('button');
+    pauseBtn.className = 'lens-pause-btn';
+    pauseBtn.setAttribute('aria-pressed', 'false');
+    pauseBtn.textContent = 'Pause lens';
+    hero.appendChild(pauseBtn);
+
+    pauseBtn.addEventListener('click', () => {
+      motionPaused = !motionPaused;
+      pauseBtn.setAttribute('aria-pressed', String(motionPaused));
+      pauseBtn.textContent = motionPaused ? 'Resume lens' : 'Pause lens';
+      if (motionPaused) {
+        stopIdleDrift();
+        clearTimeout(idleTimer);
+      } else {
+        resetIdleTimer();
+      }
+    });
+  }
 }());
 
 // ===== Eyepiece Pulse Rings =====
