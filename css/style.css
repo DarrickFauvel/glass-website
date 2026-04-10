@@ -28,6 +28,87 @@
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
 }
 
+/* ===== Dark Theme ===== */
+[data-theme="dark"] {
+  --cream:        #18110c;
+  --cream-2:      #1f1610;
+  --cream-3:      #271c14;
+  --white:        #211610;
+  --surface:      #2c1f17;
+  --crimson:      #d44040;
+  --crimson-hi:   #e85555;
+  --crimson-pale: rgba(212, 64, 64, 0.12);
+  --crimson-glow: rgba(212, 64, 64, 0.28);
+  --ink:          #ede4d8;
+  --ink-mid:      #bfb3a6;
+  --ink-dim:      #857970;
+  --border:       rgba(237, 228, 216, 0.1);
+  --border-hi:    rgba(237, 228, 216, 0.2);
+}
+
+[data-theme="dark"] header {
+  background: rgba(20, 13, 8, 0.72);
+  border-bottom-color: rgba(237, 228, 216, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+              0 4px 12px rgba(0, 0, 0, 0.35),
+              0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .hero {
+  background: var(--cream);
+  background-image: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(212, 64, 64, 0.08) 0%, transparent 65%);
+}
+
+[data-theme="dark"] .hero-bg-grid {
+  background-image:
+    linear-gradient(rgba(237, 228, 216, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 228, 216, 0.06) 1px, transparent 1px);
+}
+
+/* Flashlight — the mag shows light-mode content through the lens */
+[data-theme="dark"] .hero-mag {
+  --cream:        #f7f2ea;
+  --cream-2:      #ede7da;
+  --ink:          #1c1410;
+  --ink-mid:      #454141;
+  --ink-dim:      #504c4a;
+  --crimson:      #9b2020;
+  --crimson-hi:   #c42b2b;
+  background: #f7f2ea;
+  filter: brightness(1.12) contrast(1.08) saturate(1.1);
+}
+
+[data-theme="dark"] .hero-mag .hero-bg-grid {
+  background-image:
+    linear-gradient(rgba(28, 20, 16, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 20, 16, 0.18) 1px, transparent 1px);
+}
+
+/* Warm bloom radiating outward from the flashlight beam */
+[data-theme="dark"] .hero-lens-overlay {
+  box-shadow:
+    0 0 0 1px rgba(245, 230, 200, 0.3),
+    0 0 0 2px rgba(212, 64, 64, 0.25),
+    0 0 28px 10px rgba(250, 230, 190, 0.22),
+    0 0 65px 28px rgba(250, 220, 160, 0.1),
+    0 0 120px 55px rgba(240, 200, 120, 0.05);
+}
+
+[data-theme="dark"] .nav-toggle-bar {
+  background: var(--ink);
+}
+
+[data-theme="dark"] .lens-pause-btn {
+  border-color: rgba(237, 228, 216, 0.18);
+  color: rgba(237, 228, 216, 0.4);
+}
+
+[data-theme="dark"] .lens-pause-btn:hover,
+[data-theme="dark"] .lens-pause-btn:focus-visible {
+  color: var(--crimson);
+  border-color: var(--crimson);
+}
+
 /* ===== Skip Link ===== */
 .skip-link {
   position: absolute;
@@ -167,8 +248,7 @@ header {
 
 .header-brand {
   display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
+  align-items: center;
 }
 
 .header-logo {
@@ -187,14 +267,6 @@ header {
   color: var(--crimson);
 }
 
-.header-tagline {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  display: none;
-}
 
 @media (min-width: 640px) {
   .header-tagline { display: block; }
@@ -245,6 +317,61 @@ nav a.nav-active::after {
   gap: 1rem;
   margin-left: auto;
 }
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--crimson);
+  background: var(--crimson-pale);
+  border-color: var(--crimson);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon { display: none; }
+
+[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+[data-theme="dark"]  .theme-toggle .icon-sun  { display: block; }
+
+@keyframes theme-toggle-pop {
+  0%   { opacity: 0; transform: rotate(-45deg); }
+  100% { opacity: 1; transform: rotate(0deg); }
+}
+
+.theme-toggle.popping svg {
+  animation: theme-toggle-pop 0.3s ease-out forwards;
+}
+
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 0.4s ease,
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease !important;
+}
+
 
 /* ===== QR BUTTON ===== */
 .qr-btn {
@@ -484,6 +611,15 @@ nav a.nav-active::after {
   font-style: italic;
 }
 
+/* Boost grid visibility inside the lens */
+.hero-mag .hero-bg-grid {
+  mask-image: none;
+  -webkit-mask-image: none;
+  background-image:
+    linear-gradient(rgba(28, 20, 16, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 20, 16, 0.18) 1px, transparent 1px);
+}
+
 /* Make secrets in the mag layer clickable */
 .hero-mag .hero-secret {
   pointer-events: auto;
@@ -622,6 +758,20 @@ nav a.nav-active::after {
   background-color: var(--white);
   background-image:
     radial-gradient(ellipse 80% 60% at 70% 50%, rgba(155, 32, 32, 0.05) 0%, transparent 65%);
+}
+
+.hero-tagline {
+  position: absolute;
+  top: 0.5rem;
+  left: var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Precision grid */
@@ -763,8 +913,8 @@ nav a.nav-active::after {
   right: 1.25rem;
   z-index: 5;
   background: transparent;
-  border: 1px solid rgba(245, 235, 220, 0.2);
-  color: rgba(245, 235, 220, 0.35);
+  border: 1px solid rgba(28, 20, 16, 0.25);
+  color: rgba(28, 20, 16, 0.45);
   font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.08em;
@@ -777,8 +927,8 @@ nav a.nav-active::after {
 
 .lens-pause-btn:hover,
 .lens-pause-btn:focus-visible {
-  color: var(--cream);
-  border-color: rgba(245, 235, 220, 0.55);
+  color: var(--crimson);
+  border-color: var(--crimson);
   outline: 2px solid var(--crimson);
   outline-offset: 2px;
 }
@@ -904,8 +1054,13 @@ nav a.nav-active::after {
 
 .hero-line {
   display: block;
-  white-space: nowrap;
   animation: fadeUp 0.9s ease 0.3s both;
+}
+
+@media (min-width: 640px) {
+  .hero-line {
+    white-space: nowrap;
+  }
 }
 
 .hero-line--italic {

@@ -1,5 +1,35 @@
 // GLASS website — main.js
 
+// ===== Theme Toggle =====
+(function () {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    localStorage.setItem('glass-theme', theme);
+  }
+
+  // Sync button state on load
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+
+  btn.addEventListener('click', () => {
+    // Button pop animation
+    btn.classList.remove('popping');
+    void btn.offsetWidth;
+    btn.classList.add('popping');
+    btn.addEventListener('animationend', () => btn.classList.remove('popping'), { once: true });
+
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.classList.add('theme-transitioning');
+    applyTheme(next);
+    setTimeout(() => html.classList.remove('theme-transitioning'), 500);
+  });
+})();
+
 // ===== Mobile Nav Toggle =====
 (function () {
   const toggle = document.querySelector('.nav-toggle');
@@ -556,11 +586,15 @@ if (prefersReducedMotion) {
   mag.className = 'hero-mag';
   mag.setAttribute('aria-hidden', 'true');
   const heroRect = hero.getBoundingClientRect();
-  ['hero-bg-grid', 'hero-content', 'hero-secrets'].forEach(cls => {
+  ['hero-bg-grid', 'hero-tagline', 'hero-content', 'hero-secrets'].forEach(cls => {
     const el = hero.querySelector('.' + cls);
     if (!el) return;
     const clone = el.cloneNode(true);
-    if (cls === 'hero-content') {
+    if (cls === 'hero-bg-grid') {
+      // Remove the mask so the full grid is visible through the lens
+      clone.style.maskImage = 'none';
+      clone.style.webkitMaskImage = 'none';
+    } else if (cls === 'hero-content') {
       // flex-positioned — pin to exact pixel location so it aligns with the original
       const r = el.getBoundingClientRect();
       clone.style.cssText = `position:absolute;left:${r.left - heroRect.left}px;top:${r.top - heroRect.top}px;width:${r.width}px;margin:0`;
@@ -594,6 +628,58 @@ if (prefersReducedMotion) {
   let idleActive = false, idleVx = 0, idleVy = 0, idleTimer = null;
   let idleCurVx  = 0, idleCurVy = 0; // actual velocity, eases toward idleVx/Vy
   let motionPaused = false;
+
+  // Flick physics
+  const velHistory = [];
+  let flickVx = 0, flickVy = 0;
+
+  function trackVelocity(x, y) {
+    const now = performance.now();
+    velHistory.push({ x, y, t: now });
+    if (velHistory.length > 12) velHistory.shift();
+  }
+
+  function getFlickVelocity() {
+    const now = performance.now();
+    const recent = velHistory.filter(p => now - p.t < 80);
+    if (recent.length < 2) return { vx: 0, vy: 0 };
+    const first = recent[0];
+    const last  = recent[recent.length - 1];
+    const dt = (last.t - first.t) / 16; // normalize to 60fps frames
+    if (dt === 0) return { vx: 0, vy: 0 };
+    const MAX = 22;
+    return {
+      vx: Math.max(-MAX, Math.min(MAX, (last.x - first.x) / dt)),
+      vy: Math.max(-MAX, Math.min(MAX, (last.y - first.y) / dt)),
+    };
+  }
+
+  function momentumTick() {
+    const heroW  = hero.offsetWidth;
+    const heroH  = hero.offsetHeight;
+    const margin = LENS_R + 6;
+    const FRICTION = 0.91;
+    const BOUNCE   = 0.55;
+
+    flickVx *= FRICTION;
+    flickVy *= FRICTION;
+    lensX   += flickVx;
+    lensY   += flickVy;
+
+    if (lensX < margin)        { lensX = margin;        flickVx =  Math.abs(flickVx) * BOUNCE; }
+    else if (lensX > heroW - margin) { lensX = heroW - margin; flickVx = -Math.abs(flickVx) * BOUNCE; }
+    if (lensY < margin)        { lensY = margin;        flickVy =  Math.abs(flickVy) * BOUNCE; }
+    else if (lensY > heroH - margin) { lensY = heroH - margin; flickVy = -Math.abs(flickVy) * BOUNCE; }
+
+    applyLens(lensX, lensY);
+
+    if (Math.hypot(flickVx, flickVy) > 0.4) {
+      rafId = requestAnimationFrame(momentumTick);
+    } else {
+      rafId = null;
+      resetIdleTimer();
+    }
+  }
 
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
@@ -773,6 +859,7 @@ if (prefersReducedMotion) {
     if (following) {
       targetX = mx;
       targetY = my;
+      trackVelocity(mx, my);
       return;
     }
 
@@ -787,33 +874,56 @@ if (prefersReducedMotion) {
       return;
     }
 
-    if (dist <= ATTRACT_R) {
-      targetX = mx;
-      targetY = my;
-      if (!attracting) {
-        attracting = true;
-        cancelAnimationFrame(rafId);
-        // Ensure lens is visible if intro hasn't fired yet
-        if (mag.style.opacity !== '1') {
-          mag.style.opacity     = '1';
-          overlay.style.opacity = '1';
-          applyLens(lensX, lensY);
-        }
-        rafId = requestAnimationFrame(attractTick);
-      }
-    } else if (attracting) {
-      // Mouse drifted outside attraction zone — glide back to rest
-      attracting = false;
+    // Always attract toward cursor anywhere in the hero
+    targetX = mx;
+    targetY = my;
+    if (!attracting) {
+      attracting = true;
       cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(restoreTick);
+      if (mag.style.opacity !== '1') {
+        mag.style.opacity     = '1';
+        overlay.style.opacity = '1';
+        applyLens(lensX, lensY);
+      }
+      rafId = requestAnimationFrame(attractTick);
+    }
+  });
+
+  hero.addEventListener('mouseenter', (e) => {
+    if (lensLocked || following) return;
+    const hr = hero.getBoundingClientRect();
+    targetX = e.clientX - hr.left;
+    targetY = e.clientY - hr.top;
+    stopIdleDrift();
+    if (!attracting) {
+      attracting = true;
+      cancelAnimationFrame(rafId);
+      if (mag.style.opacity !== '1') {
+        mag.style.opacity     = '1';
+        overlay.style.opacity = '1';
+        applyLens(lensX, lensY);
+      }
+      rafId = requestAnimationFrame(attractTick);
     }
   });
 
   hero.addEventListener('mouseleave', () => {
     if (lensLocked) return;
     stopIdleDrift();
-    following  = false;
     attracting = false;
+    if (following) {
+      following = false;
+      const { vx, vy } = getFlickVelocity();
+      velHistory.length = 0;
+      cancelAnimationFrame(rafId);
+      if (Math.hypot(vx, vy) > 1.5) {
+        flickVx = vx;
+        flickVy = vy;
+        rafId = requestAnimationFrame(momentumTick);
+        return;
+      }
+    }
+    following = false;
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(restoreTick);
   });
@@ -856,6 +966,7 @@ if (prefersReducedMotion) {
     const touch = e.touches[0];
     targetX = touch.clientX - hr.left;
     targetY = touch.clientY - hr.top + TOUCH_LIFT;
+    trackVelocity(targetX, targetY);
   }, { passive: false });
 
   function onTouchEnd(e) {
@@ -863,15 +974,27 @@ if (prefersReducedMotion) {
     following = false;
     cancelAnimationFrame(rafId);
     rafId = null;
-    resetIdleTimer();
 
     // Detect tap (minimal movement) and fire secret modal if one was hit
     const t = e.changedTouches[0];
-    if (Math.hypot(t.clientX - touchStartClientX, t.clientY - touchStartClientY) < 10) {
+    const isTap = Math.hypot(t.clientX - touchStartClientX, t.clientY - touchStartClientY) < 10;
+    if (isTap) {
       const el = touchStartElement;
       if (el && el.classList.contains('hero-secret') && el.dataset.clue) {
         const clue = clues.find(c => c.text === el.dataset.clue);
         if (clue) openSecretModal(clue);
+      }
+      velHistory.length = 0;
+      resetIdleTimer();
+    } else {
+      const { vx, vy } = getFlickVelocity();
+      velHistory.length = 0;
+      if (Math.hypot(vx, vy) > 1.5) {
+        flickVx = vx;
+        flickVy = vy;
+        rafId = requestAnimationFrame(momentumTick);
+      } else {
+        resetIdleTimer();
       }
     }
   }
