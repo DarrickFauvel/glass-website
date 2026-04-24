@@ -98,6 +98,12 @@
   background: var(--ink);
 }
 
+[data-theme="dark"] #primary-nav {
+  background: rgba(20, 13, 8, 0.97);
+  border-bottom-color: rgba(237, 228, 216, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
 [data-theme="dark"] .lens-pause-btn {
   border-color: rgba(237, 228, 216, 0.18);
   color: rgba(237, 228, 216, 0.4);
