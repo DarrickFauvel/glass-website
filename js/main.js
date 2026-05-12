@@ -306,7 +306,7 @@ if (prefersReducedMotion) {
     closeBtn.focus();
 
     if (!generated) {
-      const url = window.location.href;
+      const url = window.location.origin;
       urlEl.textContent = url;
       /* global QRCode */
       new QRCode(canvas, {
