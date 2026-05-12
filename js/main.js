@@ -183,13 +183,6 @@ if (prefersReducedMotion) {
       return;
     }
 
-    if (typeof hcaptcha !== 'undefined' && !hcaptcha.getResponse()) {
-      status.textContent = 'Please complete the CAPTCHA.';
-      status.className = 'form-status form-status--error';
-      status.hidden = false;
-      return;
-    }
-
     submit.disabled = true;
     status.hidden = true;
     status.className = 'form-status';
@@ -209,7 +202,6 @@ if (prefersReducedMotion) {
           delete f.dataset.touched;
           f.removeAttribute('aria-invalid');
         });
-        if (typeof hcaptcha !== 'undefined') hcaptcha.reset();
       } else {
         throw new Error(data.message || 'Submission failed');
       }
