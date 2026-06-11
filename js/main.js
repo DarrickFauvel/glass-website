@@ -1168,7 +1168,13 @@ if (prefersReducedMotion) {
     icsLink.setAttribute('aria-label', icsLabel);
     icsLink.setAttribute('role', 'listitem');
 
+    const orSep = document.createElement('span');
+    orSep.className = 'cal-or';
+    orSep.textContent = 'or';
+    orSep.setAttribute('aria-hidden', 'true');
+
     wrap.appendChild(gLink);
+    wrap.appendChild(orSep);
     wrap.appendChild(icsLink);
     drop.appendChild(trigger);
     drop.appendChild(wrap);
