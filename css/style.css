@@ -1417,7 +1417,7 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   border-top: 3px solid var(--crimson);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 4px 24px rgba(28, 20, 16, 0.07);
 }
 
@@ -1548,25 +1548,38 @@ main {
 
 .cal-trigger {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--crimson);
   background: transparent;
-  border: 2px solid var(--crimson);
-  border-radius: 4px;
-  padding: 0.55rem 1rem;
-  min-height: 44px;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.3rem 0.65rem;
+  min-height: 36px;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  position: relative;
+  isolation: isolate;
 }
 
-.cal-dropdown:hover .cal-trigger,
-.cal-dropdown:focus-within .cal-trigger {
-  background: var(--crimson);
-  color: var(--white);
+.cal-trigger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--crimson-glow);
+  border-radius: 2px;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
+
+.cal-dropdown.cal-open .cal-trigger::before,
+.cal-dropdown:focus-within .cal-trigger::before {
+  opacity: 1;
+}
+
 
 .cal-trigger:focus-visible {
   outline: 3px solid var(--crimson);
@@ -1575,10 +1588,11 @@ main {
 
 .cal-links {
   position: absolute;
-  right: 0;
-  top: calc(100% + 4px);
+  left: 0;
+  top: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 0.2rem;
   background: var(--surface);
   border: 1px solid var(--border-hi);
@@ -1588,128 +1602,57 @@ main {
   z-index: 20;
   min-width: max-content;
   opacity: 0;
+  transform: translateY(-4px);
   pointer-events: none;
-  transition: opacity 0.15s;
+  will-change: opacity, transform;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cal-dropdown:hover .cal-links,
+.cal-dropdown.cal-open .cal-links,
 .cal-dropdown:focus-within .cal-links {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-/* Inline expanding variant — subscribe row */
-.cal-dropdown--inline {
-  display: inline-flex;
-  align-items: stretch;
-  max-width: 100%;
-  border: 1px solid var(--crimson);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.cal-dropdown--inline .cal-trigger {
-  border: none;
-  border-right: 2px solid var(--crimson);
-}
-
-.cal-dropdown--inline .cal-links {
-  position: static;
-  top: auto;
-  right: auto;
-  flex-direction: row;
-  gap: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  z-index: auto;
-  min-width: 0;
-  max-width: 0;
-  overflow: hidden;
-  transition: max-width 0.3s ease, opacity 0.2s ease;
-}
-
-.cal-dropdown--inline:hover .cal-links,
-.cal-dropdown--inline:focus-within .cal-links {
-  max-width: 320px;
-}
-
-.cal-dropdown--inline .cal-link {
-  border: none;
-  padding: 0.55rem 0.85rem;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-}
-
-.cal-dropdown--inline .cal-link:hover {
-  background: var(--crimson-glow);
-  color: var(--crimson);
-}
-
-/* Narrow screens: drop options below as absolute panel, no layout shift */
-@media (max-width: 540px) {
-  .cal-dropdown--inline {
-    overflow: visible;
-  }
-
-  .cal-dropdown--inline .cal-links {
-    position: absolute;
-    left: -1px;
-    top: calc(100% - 1px);
-    right: auto;
-    max-width: none;
-    min-width: max-content;
-    flex-direction: row;
-    background: var(--surface);
-    border: 1px solid var(--crimson);
-    border-top: none;
-    border-radius: 0 0 3px 3px;
-    box-shadow: 0 4px 12px rgba(28, 20, 16, 0.1);
-    padding: 0;
-    overflow: visible;
-    transition: opacity 0.15s;
-  }
-
-  .cal-dropdown--inline:hover .cal-links,
-  .cal-dropdown--inline:focus-within .cal-links {
-    max-width: none;
-  }
-
-  .cal-dropdown--inline .cal-link {
-    border: none;
-    padding: 0.55rem 0.85rem;
-    min-height: 44px;
-  }
-
-  .cal-dropdown--inline .cal-link:last-child {
-    border-right: none;
-  }
-}
 
 .cal-link {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--crimson);
   text-decoration: none;
-  border: 2px solid var(--crimson);
-  border-radius: 4px;
-  padding: 0.5rem 0.9rem;
-  min-height: 44px;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  background: transparent;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.28rem 0.6rem;
+  min-height: 36px;
   white-space: nowrap;
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
+  isolation: isolate;
 }
 
-.cal-link:hover {
+.cal-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: var(--crimson-glow);
-  color: var(--crimson);
-  border-color: var(--crimson);
+  border-radius: 2px;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.cal-link:hover::before {
+  opacity: 1;
 }
 
 .cal-link:focus-visible {
@@ -1719,12 +1662,12 @@ main {
 
 .cal-or {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.55rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink);
   opacity: 0.45;
-  padding: 0 0.4rem;
+  padding: 0 0.25rem;
   align-self: center;
 }
 
