@@ -1662,11 +1662,10 @@ main {
 
 .cal-or {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink);
-  opacity: 0.45;
   padding: 0 0.25rem;
   align-self: center;
 }
