@@ -1499,10 +1499,16 @@ main {
   margin-bottom: 1rem;
 }
 
+.cal-subscribe {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
 .upcoming-dates {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
@@ -1514,14 +1520,199 @@ main {
   border: 1px solid var(--border);
   padding: 0.55rem 1rem;
   letter-spacing: 0.03em;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
-  cursor: default;
+  transition: border-color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .upcoming-dates li:hover {
   border-color: var(--crimson);
   background: var(--crimson-pale);
+}
+
+.upcoming-date-text {
+  flex: 1;
+}
+
+.cal-dropdown {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.cal-trigger {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--crimson);
+  background: transparent;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cal-dropdown:hover .cal-trigger,
+.cal-dropdown:focus-within .cal-trigger {
+  background: var(--crimson);
+  color: var(--white);
+}
+
+.cal-trigger:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+.cal-links {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: 3px;
+  padding: 0.3rem;
+  box-shadow: 0 4px 16px rgba(28, 20, 16, 0.12);
+  z-index: 20;
+  min-width: max-content;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.cal-dropdown:hover .cal-links,
+.cal-dropdown:focus-within .cal-links {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Inline expanding variant — subscribe row */
+.cal-dropdown--inline {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cal-dropdown--inline .cal-trigger {
+  border: none;
+}
+
+.cal-dropdown--inline .cal-links {
+  position: static;
+  top: auto;
+  right: auto;
+  flex-direction: row;
+  gap: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  z-index: auto;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease, opacity 0.2s ease;
+}
+
+.cal-dropdown--inline:hover .cal-links,
+.cal-dropdown--inline:focus-within .cal-links {
+  max-width: 320px;
+}
+
+.cal-dropdown--inline .cal-link {
+  border: none;
+  border-left: 1px solid rgba(155, 32, 32, 0.3);
+  padding: 0.2rem 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.cal-dropdown--inline .cal-link:hover {
+  background: var(--crimson-pale);
+  color: var(--crimson);
+}
+
+/* Narrow screens: drop options below as absolute panel, no layout shift */
+@media (max-width: 540px) {
+  .cal-dropdown--inline {
+    overflow: visible;
+  }
+
+  .cal-dropdown--inline .cal-links {
+    position: absolute;
+    left: -1px;
+    top: calc(100% - 1px);
+    right: auto;
+    max-width: none;
+    min-width: max-content;
+    flex-direction: row;
+    background: var(--surface);
+    border: 1px solid var(--crimson);
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 4px 12px rgba(28, 20, 16, 0.1);
+    padding: 0;
+    overflow: visible;
+    transition: opacity 0.15s;
+  }
+
+  .cal-dropdown--inline:hover .cal-links,
+  .cal-dropdown--inline:focus-within .cal-links {
+    max-width: none;
+  }
+
+  .cal-dropdown--inline .cal-link {
+    border: none;
+    border-right: 1px solid rgba(155, 32, 32, 0.3);
+  }
+
+  .cal-dropdown--inline .cal-link:last-child {
+    border-right: none;
+  }
+}
+
+.cal-link {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  text-decoration: none;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
+  display: block;
+}
+
+.cal-link:hover {
+  background: var(--crimson);
+  color: var(--white);
+  border-color: var(--crimson);
+}
+
+.cal-link:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+@media (max-width: 540px) {
+  .upcoming-dates li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* ===== JOIN US ===== */
