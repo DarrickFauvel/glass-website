@@ -1178,6 +1178,21 @@ if (prefersReducedMotion) {
     wrap.appendChild(icsLink);
     drop.appendChild(trigger);
     drop.appendChild(wrap);
+
+    let leaveTimer = null;
+    let openTimer = null;
+    drop.addEventListener('mouseenter', () => {
+      clearTimeout(leaveTimer);
+      drop.classList.add('cal-open');
+      wrap.style.pointerEvents = 'none';
+      clearTimeout(openTimer);
+      openTimer = setTimeout(() => { wrap.style.pointerEvents = ''; }, 220);
+    });
+    drop.addEventListener('mouseleave', () => {
+      clearTimeout(openTimer);
+      leaveTimer = setTimeout(() => drop.classList.remove('cal-open'), 100);
+    });
+
     return drop;
   }
 
@@ -1202,7 +1217,7 @@ if (prefersReducedMotion) {
     'glass-meetups-recurring.ics',
     'Subscribe to all GLASS meetups on Google Calendar',
     'Download recurring .ics for Apple Calendar or Outlook',
-    { triggerText: 'Subscribe to all meetups', inline: true }
+    { triggerText: 'Subscribe to all meetups' }
   ));
   section.insertBefore(subRow, list);
 
@@ -1223,7 +1238,7 @@ if (prefersReducedMotion) {
       `glass-meetup-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}.ics`,
       `Add ${label} to Google Calendar`,
       `Download ${label} as .ics`,
-      { inline: true }
+      {}
     ));
     list.appendChild(li);
   }
