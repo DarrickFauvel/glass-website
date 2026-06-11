@@ -120,11 +120,11 @@
   position: absolute;
   top: -100%;
   left: 1rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1.4rem;
   background: var(--ink);
   color: var(--white);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 0.1em;
   text-decoration: none;
   z-index: 9999;
@@ -151,15 +151,15 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1.2rem;
+  line-height: 1.85;
   color: var(--ink);
   background-color: var(--cream);
 }
 
 /* ===== Focus Styles ===== */
 :focus-visible {
-  outline: 2px solid var(--crimson);
+  outline: 3px solid var(--crimson);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -285,14 +285,17 @@ nav {
 
 nav a {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--ink-mid);
   text-decoration: none;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: color 0.2s;
   position: relative;
-  padding: 0.5rem 0.25rem;
+  padding: 0.65rem 0.5rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 nav a::after {
@@ -1037,7 +1040,7 @@ nav a.nav-active::after {
 
 .hero-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   letter-spacing: 0.22em;
   color: var(--crimson);
   text-transform: uppercase;
@@ -1092,10 +1095,11 @@ nav a.nav-active::after {
   background: var(--crimson);
   color: #fdfaf6;
   padding: 1rem 2.5rem;
+  min-height: 52px;
   border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
@@ -1229,7 +1233,7 @@ nav a.nav-active::after {
 
 .pull-cite {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   letter-spacing: 0.2em;
   color: rgba(253, 246, 238, 0.92);
   text-transform: uppercase;
@@ -1248,7 +1252,7 @@ nav a.nav-active::after {
 
 .section-label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--crimson);
@@ -1334,7 +1338,7 @@ main {
 
 .about-values .value-num {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: var(--crimson);
   letter-spacing: 0.08em;
   grid-column: 1;
@@ -1354,11 +1358,11 @@ main {
 }
 
 .about-values span {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--ink-mid);
   grid-column: 2;
   grid-row: 2;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 /* ===== EVENTS ===== */
@@ -1398,7 +1402,7 @@ main {
 
 .events-intro {
   color: var(--ink-mid);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.9;
   max-width: 360px;
 }
@@ -1427,7 +1431,7 @@ main {
   display: inline-block;
   color: var(--crimson);
   font-family: var(--font-mono);
-  font-size: 0.63rem;
+  font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1461,13 +1465,13 @@ main {
   grid-template-columns: 6.5rem 1fr;
   gap: 1rem;
   align-items: baseline;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--ink);
 }
 
 .event-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -1492,7 +1496,7 @@ main {
 
 .upcoming-section h4 {
   font-family: var(--font-mono);
-  font-size: 0.63rem;
+  font-size: 0.8rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -1544,14 +1548,15 @@ main {
 
 .cal-trigger {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--crimson);
   background: transparent;
-  border: 1px solid var(--crimson);
-  border-radius: 3px;
-  padding: 0.2rem 0.5rem;
+  border: 2px solid var(--crimson);
+  border-radius: 4px;
+  padding: 0.55rem 1rem;
+  min-height: 44px;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -1564,8 +1569,8 @@ main {
 }
 
 .cal-trigger:focus-visible {
-  outline: 2px solid var(--crimson);
-  outline-offset: 2px;
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
 }
 
 .cal-links {
@@ -1605,6 +1610,7 @@ main {
 
 .cal-dropdown--inline .cal-trigger {
   border: none;
+  border-right: 2px solid var(--crimson);
 }
 
 .cal-dropdown--inline .cal-links {
@@ -1631,14 +1637,14 @@ main {
 
 .cal-dropdown--inline .cal-link {
   border: none;
-  border-left: 1px solid rgba(155, 32, 32, 0.3);
-  padding: 0.2rem 0.5rem;
+  padding: 0.55rem 0.85rem;
+  min-height: 44px;
   display: flex;
   align-items: center;
 }
 
 .cal-dropdown--inline .cal-link:hover {
-  background: var(--crimson-pale);
+  background: var(--crimson-glow);
   color: var(--crimson);
 }
 
@@ -1673,7 +1679,8 @@ main {
 
   .cal-dropdown--inline .cal-link {
     border: none;
-    border-right: 1px solid rgba(155, 32, 32, 0.3);
+    padding: 0.55rem 0.85rem;
+    min-height: 44px;
   }
 
   .cal-dropdown--inline .cal-link:last-child {
@@ -1683,29 +1690,42 @@ main {
 
 .cal-link {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--crimson);
   text-decoration: none;
-  border: 1px solid var(--crimson);
-  border-radius: 3px;
-  padding: 0.2rem 0.5rem;
-  transition: background 0.15s, color 0.15s;
+  border: 2px solid var(--crimson);
+  border-radius: 4px;
+  padding: 0.5rem 0.9rem;
+  min-height: 44px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   white-space: nowrap;
   cursor: pointer;
-  display: block;
+  display: flex;
+  align-items: center;
 }
 
 .cal-link:hover {
-  background: var(--crimson);
-  color: var(--white);
+  background: var(--crimson-glow);
+  color: var(--crimson);
   border-color: var(--crimson);
 }
 
 .cal-link:focus-visible {
-  outline: 2px solid var(--crimson);
-  outline-offset: 2px;
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+.cal-or {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.45;
+  padding: 0 0.4rem;
+  align-self: center;
 }
 
 @media (max-width: 540px) {
@@ -1822,15 +1842,17 @@ main {
 }
 
 .join-card-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--crimson);
   text-decoration: none;
-  border: 1px solid var(--crimson);
+  border: 2px solid var(--crimson);
   padding: 0.75rem 1.25rem;
+  min-height: 48px;
   margin-top: 0.5rem;
   align-self: flex-start;
   position: relative;
@@ -1906,7 +1928,7 @@ main {
 
 .form-group label {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-mid);
@@ -1915,11 +1937,11 @@ main {
 .form-group input,
 .form-group textarea {
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--ink);
   background: var(--white);
-  border: 1px solid var(--border-hi);
-  padding: 0.9rem 1rem;
+  border: 2px solid var(--border-hi);
+  padding: 1rem 1rem;
   width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s;
   resize: vertical;
@@ -1942,7 +1964,7 @@ main {
 
 .field-error {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   letter-spacing: 0.04em;
   color: var(--crimson);
 }
@@ -1956,13 +1978,14 @@ main {
 
 .form-submit {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--white);
   background: var(--crimson);
-  border: 1px solid var(--crimson);
-  padding: 0.9rem 1.8rem;
+  border: 2px solid var(--crimson);
+  padding: 1rem 1.8rem;
+  min-height: 52px;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s, border-color 0.2s;
@@ -1982,7 +2005,7 @@ main {
 
 .form-status {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   letter-spacing: 0.06em;
 }
 
