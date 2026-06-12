@@ -824,6 +824,18 @@ nav a.nav-active::after {
     transition: opacity 0.3s 0.26s ease, transform 0.3s 0.26s ease;
   }
 
+  #primary-nav .nav-tools [data-tooltip]::after {
+    left: 0;
+    top: auto;
+    bottom: calc(100% + 8px);
+    transform: translateX(0) translateY(4px);
+  }
+
+  #primary-nav .nav-tools [data-tooltip]:hover::after,
+  #primary-nav .nav-tools [data-tooltip]:focus-visible::after {
+    transform: translateX(0) translateY(0);
+  }
+
   #primary-nav a::after {
     display: none;
   }
