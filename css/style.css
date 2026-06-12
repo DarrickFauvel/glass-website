@@ -409,6 +409,74 @@ nav a.nav-active::after {
   outline-offset: 2px;
 }
 
+/* ===== DISCORD NAV LINK ===== */
+.discord-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.discord-nav-link:hover {
+  color: var(--crimson);
+  background: var(--crimson-pale);
+  border-color: var(--crimson);
+}
+
+.discord-nav-link:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+/* ===== TOOLTIPS ===== */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--border-hi);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tooltip]::after { transition: none; }
+}
+
+@media (hover: none) {
+  [data-tooltip]::after { display: none; }
+}
+
 /* ===== QR MODAL ===== */
 .qr-modal {
   position: fixed;
@@ -1139,6 +1207,33 @@ nav a.nav-active::after {
   transform: translateX(5px);
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero-btn--outline {
+  background: transparent;
+  color: var(--crimson);
+  border: 2px solid var(--crimson);
+  animation-delay: 1.0s;
+}
+
+.hero-btn--outline::after {
+  content: '';
+}
+
+.hero-btn--outline:hover {
+  background: var(--crimson);
+  color: #fdfaf6;
+}
+
+.hero-btn--outline:hover::after {
+  transform: none;
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1806,6 +1901,16 @@ main {
 
 .join-card-btn:hover {
   background: var(--crimson);
+  color: var(--white);
+}
+
+.join-card-btn--filled {
+  background: var(--crimson);
+  color: var(--white);
+}
+
+.join-card-btn--filled:hover {
+  background: var(--crimson-hi);
   color: var(--white);
 }
 
