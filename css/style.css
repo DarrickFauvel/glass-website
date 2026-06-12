@@ -327,6 +327,12 @@ nav a.nav-active::after {
   margin-left: auto;
 }
 
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* ===== THEME TOGGLE ===== */
 .theme-toggle {
   display: flex;
@@ -799,8 +805,23 @@ nav a.nav-active::after {
     transform: translateX(-8px);
   }
 
-  #primary-nav a:last-child {
+  #primary-nav a:last-of-type {
     border-bottom: none;
+  }
+
+  #primary-nav .nav-tools {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem var(--gutter);
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  .nav-open #primary-nav .nav-tools {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s 0.26s ease, transform 0.3s 0.26s ease;
   }
 
   #primary-nav a::after {
