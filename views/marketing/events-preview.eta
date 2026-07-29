@@ -1,0 +1,35 @@
+    <section id="events" class="events" aria-labelledby="events-heading">
+      <div class="section-header reveal">
+        <span class="section-label">Events</span>
+      </div>
+      <div class="events-intro-row reveal">
+        <h2 id="events-heading">Monthly<br><em>Meetup</em></h2>
+        <p class="events-intro">Join us in person every month on the <strong>2nd Wednesday</strong> for an evening of
+          science, skepticism, and good conversation.</p>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-card-header">
+          <span class="event-recurring-badge">Monthly — 2nd Wednesday</span>
+          <h3>GLASS In-Person Meetup</h3>
+        </div>
+        <ul class="event-details">
+          <li>
+            <span class="event-label">Time</span>
+            <span>7:00 PM – 9:30 PM</span>
+          </li>
+          <li>
+            <span class="event-label">Location</span>
+            <span>Panera Bread — 188 Boston Rd, Billerica, MA 01862</span>
+          </li>
+        </ul>
+        <div class="event-map">
+          <iframe src="https://maps.google.com/maps?q=188+Boston+Rd,+Billerica,+MA+01862&output=embed" width="100%"
+            height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Panera Bread, 188 Boston Rd, Billerica, MA"></iframe>
+        </div>
+        <div class="upcoming-section">
+          <h4>Upcoming Dates</h4>
+          <ul id="upcoming-dates" class="upcoming-dates"></ul>
+        </div>
+      </div>
+    </section>
