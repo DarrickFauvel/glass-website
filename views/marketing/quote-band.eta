@@ -1,0 +1,8 @@
+  <section class="quote-band" aria-label="Featured quote">
+    <div class="quote-band-inner reveal">
+      <blockquote class="pull-quote">
+        <p>"Extraordinary claims require extraordinary evidence."</p>
+        <footer><cite class="pull-cite">— Carl Sagan</cite></footer>
+      </blockquote>
+    </div>
+  </section>

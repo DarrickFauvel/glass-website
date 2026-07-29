@@ -1,0 +1,13 @@
+<%~ include("hero", it) %>
+
+<%~ include("quote-band", it) %>
+
+  <main id="main-content">
+<%~ include("about", it) %>
+
+<%~ include("events-preview", it) %>
+  </main>
+
+<%~ include("contact-form", it) %>
+
+<%~ include("join-us", it) %>
