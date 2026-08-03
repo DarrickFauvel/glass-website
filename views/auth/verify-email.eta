@@ -1,0 +1,19 @@
+  <main id="main-content">
+    <div class="auth-page">
+      <div class="auth-card">
+<% if (it.success) { %>
+        <h1>Email Verified</h1>
+        <p class="auth-subtitle">Your email is confirmed. You can now log in.</p>
+        <div class="auth-links">
+          <a href="/login">Log in</a>
+        </div>
+<% } else { %>
+        <h1>Link Expired</h1>
+        <p class="auth-subtitle">This verification link is invalid or has expired.</p>
+        <div class="auth-links">
+          <a href="/login">Back to log in</a>
+        </div>
+<% } %>
+      </div>
+    </div>
+  </main>

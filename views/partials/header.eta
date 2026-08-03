@@ -32,6 +32,7 @@
                 <rect x="15" y="15" width="2" height="2"/>
               </svg>
             </button>
+<%~ include("nav-auth-state", it) %>
           </div>
         </nav>
         <a href="https://discord.gg/87g598FJjM" class="discord-nav-link" target="_blank" rel="noopener noreferrer" aria-label="Join our Discord server" data-tooltip="Join Discord">

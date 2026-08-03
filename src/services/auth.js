@@ -1,0 +1,17 @@
+import argon2 from 'argon2';
+
+/** @type {import('argon2').HashOptions} */
+const HASH_OPTIONS = {
+  type: argon2.argon2id,
+  memoryCost: 19456,
+  timeCost: 2,
+  parallelism: 1,
+};
+
+export function hashPassword(password) {
+  return argon2.hash(password, HASH_OPTIONS);
+}
+
+export function verifyPassword(hash, password) {
+  return argon2.verify(hash, password);
+}

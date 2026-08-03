@@ -415,6 +415,40 @@ nav a.nav-active::after {
   outline-offset: 2px;
 }
 
+/* ===== NAV AUTH STATE ===== */
+.nav-user-name {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  white-space: nowrap;
+}
+
+.nav-logout-form {
+  display: contents;
+}
+
+.nav-auth-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  background: none;
+  border: none;
+  padding: 0.4rem 0.1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.nav-auth-link:hover {
+  color: var(--crimson);
+}
+
+.nav-auth-link--primary {
+  color: var(--crimson);
+  font-weight: 600;
+}
+
 /* ===== DISCORD NAV LINK ===== */
 .discord-nav-link {
   display: flex;
@@ -2134,6 +2168,66 @@ main {
 
 .footer-dev a:hover {
   color: var(--crimson);
+}
+
+/* ===== AUTH PAGES ===== */
+.auth-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter) clamp(3rem, 8vw, 5rem);
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: clamp(1.75rem, 5vw, 2.75rem);
+}
+
+.auth-card h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-form .form-submit {
+  width: 100%;
+  text-align: center;
+}
+
+.auth-links {
+  margin-top: 1.75rem;
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-links a {
+  color: var(--crimson);
+}
+
+.auth-links a:hover {
+  color: var(--crimson-hi);
 }
 
 /* ===== Reduced Motion ===== */
