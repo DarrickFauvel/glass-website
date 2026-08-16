@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
 import { getDb } from '../client.js';
 
-export async function createUser({ email, passwordHash, displayName, reminderOptIn = false, consentAt }) {
+export async function createUser({ email, passwordHash, name, displayName, reminderOptIn = false, consentAt }) {
   const id = nanoid();
   await getDb().execute({
-    sql: `INSERT INTO users (id, email, password_hash, display_name, reminder_opt_in, privacy_consent_at)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-    args: [id, email, passwordHash, displayName, reminderOptIn ? 1 : 0, consentAt ?? null],
+    sql: `INSERT INTO users (id, email, password_hash, name, display_name, reminder_opt_in, privacy_consent_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    args: [id, email, passwordHash, name, displayName, reminderOptIn ? 1 : 0, consentAt ?? null],
   });
   return id;
 }
@@ -38,6 +38,20 @@ export async function updatePassword(userId, passwordHash) {
   await getDb().execute({
     sql: 'UPDATE users SET password_hash = ? WHERE id = ?',
     args: [passwordHash, userId],
+  });
+}
+
+export async function updateName(userId, name) {
+  await getDb().execute({
+    sql: 'UPDATE users SET name = ? WHERE id = ?',
+    args: [name, userId],
+  });
+}
+
+export async function updateDisplayName(userId, displayName) {
+  await getDb().execute({
+    sql: 'UPDATE users SET display_name = ? WHERE id = ?',
+    args: [displayName, userId],
   });
 }
 

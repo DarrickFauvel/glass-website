@@ -9,14 +9,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // columns added to an existing table need an explicit, idempotent ALTER here.
 const COLUMN_ADDITIONS = [
   { table: 'users', column: 'privacy_consent_at', ddl: 'ALTER TABLE users ADD COLUMN privacy_consent_at TEXT' },
+  {
+    table: 'users',
+    column: 'name',
+    ddl: "ALTER TABLE users ADD COLUMN name TEXT NOT NULL DEFAULT ''",
+    // Existing accounts never had a private name — seed it from their display name.
+    backfill: "UPDATE users SET name = display_name WHERE name = ''",
+  },
 ];
 
 async function applyColumnAdditions() {
   const db = getDb();
-  for (const { table, column, ddl } of COLUMN_ADDITIONS) {
+  for (const { table, column, ddl, backfill } of COLUMN_ADDITIONS) {
     const { rows } = await db.execute(`PRAGMA table_info(${table})`);
     if (!rows.some((row) => row.name === column)) {
       await db.execute(ddl);
+      if (backfill) await db.execute(backfill);
     }
   }
 }
