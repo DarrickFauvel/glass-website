@@ -41,6 +41,13 @@ export async function updatePassword(userId, passwordHash) {
   });
 }
 
+export async function updateReminderOptIn(userId, optIn) {
+  await getDb().execute({
+    sql: 'UPDATE users SET reminder_opt_in = ? WHERE id = ?',
+    args: [optIn ? 1 : 0, userId],
+  });
+}
+
 // Explicit per-table deletes rather than relying on ON DELETE CASCADE —
 // erasure must be guaranteed even if foreign_keys enforcement is ever off.
 export async function deleteUser(userId) {

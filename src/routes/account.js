@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { startSSE, patchSignals, redirectClient } from '../middleware/datastar.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { verifyPassword } from '../services/auth.js';
-import { findUserById, deleteUser } from '../db/queries/users.js';
+import { findUserById, deleteUser, updateReminderOptIn } from '../db/queries/users.js';
 
 const SESSION_COOKIE = 'sid';
 
@@ -25,6 +25,15 @@ accountRouter.get('/account/export', requireAuth, (req, res) => {
     privacyConsentAt: privacy_consent_at,
     accountCreatedAt: created_at,
   });
+});
+
+accountRouter.post('/account/reminder-preference', requireAuth, async (req, res) => {
+  const optIn = Boolean(req.body.reminderPref?.value);
+  await updateReminderOptIn(req.user.id, optIn);
+
+  startSSE(res);
+  patchSignals(res, { reminderPref: { saved: true } });
+  res.end();
 });
 
 // GDPR Art. 17 right to erasure — password-gated since this is irreversible.

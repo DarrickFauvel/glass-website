@@ -2318,6 +2318,20 @@ main {
   color: var(--ink);
 }
 
+.account-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.account-toggle-saved {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+}
+
 .account-actions {
   display: flex;
 }
