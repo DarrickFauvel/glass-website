@@ -2046,6 +2046,13 @@ main {
   gap: 0.45rem;
 }
 
+.form-hint {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
 .form-group label {
   font-family: var(--font-mono);
   font-size: 1rem;
@@ -2290,11 +2297,58 @@ main {
 }
 
 /* ===== ACCOUNT PAGE ===== */
+.account-shell {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter) clamp(3rem, 8vw, 5rem);
+}
+
+.account-shell h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.account-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.account-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.account-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 1.25rem;
+}
+
+.account-section--danger {
+  background: var(--crimson-pale);
+  border-color: var(--crimson);
+}
+
+.account-section--danger .account-section-title {
+  color: var(--crimson);
+}
+
+.account-inline-form {
+  margin-top: 1.5rem;
+}
+
 .account-details {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  margin-bottom: 2rem;
 }
 
 .account-details > div {
@@ -2303,6 +2357,11 @@ main {
   gap: 1rem;
   padding-bottom: 0.85rem;
   border-bottom: 1px solid var(--border);
+}
+
+.account-details > div:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .account-details dt {
@@ -2314,15 +2373,84 @@ main {
 }
 
 .account-details dd {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   font-size: 0.95rem;
   color: var(--ink);
+}
+
+.account-inline-edit-form {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.account-inline-input {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  width: 13rem;
+  max-width: 100%;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--border-hi);
+  border-radius: 4px;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.account-inline-input:focus {
+  outline: 2px solid var(--crimson);
+  outline-offset: 1px;
+  border-color: var(--crimson);
+}
+
+.account-inline-save {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--crimson);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.account-inline-save:hover {
+  color: var(--crimson-hi);
+}
+
+.account-inline-save:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.account-inline-edit-form .field-error {
+  flex-basis: 100%;
 }
 
 .account-toggle-row {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+}
+
+.account-inline-edit {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.account-inline-edit:hover {
+  color: var(--crimson);
 }
 
 .account-toggle-saved {
@@ -2334,12 +2462,6 @@ main {
 
 .account-actions {
   display: flex;
-}
-
-.account-divider {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 2rem 0;
 }
 
 .account-danger-toggle {
@@ -2358,7 +2480,7 @@ main {
   font-size: 0.92rem;
   color: var(--ink-mid);
   line-height: 1.6;
-  margin: 1rem 0;
+  margin: 0 0 1rem;
 }
 
 /* ===== LEGAL PAGES ===== */

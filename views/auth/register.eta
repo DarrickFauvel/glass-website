@@ -10,13 +10,18 @@
       </div>
 <% } else { %>
       <div class="auth-card"
-        data-signals="{register: {displayName: '', email: '', password: '', confirmPassword: '', consent: false, reminderOptIn: false, submitting: false, error: ''}}">
+        data-signals="{register: {name: '', displayName: '', email: '', password: '', confirmPassword: '', consent: false, reminderOptIn: false, submitting: false, error: ''}}">
         <h1>Create an Account</h1>
         <p class="auth-subtitle">Join the Greater Lowell Area Science-based Skeptics community.</p>
         <form class="auth-form" data-on:submit__prevent="$register.submitting = true; @post('/register', {contentType: 'json'})">
           <div class="form-group">
             <label for="register-name">Name</label>
-            <input type="text" id="register-name" data-bind="register.displayName" required autocomplete="name">
+            <input type="text" id="register-name" data-bind="register.name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="register-display-name">Display Name</label>
+            <input type="text" id="register-display-name" data-bind="register.displayName" required autocomplete="nickname">
+            <p class="form-hint">Shown publicly instead of your name — e.g. on the site nav.</p>
           </div>
           <div class="form-group">
             <label for="register-email">Email</label>

@@ -1,37 +1,120 @@
   <main id="main-content">
-    <div class="auth-page">
-      <div class="auth-card">
-        <h1>Your Account</h1>
-        <p class="auth-subtitle">Manage your data and privacy settings.</p>
+    <div class="account-shell">
+      <h1>Your Account</h1>
+      <p class="auth-subtitle">Manage your profile, notifications, and security settings.</p>
 
-        <dl class="account-details">
-          <div><dt>Name</dt><dd><%= it.user.display_name %></dd></div>
-          <div><dt>Email</dt><dd><%= it.user.email %></dd></div>
-        </dl>
+      <div class="account-sections">
 
-        <div class="account-toggle-row"
-          data-signals="{reminderPref: {value: <%= it.user.reminder_opt_in ? 'true' : 'false' %>, saved: false}}">
-          <label class="form-checkbox">
-            <input type="checkbox" data-bind="reminderPref.value"
-              data-on:change="$reminderPref.saved = false; @post('/account/reminder-preference', {contentType: 'json'})">
-            <span>Email me reminders about upcoming GLASS events</span>
-          </label>
-          <span class="account-toggle-saved" data-show="$reminderPref.saved">Saved</span>
+        <div class="account-section"
+          data-signals="{accountName: {value: <%= JSON.stringify(it.user.name) %>, editing: false, submitting: false, error: ''}, profileName: {value: <%= JSON.stringify(it.user.display_name) %>, editing: false, submitting: false, error: ''}}">
+          <h2 class="account-section-title">Profile</h2>
+          <p class="form-hint">Name is private. Display Name is shown publicly in the site nav.</p>
+
+          <dl class="account-details">
+            <div>
+              <dt>Name</dt>
+              <dd>
+                <span data-show="!$accountName.editing" data-text="$accountName.value"></span>
+                <form class="account-inline-edit-form" data-show="$accountName.editing"
+                  data-on:submit__prevent="$accountName.submitting = true; @post('/account/name', {contentType: 'json'})">
+                  <input type="text" class="account-inline-input" data-bind="accountName.value"
+                    required maxlength="100" autocomplete="name" aria-label="Name">
+                  <button type="submit" class="account-inline-save" data-attr:disabled="$accountName.submitting">Save</button>
+                  <button type="button" class="account-inline-edit" data-on:click="$accountName.editing = false">Cancel</button>
+                  <span class="field-error" data-text="$accountName.error" role="alert"></span>
+                </form>
+                <button type="button" class="account-inline-edit" data-show="!$accountName.editing"
+                  data-on:click="$accountName.editing = true">Edit</button>
+              </dd>
+            </div>
+            <div>
+              <dt>Display Name</dt>
+              <dd>
+                <span data-show="!$profileName.editing" data-text="$profileName.value"></span>
+                <form class="account-inline-edit-form" data-show="$profileName.editing"
+                  data-on:submit__prevent="$profileName.submitting = true; @post('/account/display-name', {contentType: 'json'})">
+                  <input type="text" class="account-inline-input" data-bind="profileName.value"
+                    required maxlength="100" autocomplete="nickname" aria-label="Display Name">
+                  <button type="submit" class="account-inline-save" data-attr:disabled="$profileName.submitting">Save</button>
+                  <button type="button" class="account-inline-edit" data-on:click="$profileName.editing = false">Cancel</button>
+                  <span class="field-error" data-text="$profileName.error" role="alert"></span>
+                </form>
+                <button type="button" class="account-inline-edit" data-show="!$profileName.editing"
+                  data-on:click="$profileName.editing = true">Edit</button>
+              </dd>
+            </div>
+            <div><dt>Email</dt><dd><%= it.user.email %></dd></div>
+          </dl>
         </div>
 
-        <div class="account-actions">
-          <a class="form-submit form-submit--ghost" href="/account/export" download>Download My Data</a>
+        <div class="account-section">
+          <h2 class="account-section-title">Notifications</h2>
+          <div class="account-toggle-row"
+            data-signals="{reminderPref: {value: <%= it.user.reminder_opt_in ? 'true' : 'false' %>, saved: false}}">
+            <label class="form-checkbox">
+              <input type="checkbox" data-bind="reminderPref.value"
+                data-on:change="$reminderPref.saved = false; @post('/account/reminder-preference', {contentType: 'json'})">
+              <span>Email me reminders about upcoming GLASS events</span>
+            </label>
+            <span class="account-toggle-saved" data-show="$reminderPref.saved">Saved</span>
+          </div>
         </div>
 
-        <hr class="account-divider">
+        <div class="account-section"
+          data-signals="{changePassword: {currentPassword: '', newPassword: '', confirmPassword: '', submitting: false, error: '', success: false, editing: false}}">
+          <h2 class="account-section-title">Security</h2>
 
-        <div data-signals="{deleteAccount: {password: '', submitting: false, error: '', confirming: false}}">
+          <dl class="account-details">
+            <div>
+              <dt>Password</dt>
+              <dd>
+                <span>••••••••</span>
+                <button type="button" class="account-inline-edit" data-show="!$changePassword.editing"
+                  data-on:click="$changePassword.editing = true; $changePassword.success = false">Change</button>
+              </dd>
+            </div>
+          </dl>
+          <span class="account-toggle-saved" data-show="$changePassword.success">Password updated.</span>
+
+          <form class="auth-form account-inline-form" data-show="$changePassword.editing"
+            data-on:submit__prevent="$changePassword.submitting = true; $changePassword.success = false; @post('/account/change-password', {contentType: 'json'})">
+            <div class="form-group">
+              <label for="current-password">Current Password</label>
+              <input type="password" id="current-password" data-bind="changePassword.currentPassword" required autocomplete="current-password">
+            </div>
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input type="password" id="new-password" data-bind="changePassword.newPassword" required minlength="8" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+              <label for="confirm-new-password">Confirm New Password</label>
+              <input type="password" id="confirm-new-password" data-bind="changePassword.confirmPassword" required autocomplete="new-password">
+            </div>
+            <span class="field-error" data-text="$changePassword.error" role="alert"></span>
+            <div class="form-footer">
+              <button type="submit" class="form-submit" data-attr:disabled="$changePassword.submitting">Update Password</button>
+              <button type="button" class="account-inline-edit" data-on:click="$changePassword.editing = false">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="account-section">
+          <h2 class="account-section-title">Privacy &amp; Data</h2>
+          <div class="account-actions">
+            <a class="form-submit form-submit--ghost" href="/account/export" download>Download My Data</a>
+          </div>
+          <p class="auth-links"><a href="/privacy">Read our Privacy Policy</a></p>
+        </div>
+
+        <div class="account-section account-section--danger"
+          data-signals="{deleteAccount: {password: '', submitting: false, error: '', confirming: false}}">
+          <h2 class="account-section-title">Danger Zone</h2>
+          <p class="account-danger-copy">Deleting your account permanently removes your profile, sessions, and any pending tokens. This cannot be undone.</p>
           <button type="button" class="account-danger-toggle" data-on:click="$deleteAccount.confirming = !$deleteAccount.confirming">
             Delete My Account
           </button>
-          <form class="auth-form" data-show="$deleteAccount.confirming"
+          <form class="auth-form account-inline-form" data-show="$deleteAccount.confirming"
             data-on:submit__prevent="$deleteAccount.submitting = true; @post('/account/delete', {contentType: 'json'})">
-            <p class="account-danger-copy">This permanently deletes your account, sessions, and any pending tokens. This cannot be undone.</p>
             <div class="form-group">
               <label for="delete-password">Confirm your password</label>
               <input type="password" id="delete-password" data-bind="deleteAccount.password" required autocomplete="current-password">
@@ -45,9 +128,6 @@
           </form>
         </div>
 
-        <div class="auth-links">
-          <a href="/privacy">Privacy Policy</a>
-        </div>
       </div>
     </div>
   </main>
