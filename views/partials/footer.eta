@@ -2,6 +2,7 @@
     <div class="footer-inner">
       <span class="footer-brand">GLASS</span>
       <p>&copy; 2026 Greater Lowell Area Science-based Skeptics. All rights reserved.</p>
+      <p class="footer-legal"><a href="/privacy">Privacy Policy</a></p>
       <p class="footer-dev">Site by <a href="https://darrickdevelops.com" target="_blank" rel="noopener noreferrer">darrickdevelops.com</a></p>
     </div>
   </footer>

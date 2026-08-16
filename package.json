@@ -9,13 +9,21 @@
   "packageManager": "pnpm@11.17.0",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "migrate": "node src/db/migrate.js"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "argon2": "^0.45.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
     "eta": "^4.6.0",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "nanoid": "^6.0.0",
+    "nodemailer": "^9.0.5"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/node": "^25.0.0",
     "typescript": "^5.7.0"

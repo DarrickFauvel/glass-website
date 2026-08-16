@@ -1,0 +1,56 @@
+  <main id="main-content">
+    <div class="auth-page">
+<% if (it.sentEmail) { %>
+      <div class="auth-card">
+        <h1>Check Your Email</h1>
+        <p class="auth-subtitle">We sent a verification link to <strong><%= it.sentEmail %></strong>. Click it to finish creating your account.</p>
+        <div class="auth-links">
+          <a href="/login">Back to log in</a>
+        </div>
+      </div>
+<% } else { %>
+      <div class="auth-card"
+        data-signals="{register: {displayName: '', email: '', password: '', confirmPassword: '', consent: false, reminderOptIn: false, submitting: false, error: ''}}">
+        <h1>Create an Account</h1>
+        <p class="auth-subtitle">Join the Greater Lowell Area Science-based Skeptics community.</p>
+        <form class="auth-form" data-on:submit__prevent="$register.submitting = true; @post('/register', {contentType: 'json'})">
+          <div class="form-group">
+            <label for="register-name">Name</label>
+            <input type="text" id="register-name" data-bind="register.displayName" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" data-bind="register.email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" data-bind="register.password" required minlength="8" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input type="password" id="register-confirm" data-bind="register.confirmPassword" required autocomplete="new-password">
+          </div>
+          <div class="form-group form-group--checkbox">
+            <label class="form-checkbox">
+              <input type="checkbox" data-bind="register.consent" required>
+              <span>I agree to the <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
+            </label>
+          </div>
+          <div class="form-group form-group--checkbox">
+            <label class="form-checkbox">
+              <input type="checkbox" data-bind="register.reminderOptIn">
+              <span>Email me reminders about upcoming GLASS events (optional).</span>
+            </label>
+          </div>
+          <span class="field-error" data-text="$register.error" role="alert"></span>
+          <div class="form-footer">
+            <button type="submit" class="form-submit" data-attr:disabled="$register.submitting">Sign Up</button>
+          </div>
+        </form>
+        <div class="auth-links">
+          <a href="/login">Already have an account? Log in</a>
+        </div>
+      </div>
+<% } %>
+    </div>
+  </main>

@@ -5,13 +5,13 @@
   <header>
     <div class="header-inner">
       <div class="header-brand">
-        <a href="#" class="header-logo" title="Greater Lowell Area Science-based Skeptics">GLASS</a>
+        <a href="/" class="header-logo" title="Greater Lowell Area Science-based Skeptics">GLASS</a>
       </div>
       <div class="header-end">
         <nav id="primary-nav" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#events">Events</a>
-          <a href="#contact">Contact</a>
+          <a href="/#about">About</a>
+          <a href="/#events">Events</a>
+          <a href="/#contact">Contact</a>
           <div class="nav-tools">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" data-tooltip="Toggle dark mode">
               <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -32,6 +32,7 @@
                 <rect x="15" y="15" width="2" height="2"/>
               </svg>
             </button>
+<%~ include("nav-auth-state", it) %>
           </div>
         </nav>
         <a href="https://discord.gg/87g598FJjM" class="discord-nav-link" target="_blank" rel="noopener noreferrer" aria-label="Join our Discord server" data-tooltip="Join Discord">
