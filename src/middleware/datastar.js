@@ -27,3 +27,15 @@ export function patchElements(res, html, { selector, mode } = {}) {
   for (const line of html.split('\n')) dataLines.push(`elements ${line}`);
   writeFrame(res, 'datastar-patch-elements', dataLines);
 }
+
+/**
+ * @post expects an SSE response, so a plain res.redirect() on success gets
+ * swallowed by the client's SSE reader instead of navigating the browser.
+ * Appending a <script> via patch-elements runs client-side and does the redirect for us.
+ */
+export function redirectClient(res, url) {
+  patchElements(res, `<script>window.location = ${JSON.stringify(url)}</script>`, {
+    selector: 'body',
+    mode: 'append',
+  });
+}

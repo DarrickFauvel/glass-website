@@ -1,23 +1,31 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { config } from '../config.js';
 
-const FROM_EMAIL = 'GLASS <noreply@sciencebasedskeptics.com>';
+const FROM_EMAIL = `GLASS <${config.smtp.fromEmail}>`;
 
-let resend;
+let transporter;
 
-function getResend() {
-  if (!resend) {
-    if (!config.resend.apiKey) {
-      throw new Error('RESEND_API_KEY is not set — cannot send email.');
+function getTransporter() {
+  if (!transporter) {
+    if (!config.smtp.user || !config.smtp.pass) {
+      throw new Error('SMTP_USER / SMTP_PASS are not set — cannot send email.');
     }
-    resend = new Resend(config.resend.apiKey);
+    transporter = nodemailer.createTransport({
+      host: config.smtp.host,
+      port: config.smtp.port,
+      secure: config.smtp.port === 465,
+      auth: {
+        user: config.smtp.user,
+        pass: config.smtp.pass,
+      },
+    });
   }
-  return resend;
+  return transporter;
 }
 
 export async function sendVerificationEmail(to, token) {
   const link = `${config.baseUrl}/verify-email?token=${token}`;
-  await getResend().emails.send({
+  await getTransporter().sendMail({
     from: FROM_EMAIL,
     to,
     subject: 'Verify your GLASS account',
@@ -28,7 +36,7 @@ export async function sendVerificationEmail(to, token) {
 
 export async function sendPasswordResetEmail(to, token) {
   const link = `${config.baseUrl}/reset-password?token=${token}`;
-  await getResend().emails.send({
+  await getTransporter().sendMail({
     from: FROM_EMAIL,
     to,
     subject: 'Reset your GLASS password',

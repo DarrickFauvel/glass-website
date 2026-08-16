@@ -1,0 +1,21 @@
+  <main id="main-content">
+    <div class="auth-page">
+      <div class="auth-card" data-signals="{notes: {body: '', submitting: false, error: ''}}">
+        <h1>DB Write Test</h1>
+        <p class="auth-subtitle">Datastar form &rarr; SSE response &rarr; Turso insert.</p>
+        <form class="auth-form" data-on:submit__prevent="$notes.submitting = true; @post('/dev/notes-test', {contentType: 'json'})">
+          <div class="form-group">
+            <label for="note-body">Note</label>
+            <input type="text" id="note-body" data-bind="notes.body" required autocomplete="off">
+          </div>
+          <span class="field-error" data-text="$notes.error" role="alert"></span>
+          <div class="form-footer">
+            <button type="submit" class="form-submit" data-attr:disabled="$notes.submitting">Save Note</button>
+          </div>
+        </form>
+        <div id="notes-panel">
+<%~ include("_notes-panel", it) %>
+        </div>
+      </div>
+    </div>
+  </main>

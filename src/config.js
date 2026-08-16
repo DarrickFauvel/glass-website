@@ -9,8 +9,12 @@ export const config = {
     url: process.env.TURSO_DATABASE_URL,
     authToken: process.env.TURSO_AUTH_TOKEN,
   },
-  resend: {
-    apiKey: process.env.RESEND_API_KEY,
-    contactNotifyEmail: process.env.CONTACT_NOTIFY_EMAIL,
+  smtp: {
+    host: process.env.SMTP_HOST || 'mail.privateemail.com',
+    port: Number(process.env.SMTP_PORT) || 465,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+    fromEmail: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER,
   },
+  contactNotifyEmail: process.env.CONTACT_NOTIFY_EMAIL,
 };

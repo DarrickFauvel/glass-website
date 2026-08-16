@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { startSSE, patchSignals } from '../middleware/datastar.js';
+import { startSSE, patchSignals, redirectClient } from '../middleware/datastar.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { hashPassword, verifyPassword } from '../services/auth.js';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.js';
@@ -28,7 +28,7 @@ authRouter.get('/register', (req, res) => {
 });
 
 authRouter.post('/register', async (req, res) => {
-  const { displayName, email, password, confirmPassword } = req.body.register ?? {};
+  const { displayName, email, password, confirmPassword, consent, reminderOptIn } = req.body.register ?? {};
   const cleanEmail = normalizeEmail(email);
   const cleanName = String(displayName ?? '').trim();
 
@@ -37,6 +37,7 @@ authRouter.post('/register', async (req, res) => {
   else if (!EMAIL_RE.test(cleanEmail)) error = 'Please enter a valid email address.';
   else if (!password || password.length < 8) error = 'Password must be at least 8 characters.';
   else if (password !== confirmPassword) error = 'Passwords do not match.';
+  else if (!consent) error = 'You must agree to the Privacy Policy to create an account.';
 
   if (!error && (await findUserByEmail(cleanEmail))) {
     error = 'An account with that email already exists.';
@@ -49,13 +50,21 @@ authRouter.post('/register', async (req, res) => {
   }
 
   const passwordHash = await hashPassword(password);
-  const userId = await createUser({ email: cleanEmail, passwordHash, displayName: cleanName });
+  const userId = await createUser({
+    email: cleanEmail,
+    passwordHash,
+    displayName: cleanName,
+    reminderOptIn: Boolean(reminderOptIn),
+    consentAt: new Date().toISOString(),
+  });
   const token = await createVerificationToken(userId);
   await sendVerificationEmail(cleanEmail, token).catch((err) => {
     console.error('Failed to send verification email:', err);
   });
 
-  res.redirect(303, `/register?sent=${encodeURIComponent(cleanEmail)}`);
+  startSSE(res);
+  redirectClient(res, `/register?sent=${encodeURIComponent(cleanEmail)}`);
+  res.end();
 });
 
 authRouter.get('/verify-email', async (req, res) => {
@@ -94,7 +103,9 @@ authRouter.post('/login', async (req, res) => {
   });
 
   // /profile lands in Milestone 3 — redirect home until it exists.
-  res.redirect(303, '/');
+  startSSE(res);
+  redirectClient(res, '/');
+  res.end();
 });
 
 authRouter.post('/logout', requireAuth, async (req, res) => {
@@ -117,7 +128,9 @@ authRouter.post('/forgot-password', async (req, res) => {
       console.error('Failed to send password reset email:', err);
     });
   }
-  res.redirect(303, '/forgot-password?sent=1');
+  startSSE(res);
+  redirectClient(res, '/forgot-password?sent=1');
+  res.end();
 });
 
 authRouter.get('/reset-password', async (req, res) => {
@@ -147,5 +160,7 @@ authRouter.post('/reset-password', async (req, res) => {
   await updatePassword(row.user_id, passwordHash);
   await markPasswordResetTokenUsed(row.token);
 
-  res.redirect(303, '/login');
+  startSSE(res);
+  redirectClient(res, '/login');
+  res.end();
 });

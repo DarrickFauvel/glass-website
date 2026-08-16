@@ -4,7 +4,7 @@
         data-signals="{login: {email: '', password: '', submitting: false, error: ''}}">
         <h1>Log In</h1>
         <p class="auth-subtitle">Welcome back.</p>
-        <form class="auth-form" data-on-submit="$login.submitting = true; @post('/login')">
+        <form class="auth-form" data-on:submit__prevent="$login.submitting = true; @post('/login', {contentType: 'json'})">
           <div class="form-group">
             <label for="login-email">Email</label>
             <input type="email" id="login-email" data-bind="login.email" required autocomplete="email">
@@ -15,7 +15,7 @@
           </div>
           <span class="field-error" data-text="$login.error" role="alert"></span>
           <div class="form-footer">
-            <button type="submit" class="form-submit" data-attr-disabled="$login.submitting">Log In</button>
+            <button type="submit" class="form-submit" data-attr:disabled="$login.submitting">Log In</button>
           </div>
         </form>
         <div class="auth-links">

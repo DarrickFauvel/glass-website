@@ -97,13 +97,13 @@ if (prefersReducedMotion) {
 
 // ===== Scrollspy =====
 (function () {
-  const navLinks = document.querySelectorAll('#primary-nav a[href^="#"]');
-  const sectionIds = Array.from(navLinks).map((a) => a.getAttribute('href').slice(1));
+  const navLinks = document.querySelectorAll('#primary-nav a[href*="#"]');
+  const sectionIds = Array.from(navLinks).map((a) => a.getAttribute('href').split('#')[1]);
   const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
 
   function setActive(id) {
     navLinks.forEach((a) => {
-      a.classList.toggle('nav-active', a.getAttribute('href') === '#' + id);
+      a.classList.toggle('nav-active', a.getAttribute('href').split('#')[1] === id);
     });
   }
 

@@ -1,5 +1,5 @@
 <% if (it.user) { %>
-              <span class="nav-user-name"><%= it.user.display_name %></span>
+              <a href="/account" class="nav-user-name"><%= it.user.display_name %></a>
               <form method="post" action="/logout" class="nav-logout-form">
                 <button type="submit" class="nav-auth-link">Log Out</button>
               </form>

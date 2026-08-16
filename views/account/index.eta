@@ -1,0 +1,44 @@
+  <main id="main-content">
+    <div class="auth-page">
+      <div class="auth-card">
+        <h1>Your Account</h1>
+        <p class="auth-subtitle">Manage your data and privacy settings.</p>
+
+        <dl class="account-details">
+          <div><dt>Name</dt><dd><%= it.user.display_name %></dd></div>
+          <div><dt>Email</dt><dd><%= it.user.email %></dd></div>
+          <div><dt>Event reminders</dt><dd><%= it.user.reminder_opt_in ? 'Subscribed' : 'Not subscribed' %></dd></div>
+        </dl>
+
+        <div class="account-actions">
+          <a class="form-submit form-submit--ghost" href="/account/export" download>Download My Data</a>
+        </div>
+
+        <hr class="account-divider">
+
+        <div data-signals="{deleteAccount: {password: '', submitting: false, error: '', confirming: false}}">
+          <button type="button" class="account-danger-toggle" data-on:click="$deleteAccount.confirming = !$deleteAccount.confirming">
+            Delete My Account
+          </button>
+          <form class="auth-form" data-show="$deleteAccount.confirming"
+            data-on:submit__prevent="$deleteAccount.submitting = true; @post('/account/delete', {contentType: 'json'})">
+            <p class="account-danger-copy">This permanently deletes your account, sessions, and any pending tokens. This cannot be undone.</p>
+            <div class="form-group">
+              <label for="delete-password">Confirm your password</label>
+              <input type="password" id="delete-password" data-bind="deleteAccount.password" required autocomplete="current-password">
+            </div>
+            <span class="field-error" data-text="$deleteAccount.error" role="alert"></span>
+            <div class="form-footer">
+              <button type="submit" class="form-submit form-submit--danger" data-attr:disabled="$deleteAccount.submitting">
+                Permanently Delete
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="auth-links">
+          <a href="/privacy">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </main>

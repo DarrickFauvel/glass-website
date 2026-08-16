@@ -1,0 +1,83 @@
+  <main id="main-content">
+    <div class="legal-page">
+      <span class="section-label">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p class="legal-updated">Last updated: August 16, 2026</p>
+
+      <p>The Greater Lowell Area Science-based Skeptics (GLASS) respects your privacy. This policy explains what
+        personal data we collect through this website, why, how long we keep it, and the rights you have over it
+        under the UK/EU General Data Protection Regulation (GDPR) and similar laws.</p>
+
+      <h2>Who we are</h2>
+      <p>GLASS is an informal community group based in the Greater Lowell area of Massachusetts, USA. For any
+        question about this policy or your data, contact us at
+        <a href="mailto:info@sciencebasedskeptics.com">info@sciencebasedskeptics.com</a>.</p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Account data</strong> — email address, display name, and a securely hashed password (we never
+          store or have access to your password in plain text) when you register for an account.</li>
+        <li><strong>Event reminder preference</strong> — whether you've opted in to reminder emails about upcoming
+          GLASS events. Off by default; only set if you check the box at signup.</li>
+        <li><strong>Session cookie</strong> — a single strictly-necessary cookie (<code>sid</code>) that keeps you
+          logged in. It is not used for tracking or advertising, and no consent banner is required for it under
+          ePrivacy rules. We do not use analytics or advertising cookies.</li>
+        <li><strong>Contact form submissions</strong> — if you use the contact form, your name, email, and message
+          are sent directly to our form processor, Web3Forms, and forwarded to us by email. We don't store these
+          submissions in our own database.</li>
+      </ul>
+
+      <h2>Why we process it, and on what basis</h2>
+      <ul>
+        <li><strong>Providing your account</strong> (email, name, password) — necessary to perform our contract
+          with you as a registered member (Art. 6(1)(b) GDPR).</li>
+        <li><strong>Event reminder emails</strong> — your explicit consent, given by checking the opt-in box (Art.
+          6(1)(a) GDPR). You can withdraw it any time from your <a href="/account">account page</a>.</li>
+        <li><strong>Keeping you logged in / account security</strong> — our legitimate interest in running a
+          functioning, secure website (Art. 6(1)(f) GDPR).</li>
+        <li><strong>Responding to contact form messages</strong> — your consent, given by submitting the form.</li>
+      </ul>
+
+      <h2>Who else sees it</h2>
+      <p>We use a small number of third-party processors to run the site. Data may be processed on servers located
+        in the United States.</p>
+      <ul>
+        <li><strong>Resend</strong> — sends account verification and password-reset emails.</li>
+        <li><strong>Web3Forms</strong> — delivers contact form submissions to us by email.</li>
+        <li><strong>Turso</strong> — hosts our database (account records, sessions, tokens).</li>
+      </ul>
+      <p>We do not sell your data, and we don't share it with anyone for marketing purposes.</p>
+
+      <h2>How long we keep it</h2>
+      <ul>
+        <li>Account data is kept until you delete your account or ask us to.</li>
+        <li>Login sessions expire automatically after 30 days.</li>
+        <li>Email verification links expire after 24 hours; password reset links after 1 hour. Expired or used
+          tokens are purged automatically.</li>
+        <li>An account that never verifies its email is automatically deleted after 30 days.</li>
+      </ul>
+
+      <h2>Your rights</h2>
+      <p>Under GDPR you have the right to:</p>
+      <ul>
+        <li><strong>Access</strong> the personal data we hold about you.</li>
+        <li><strong>Correct</strong> inaccurate data.</li>
+        <li><strong>Erase</strong> your data ("right to be forgotten").</li>
+        <li><strong>Export</strong> your data in a portable format.</li>
+        <li><strong>Withdraw consent</strong> (e.g. event reminders) at any time.</li>
+        <li><strong>Object</strong> to processing based on legitimate interest.</li>
+        <li><strong>Lodge a complaint</strong> with your local data protection supervisory authority.</li>
+      </ul>
+      <p>You can exercise most of these yourself, any time, from your <a href="/account">account page</a>: download
+        a copy of your data, or permanently delete your account. For anything else, email us at
+        <a href="mailto:info@sciencebasedskeptics.com">info@sciencebasedskeptics.com</a> and we'll respond within
+        30 days.</p>
+
+      <h2>Children</h2>
+      <p>This site is not directed at children, and we don't knowingly collect data from anyone under 16.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If we make material changes to how we handle your data, we'll update this page and change the "last
+        updated" date above.</p>
+    </div>
+  </main>
