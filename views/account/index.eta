@@ -7,8 +7,17 @@
         <dl class="account-details">
           <div><dt>Name</dt><dd><%= it.user.display_name %></dd></div>
           <div><dt>Email</dt><dd><%= it.user.email %></dd></div>
-          <div><dt>Event reminders</dt><dd><%= it.user.reminder_opt_in ? 'Subscribed' : 'Not subscribed' %></dd></div>
         </dl>
+
+        <div class="account-toggle-row"
+          data-signals="{reminderPref: {value: <%= it.user.reminder_opt_in ? 'true' : 'false' %>, saved: false}}">
+          <label class="form-checkbox">
+            <input type="checkbox" data-bind="reminderPref.value"
+              data-on:change="$reminderPref.saved = false; @post('/account/reminder-preference', {contentType: 'json'})">
+            <span>Email me reminders about upcoming GLASS events</span>
+          </label>
+          <span class="account-toggle-saved" data-show="$reminderPref.saved">Saved</span>
+        </div>
 
         <div class="account-actions">
           <a class="form-submit form-submit--ghost" href="/account/export" download>Download My Data</a>
