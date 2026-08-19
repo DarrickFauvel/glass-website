@@ -6,13 +6,14 @@ import { eta } from './eta.js';
 import { config } from './config.js';
 import { migrate } from './db/migrate.js';
 import { cleanupExpiredData } from './db/cleanup.js';
+import { ensureUpcomingRecurringMeetups } from './services/eventMaintenance.js';
 import { sessionMiddleware } from './middleware/session.js';
 import { marketingRouter } from './routes/marketing.js';
 import { authRouter } from './routes/auth.js';
 import { accountRouter } from './routes/account.js';
-import { devRouter } from './routes/dev.js';
+import { adminRouter } from './routes/admin.js';
 
-const RETENTION_CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const DAILY_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
@@ -21,13 +22,16 @@ export function createApp() {
   const app = express();
 
   migrate()
-    .then(() => cleanupExpiredData())
+    .then(() => Promise.all([cleanupExpiredData(), ensureUpcomingRecurringMeetups()]))
     .catch((err) => {
       console.error('Migration failed at boot (continuing anyway):', err.message);
     });
   setInterval(() => {
     cleanupExpiredData().catch((err) => console.error('Data retention cleanup failed:', err.message));
-  }, RETENTION_CLEANUP_INTERVAL_MS);
+  }, DAILY_INTERVAL_MS);
+  setInterval(() => {
+    ensureUpcomingRecurringMeetups().catch((err) => console.error('Recurring meetup maintenance failed:', err.message));
+  }, DAILY_INTERVAL_MS);
 
   app.engine('eta', (filePath, data, callback) => {
     try {
@@ -55,9 +59,7 @@ export function createApp() {
   app.use(marketingRouter);
   app.use(authRouter);
   app.use(accountRouter);
-  if (config.nodeEnv !== 'production') {
-    app.use(devRouter);
-  }
+  app.use(adminRouter);
 
   return app;
 }

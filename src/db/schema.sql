@@ -38,8 +38,17 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
 );
 CREATE INDEX IF NOT EXISTS idx_prt_user_id ON password_reset_tokens(user_id);
 
-CREATE TABLE IF NOT EXISTS notes (
+-- starts_at is stored as the naive local wall-clock string submitted by the
+-- <input type="datetime-local"> admin form ("YYYY-MM-DDTHH:mm"), not a UTC
+-- instant — there's no timezone handling elsewhere in the app, and this
+-- avoids a local-to-UTC-and-back round trip when re-populating the edit form.
+CREATE TABLE IF NOT EXISTS events (
   id TEXT PRIMARY KEY,
-  body TEXT NOT NULL,
+  title TEXT NOT NULL,
+  starts_at TEXT NOT NULL,
+  location TEXT NOT NULL,
+  cancelled_at TEXT,
+  is_recurring INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
+CREATE INDEX IF NOT EXISTS idx_events_starts_at ON events(starts_at);

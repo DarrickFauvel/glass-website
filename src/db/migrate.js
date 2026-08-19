@@ -16,6 +16,11 @@ const COLUMN_ADDITIONS = [
     // Existing accounts never had a private name — seed it from their display name.
     backfill: "UPDATE users SET name = display_name WHERE name = ''",
   },
+  {
+    table: 'events',
+    column: 'is_recurring',
+    ddl: 'ALTER TABLE events ADD COLUMN is_recurring INTEGER NOT NULL DEFAULT 0',
+  },
 ];
 
 async function applyColumnAdditions() {

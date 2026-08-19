@@ -1043,203 +1043,26 @@ if (prefersReducedMotion) {
   }
 }());
 
-// ===== Upcoming 2nd-Wednesday meetup dates =====
+// ===== "Add to calendar" dropdown interactions =====
+// Dates and calendar links (Google Calendar / .ics) are rendered server-side
+// from the events table (see events-preview.eta, src/lib/calendarLinks.js) —
+// this just wires up the hover-to-open behavior for whatever dropdowns exist.
 (function () {
-  function secondWednesday(year, month) {
-    // month is 0-indexed
-    const d = new Date(year, month, 1);
-    const dayOfWeek = d.getDay();
-    const firstWed = 1 + ((3 - dayOfWeek + 7) % 7);
-    return new Date(year, month, firstWed + 7);
-  }
-
-  const list = document.getElementById('upcoming-dates');
-  if (!list) return;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const formatter = new Intl.DateTimeFormat('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  const EVENT = {
-    title: 'GLASS In-Person Meetup',
-    desc: 'An evening of science, skepticism, and good conversation.',
-    location: 'Panera Bread, 188 Boston Rd, Billerica, MA 01862',
-  };
-
-  function fmtDt(date, h, m) {
-    const p = n => String(n).padStart(2, '0');
-    const d = new Date(date);
-    return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}T${p(h)}${p(m)}00`;
-  }
-
-  function googleCalUrl(date) {
-    const p = new URLSearchParams({
-      action: 'TEMPLATE',
-      text: EVENT.title,
-      dates: `${fmtDt(date, 19, 0)}/${fmtDt(date, 21, 30)}`,
-      details: EVENT.desc,
-      location: EVENT.location,
-    });
-    return `https://www.google.com/calendar/render?${p}`;
-  }
-
-  function googleCalRecurUrl(firstDate) {
-    const p = new URLSearchParams({
-      action: 'TEMPLATE',
-      text: EVENT.title,
-      dates: `${fmtDt(firstDate, 19, 0)}/${fmtDt(firstDate, 21, 30)}`,
-      details: EVENT.desc,
-      location: EVENT.location,
-      recur: 'RRULE:FREQ=MONTHLY;BYDAY=2WE',
-    });
-    return `https://www.google.com/calendar/render?${p}`;
-  }
-
-  function icsDataUri(date) {
-    const p = n => String(n).padStart(2, '0');
-    const d = new Date(date);
-    const uid = `glass-meetup-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}@glass-skeptics.org`;
-    const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'CALSCALE:GREGORIAN',
-      'X-WR-TIMEZONE:America/New_York', 'PRODID:-//GLASS//GLASS Website//EN',
-      'BEGIN:VEVENT',
-      `DTSTART;TZID=America/New_York:${fmtDt(date, 19, 0)}`,
-      `DTEND;TZID=America/New_York:${fmtDt(date, 21, 30)}`,
-      'SUMMARY:GLASS In-Person Meetup',
-      'DESCRIPTION:An evening of science\\, skepticism\\, and good conversation.',
-      'LOCATION:Panera Bread\\, 188 Boston Rd\\, Billerica\\, MA 01862',
-      `UID:${uid}`,
-      'END:VEVENT', 'END:VCALENDAR',
-    ].join('\r\n');
-    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-  }
-
-  function icsRecurDataUri(firstDate) {
-    const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'CALSCALE:GREGORIAN',
-      'X-WR-TIMEZONE:America/New_York', 'PRODID:-//GLASS//GLASS Website//EN',
-      'BEGIN:VEVENT',
-      `DTSTART;TZID=America/New_York:${fmtDt(firstDate, 19, 0)}`,
-      `DTEND;TZID=America/New_York:${fmtDt(firstDate, 21, 30)}`,
-      'RRULE:FREQ=MONTHLY;BYDAY=2WE',
-      'SUMMARY:GLASS In-Person Meetup',
-      'DESCRIPTION:An evening of science\\, skepticism\\, and good conversation.',
-      'LOCATION:Panera Bread\\, 188 Boston Rd\\, Billerica\\, MA 01862',
-      'UID:glass-meetup-recurring@glass-skeptics.org',
-      'END:VEVENT', 'END:VCALENDAR',
-    ].join('\r\n');
-    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-  }
-
-  function makeCalLinks(gUrl, icsUri, icsFilename, gLabel, icsLabel, opts = {}) {
-    const { triggerText = 'Add to calendar', inline = false } = opts;
-
-    const drop = document.createElement('span');
-    drop.className = inline ? 'cal-dropdown cal-dropdown--inline' : 'cal-dropdown';
-
-    const trigger = document.createElement('button');
-    trigger.className = 'cal-trigger';
-    trigger.type = 'button';
-    trigger.textContent = triggerText;
-
-    const wrap = document.createElement('span');
-    wrap.className = 'cal-links';
-    wrap.setAttribute('role', 'list');
-
-    const gLink = document.createElement('a');
-    gLink.href = gUrl;
-    gLink.target = '_blank';
-    gLink.rel = 'noopener noreferrer';
-    gLink.className = 'cal-link';
-    gLink.textContent = 'Google';
-    gLink.setAttribute('aria-label', gLabel);
-    gLink.setAttribute('role', 'listitem');
-
-    const icsLink = document.createElement('a');
-    icsLink.href = icsUri;
-    icsLink.download = icsFilename;
-    icsLink.className = 'cal-link';
-    icsLink.textContent = 'Apple / Outlook';
-    icsLink.setAttribute('aria-label', icsLabel);
-    icsLink.setAttribute('role', 'listitem');
-
-    const orSep = document.createElement('span');
-    orSep.className = 'cal-or';
-    orSep.textContent = 'or';
-    orSep.setAttribute('aria-hidden', 'true');
-
-    wrap.appendChild(gLink);
-    wrap.appendChild(orSep);
-    wrap.appendChild(icsLink);
-    drop.appendChild(trigger);
-    drop.appendChild(wrap);
-
+  document.querySelectorAll('.cal-dropdown').forEach(function (drop) {
+    const links = drop.querySelector('.cal-links');
     let leaveTimer = null;
     let openTimer = null;
+
     drop.addEventListener('mouseenter', () => {
       clearTimeout(leaveTimer);
       drop.classList.add('cal-open');
-      wrap.style.pointerEvents = 'none';
+      links.style.pointerEvents = 'none';
       clearTimeout(openTimer);
-      openTimer = setTimeout(() => { wrap.style.pointerEvents = ''; }, 220);
+      openTimer = setTimeout(() => { links.style.pointerEvents = ''; }, 220);
     });
     drop.addEventListener('mouseleave', () => {
       clearTimeout(openTimer);
       leaveTimer = setTimeout(() => drop.classList.remove('cal-open'), 100);
     });
-
-    return drop;
-  }
-
-  // Collect the next 6 upcoming dates
-  const dates = [];
-  let year = today.getFullYear();
-  let month = today.getMonth();
-  while (dates.length < 6) {
-    const date = secondWednesday(year, month);
-    if (date >= today) dates.push(date);
-    month++;
-    if (month > 11) { month = 0; year++; }
-  }
-
-  // "Subscribe to all meetups" row above the list
-  const section = list.closest('.upcoming-section');
-  const subRow = document.createElement('div');
-  subRow.className = 'cal-subscribe';
-  subRow.appendChild(makeCalLinks(
-    googleCalRecurUrl(dates[0]),
-    icsRecurDataUri(dates[0]),
-    'glass-meetups-recurring.ics',
-    'Subscribe to all GLASS meetups on Google Calendar',
-    'Download recurring .ics for Apple Calendar or Outlook',
-    { triggerText: 'Subscribe to all meetups' }
-  ));
-  section.insertBefore(subRow, list);
-
-  // Per-date rows
-  const pad = n => String(n).padStart(2, '0');
-  for (const date of dates) {
-    const label = formatter.format(date);
-    const li = document.createElement('li');
-
-    const dateSpan = document.createElement('span');
-    dateSpan.className = 'upcoming-date-text';
-    dateSpan.textContent = label;
-
-    li.appendChild(dateSpan);
-    li.appendChild(makeCalLinks(
-      googleCalUrl(date),
-      icsDataUri(date),
-      `glass-meetup-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}.ics`,
-      `Add ${label} to Google Calendar`,
-      `Download ${label} as .ics`,
-      {}
-    ));
-    list.appendChild(li);
-  }
+  });
 }());

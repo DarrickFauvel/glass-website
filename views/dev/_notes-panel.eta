@@ -1,9 +1,0 @@
-<% if (it.status) { %>
-  <p class="auth-subtitle">Saved: "<%= it.status %>"</p>
-<% } %>
-  <h2>Saved notes (<%= it.notes.length %>)</h2>
-  <ul>
-    <% it.notes.forEach(function(note) { %>
-    <li><strong><%= note.created_at %></strong> — <%= note.body %></li>
-    <% }) %>
-  </ul>

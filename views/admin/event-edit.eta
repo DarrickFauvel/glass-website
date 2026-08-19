@@ -1,0 +1,34 @@
+  <main id="main-content">
+    <div class="admin-shell">
+      <h1>Edit Event</h1>
+<% if (it.event.is_recurring) { %>
+      <p class="form-hint">This is one date in the recurring monthly meetup. Checking "Cancelled" only cancels this date — a replacement date further out is generated automatically to keep 6 upcoming meetups scheduled.</p>
+<% } %>
+
+      <div class="account-section">
+        <form class="auth-form" method="post" action="/admin/events/<%= it.event.id %>">
+          <div class="form-group">
+            <label for="edit-title">Title</label>
+            <input type="text" id="edit-title" name="event[title]" value="<%= it.event.title %>" required>
+          </div>
+<%~ include("_time-fields", { idPrefix: 'edit', fieldPrefix: 'event', date: it.date, hour: it.hour, minute: it.minute, ampm: it.ampm }) %>
+          <div class="form-group">
+            <label for="edit-location">Location</label>
+            <input type="text" id="edit-location" name="event[location]" value="<%= it.event.location %>" required>
+          </div>
+          <div class="event-cancel-field">
+            <label class="form-checkbox">
+              <input type="checkbox" name="event[cancelled]" value="1" <%= it.event.cancelled_at ? 'checked' : '' %>>
+              <span>Cancel this event</span>
+            </label>
+            <span class="event-cancel-indicator event-cancel-indicator--inactive">Scheduled — counts as an upcoming event</span>
+            <span class="event-cancel-indicator event-cancel-indicator--active">Cancelled — will not count as upcoming</span>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="form-submit">Save</button>
+            <a class="form-submit form-submit--ghost" href="/admin/events">Back</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>

@@ -1,0 +1,21 @@
+          <div class="form-group">
+            <label for="<%= it.idPrefix %>-date">Date &amp; Time</label>
+            <div class="admin-time-row">
+              <input type="date" id="<%= it.idPrefix %>-date" name="<%= it.fieldPrefix %>[date]" value="<%= it.date %>" required>
+              <select id="<%= it.idPrefix %>-hour" name="<%= it.fieldPrefix %>[hour]" aria-label="Hour" required>
+<% for (let h = 1; h <= 12; h++) { %>
+                <option value="<%= h %>" <%= String(h) === it.hour ? 'selected' : '' %>><%= h %></option>
+<% } %>
+              </select>
+              <span class="admin-time-colon">:</span>
+              <select id="<%= it.idPrefix %>-minute" name="<%= it.fieldPrefix %>[minute]" aria-label="Minute" required>
+<% for (let m = 0; m < 60; m++) { const mm = String(m).padStart(2, '0'); %>
+                <option value="<%= mm %>" <%= mm === it.minute ? 'selected' : '' %>><%= mm %></option>
+<% } %>
+              </select>
+              <select id="<%= it.idPrefix %>-ampm" name="<%= it.fieldPrefix %>[ampm]" aria-label="AM or PM" required>
+                <option value="AM" <%= it.ampm === 'AM' ? 'selected' : '' %>>AM</option>
+                <option value="PM" <%= it.ampm === 'PM' ? 'selected' : '' %>>PM</option>
+              </select>
+            </div>
+          </div>
