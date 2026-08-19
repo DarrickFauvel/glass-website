@@ -26,6 +26,8 @@
 
   --max-width: 1080px;
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
+
+  color-scheme: light;
 }
 
 /* ===== Dark Theme ===== */
@@ -44,6 +46,8 @@
   --ink-dim:      #857970;
   --border:       rgba(237, 228, 216, 0.1);
   --border-hi:    rgba(237, 228, 216, 0.2);
+
+  color-scheme: dark;
 }
 
 [data-theme="dark"] header {
@@ -1708,6 +1712,45 @@ main {
   flex: 1;
 }
 
+.upcoming-date-text-short {
+  display: none;
+}
+
+@media (max-width: 540px) {
+  .upcoming-date-text-full {
+    display: none;
+  }
+
+  .upcoming-date-text-short {
+    display: inline;
+  }
+}
+
+.upcoming-dates li.upcoming-date-cancelled {
+  opacity: 0.65;
+}
+
+.upcoming-dates li.upcoming-date-cancelled:hover {
+  border-color: var(--border);
+  background: var(--cream);
+}
+
+.upcoming-date-text--cancelled {
+  text-decoration: line-through;
+}
+
+.upcoming-date-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+  white-space: nowrap;
+}
+
 .cal-dropdown {
   position: relative;
   display: inline-block;
@@ -2062,6 +2105,7 @@ main {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
   font-family: var(--font-body);
   font-size: 1.1rem;
@@ -2077,7 +2121,53 @@ main {
   border-radius: 0;
 }
 
+.form-group input[type="date"] {
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: 0.3rem;
+  margin-right: -0.3rem;
+  border-radius: 4px;
+  opacity: 0.8;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background: var(--crimson-pale);
+}
+
+.admin-time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-time-row input[type="date"] {
+  flex: 1 1 160px;
+  width: auto;
+}
+
+.admin-time-row select {
+  width: auto;
+  flex: 0 0 auto;
+  padding-right: 2rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-mid) 50%), linear-gradient(135deg, var(--ink-mid) 50%, transparent 50%);
+  background-position: calc(100% - 1.1rem) center, calc(100% - 0.75rem) center;
+  background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+
+.admin-time-colon {
+  font-family: var(--font-mono);
+  color: var(--ink-mid);
+}
+
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: var(--crimson);
@@ -2482,6 +2572,90 @@ main {
   line-height: 1.6;
   margin: 0 0 1rem;
 }
+
+/* ===== ADMIN PAGES ===== */
+.admin-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter) clamp(3rem, 8vw, 5rem);
+}
+
+.admin-shell h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.admin-shell .account-section {
+  margin: 1.75rem 0;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--white);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.admin-table th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table a {
+  color: var(--crimson);
+}
+
+.event-cancel-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 2px solid var(--border-hi);
+  border-radius: 4px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.event-cancel-indicator {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.event-cancel-indicator--inactive { color: #2a6e3f; }
+.event-cancel-indicator--active { display: none; color: var(--crimson); }
+
+.event-cancel-field:has(input:checked) {
+  border-color: var(--crimson);
+  background: var(--crimson-pale);
+}
+
+.event-cancel-field:has(input:checked) .event-cancel-indicator--inactive { display: none; }
+.event-cancel-field:has(input:checked) .event-cancel-indicator--active { display: block; }
 
 /* ===== LEGAL PAGES ===== */
 .legal-page {
