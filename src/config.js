@@ -17,5 +17,4 @@ export const config = {
     fromEmail: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER,
   },
   contactNotifyEmail: process.env.CONTACT_NOTIFY_EMAIL,
-  reminderDaysBefore: Number(process.env.REMINDER_DAYS_BEFORE) || 2,
 };

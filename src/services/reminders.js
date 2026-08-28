@@ -1,28 +1,38 @@
-import { listEventsNeedingReminder, markReminderSent } from '../db/queries/events.js';
-import { listReminderRecipientEmails } from '../db/queries/users.js';
+import { listUpcomingActiveEvents } from '../db/queries/events.js';
+import { listSentReminderKeys, markReminderSent } from '../db/queries/eventReminders.js';
+import { listReminderRecipientEmails } from '../db/queries/reminderOffsets.js';
 import { sendEventReminderEmail } from './email.js';
 import { formatEventDateLabel, formatEventTimeLabel } from '../lib/calendarLinks.js';
-import { localDateTimeStringDaysFromNow } from '../lib/eventTime.js';
-import { config } from '../config.js';
+import { daysUntilDate } from '../lib/eventTime.js';
+import { REMINDER_OFFSET_OPTIONS } from '../lib/reminderOffsets.js';
 
-// Idempotent: an event's reminder_sent_at is set right after its send attempt, so
-// a second run (next boot, next interval tick) skips anything already handled —
-// safe to call as often as the caller likes.
+// Idempotent: each (event, offset) pair is recorded in event_reminders_sent right
+// after its send attempt, so a second run (next boot, next interval tick) skips
+// anything already handled — safe to call as often as the caller likes. A member
+// opted into multiple offsets (e.g. 7 days and 2 days) gets one email per offset
+// as each becomes due, not just one reminder total.
 export async function sendDueEventReminders() {
-  const cutoff = localDateTimeStringDaysFromNow(config.reminderDaysBefore);
-  const events = await listEventsNeedingReminder(cutoff);
+  const events = await listUpcomingActiveEvents();
   if (events.length === 0) return;
 
-  const recipients = await listReminderRecipientEmails();
+  const sentKeys = await listSentReminderKeys(events.map((event) => event.id));
+
   for (const event of events) {
-    if (recipients.length > 0) {
-      await sendEventReminderEmail(
-        recipients,
-        event,
-        formatEventDateLabel(event.starts_at),
-        formatEventTimeLabel(event.starts_at),
-      );
+    const daysUntil = daysUntilDate(event.starts_at);
+    for (const { days: offsetDays } of REMINDER_OFFSET_OPTIONS) {
+      if (daysUntil > offsetDays) continue; // not due yet
+      if (sentKeys.has(`${event.id}:${offsetDays}`)) continue; // already sent
+
+      const recipients = await listReminderRecipientEmails(offsetDays);
+      if (recipients.length > 0) {
+        await sendEventReminderEmail(
+          recipients,
+          event,
+          formatEventDateLabel(event.starts_at),
+          formatEventTimeLabel(event.starts_at),
+        );
+      }
+      await markReminderSent(event.id, offsetDays);
     }
-    await markReminderSent(event.id);
   }
 }

@@ -47,17 +47,19 @@
           </dl>
         </div>
 
-        <div class="account-section">
+        <div class="account-section" data-signals="<%~ it.reminderPrefsSignalsJson %>">
           <h2 class="account-section-title">Notifications</h2>
-          <div class="account-toggle-row"
-            data-signals="{reminderPref: {value: <%= it.user.reminder_opt_in ? 'true' : 'false' %>, saved: false}}">
+          <p class="form-hint">Email me a reminder about upcoming GLASS meetups:</p>
+          <div class="account-checkbox-list">
+<% it.offsetOptions.forEach(function (option) { %>
             <label class="form-checkbox">
-              <input type="checkbox" data-bind="reminderPref.value"
-                data-on:change="$reminderPref.saved = false; @post('/account/reminder-preference', {contentType: 'json'})">
-              <span>Email me reminders about upcoming GLASS events</span>
+              <input type="checkbox" data-bind="reminderPrefs.d<%= option.days %>"
+                data-on:change="$reminderPrefs.saved = false; @post('/account/reminder-preferences', {contentType: 'json'})">
+              <span><%= option.label %></span>
             </label>
-            <span class="account-toggle-saved" data-show="$reminderPref.saved">Saved</span>
+<% }); %>
           </div>
+          <span class="account-toggle-saved" data-show="$reminderPrefs.saved">Saved</span>
         </div>
 
         <div class="account-section"

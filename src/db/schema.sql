@@ -6,11 +6,19 @@ CREATE TABLE IF NOT EXISTS users (
   display_name TEXT NOT NULL,
   email_verified INTEGER NOT NULL DEFAULT 0,
   is_admin INTEGER NOT NULL DEFAULT 0,
-  reminder_opt_in INTEGER NOT NULL DEFAULT 0,
   privacy_consent_at TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+-- A member can opt into any subset of the fixed offsets in
+-- src/lib/reminderOffsets.js (0 rows = no reminders at all).
+CREATE TABLE IF NOT EXISTS user_reminder_offsets (
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  offset_days INTEGER NOT NULL,
+  PRIMARY KEY (user_id, offset_days)
+);
+CREATE INDEX IF NOT EXISTS idx_user_reminder_offsets_offset ON user_reminder_offsets(offset_days);
 
 CREATE TABLE IF NOT EXISTS sessions (
   id TEXT PRIMARY KEY,
@@ -49,7 +57,15 @@ CREATE TABLE IF NOT EXISTS events (
   location TEXT NOT NULL,
   cancelled_at TEXT,
   is_recurring INTEGER NOT NULL DEFAULT 0,
-  reminder_sent_at TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE INDEX IF NOT EXISTS idx_events_starts_at ON events(starts_at);
+
+-- One row per (event, offset) reminder actually sent — an event can appear once
+-- per distinct offset a member has opted into, not just once overall.
+CREATE TABLE IF NOT EXISTS event_reminders_sent (
+  event_id TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  offset_days INTEGER NOT NULL,
+  sent_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+  PRIMARY KEY (event_id, offset_days)
+);

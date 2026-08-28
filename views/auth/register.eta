@@ -44,7 +44,7 @@
           <div class="form-group form-group--checkbox">
             <label class="form-checkbox">
               <input type="checkbox" data-bind="register.reminderOptIn">
-              <span>Email me reminders about upcoming GLASS events (optional).</span>
+              <span>Email me a reminder 2 days before GLASS meetups (optional — you can add more reminder timings later from your account page).</span>
             </label>
           </div>
           <span class="field-error" data-text="$register.error" role="alert"></span>

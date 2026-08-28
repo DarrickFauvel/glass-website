@@ -55,7 +55,7 @@ export async function sendEventReminderEmail(recipients, event, dateLabel, timeL
     to: FROM_EMAIL,
     bcc: recipients,
     subject: `Reminder: GLASS meetup — ${dateLabel}`,
-    text: `${event.title}\n\n${dateLabel} at ${timeLabel}\n${event.location}\n${mapsLink}\n\nHope to see you there!\n\nYou're receiving this because you opted in to event reminders. Manage this at ${accountLink}.`,
-    html: `<p><strong>${event.title}</strong></p><p>${dateLabel} at ${timeLabel}<br>${event.location}<br><a href="${mapsLink}">View on Google Maps</a></p><p>Hope to see you there!</p><p style="color:#666;font-size:0.9em;">You're receiving this because you opted in to event reminders. Manage this at <a href="${accountLink}">${accountLink}</a>.</p>`,
+    text: `${event.title}\n\n${dateLabel} at ${timeLabel}\n${event.location}\n${mapsLink}\n\nHope to see you there!\n\nYou're receiving this because you opted into this reminder. Change which reminders you get at ${accountLink}.`,
+    html: `<p><strong>${event.title}</strong></p><p>${dateLabel} at ${timeLabel}<br>${event.location}<br><a href="${mapsLink}">View on Google Maps</a></p><p>Hope to see you there!</p><p style="color:#666;font-size:0.9em;">You're receiving this because you opted into this reminder. Change which reminders you get at <a href="${accountLink}">${accountLink}</a>.</p>`,
   });
 }

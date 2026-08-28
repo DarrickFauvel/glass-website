@@ -17,8 +17,9 @@
       <ul>
         <li><strong>Account data</strong> — email address, display name, and a securely hashed password (we never
           store or have access to your password in plain text) when you register for an account.</li>
-        <li><strong>Event reminder preference</strong> — whether you've opted in to reminder emails about upcoming
-          GLASS events. Off by default; only set if you check the box at signup.</li>
+        <li><strong>Event reminder preferences</strong> — which reminder timings (e.g. 7 days before, 2 days before,
+          the day of) you've opted into for upcoming GLASS events. None by default; only set if you check the box at
+          signup or choose timings from your account page.</li>
         <li><strong>Session cookie</strong> — a single strictly-necessary cookie (<code>sid</code>) that keeps you
           logged in. It is not used for tracking or advertising, and no consent banner is required for it under
           ePrivacy rules. We do not use analytics or advertising cookies.</li>

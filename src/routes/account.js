@@ -5,23 +5,35 @@ import { hashPassword, verifyPassword } from '../services/auth.js';
 import {
   findUserById,
   deleteUser,
-  updateReminderOptIn,
   updateName,
   updateDisplayName,
   updatePassword,
 } from '../db/queries/users.js';
+import { getUserReminderOffsets, setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
+import { REMINDER_OFFSET_OPTIONS } from '../lib/reminderOffsets.js';
 
 const SESSION_COOKIE = 'sid';
 
 export const accountRouter = Router();
 
-accountRouter.get('/account', requireAuth, (req, res) => {
-  res.render('account/index', { user: req.user });
+accountRouter.get('/account', requireAuth, async (req, res) => {
+  const selectedOffsets = await getUserReminderOffsets(req.user.id);
+  const reminderPrefsSignal = { saved: false };
+  for (const option of REMINDER_OFFSET_OPTIONS) {
+    reminderPrefsSignal[`d${option.days}`] = selectedOffsets.includes(option.days);
+  }
+
+  res.render('account/index', {
+    user: req.user,
+    offsetOptions: REMINDER_OFFSET_OPTIONS,
+    reminderPrefsSignalsJson: JSON.stringify({ reminderPrefs: reminderPrefsSignal }),
+  });
 });
 
 // GDPR Art. 20 data portability — everything we hold on the account, as JSON.
-accountRouter.get('/account/export', requireAuth, (req, res) => {
-  const { id, email, name, display_name, email_verified, reminder_opt_in, privacy_consent_at, created_at } = req.user;
+accountRouter.get('/account/export', requireAuth, async (req, res) => {
+  const { id, email, name, display_name, email_verified, privacy_consent_at, created_at } = req.user;
+  const reminderOffsetDays = await getUserReminderOffsets(req.user.id);
   res.setHeader('Content-Disposition', 'attachment; filename="glass-account-data.json"');
   res.json({
     id,
@@ -29,7 +41,7 @@ accountRouter.get('/account/export', requireAuth, (req, res) => {
     name,
     displayName: display_name,
     emailVerified: Boolean(email_verified),
-    reminderOptIn: Boolean(reminder_opt_in),
+    reminderOffsetDays,
     privacyConsentAt: privacy_consent_at,
     accountCreatedAt: created_at,
   });
@@ -100,12 +112,15 @@ accountRouter.post('/account/change-password', requireAuth, async (req, res) => 
   res.end();
 });
 
-accountRouter.post('/account/reminder-preference', requireAuth, async (req, res) => {
-  const optIn = Boolean(req.body.reminderPref?.value);
-  await updateReminderOptIn(req.user.id, optIn);
+accountRouter.post('/account/reminder-preferences', requireAuth, async (req, res) => {
+  const prefs = req.body.reminderPrefs ?? {};
+  const offsetDays = REMINDER_OFFSET_OPTIONS.filter((option) => Boolean(prefs[`d${option.days}`])).map(
+    (option) => option.days,
+  );
+  await setUserReminderOffsets(req.user.id, offsetDays);
 
   startSSE(res);
-  patchSignals(res, { reminderPref: { saved: true } });
+  patchSignals(res, { reminderPrefs: { saved: true } });
   res.end();
 });
 
