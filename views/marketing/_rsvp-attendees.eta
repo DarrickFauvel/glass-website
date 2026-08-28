@@ -2,7 +2,7 @@
   <summary><%= it.attendees.length %> attending</summary>
   <ul class="rsvp-attendee-list">
 <% it.attendees.forEach(function (a) { %>
-    <li><%= a.displayName %></li>
+    <li><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></li>
 <% }); %>
 <% if (!it.attendees.length) { %>
     <li class="rsvp-attendee-empty">No one has RSVP'd yet.</li>

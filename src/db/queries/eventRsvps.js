@@ -31,24 +31,31 @@ export async function getUserRsvpStatusesForEvents(userId, eventIds) {
   return new Map(result.rows.map((row) => [row.event_id, row.status]));
 }
 
-// Map<eventId, Array<{ userId, displayName }>> — attending only, one batched query
-// (avoids an N+1 query per rendered event). display_name is used deliberately: it's
-// already documented (views/account/index.eta) as the public-facing name; `name` is private.
+// Map<eventId, Array<{ userId, displayName, isOrganizer }>> — attending only, one
+// batched query (avoids an N+1 query per rendered event). display_name is used
+// deliberately: it's already documented (views/account/index.eta) as the
+// public-facing name; `name` is private. Organizer status is admins.is_admin —
+// there's no separate organizer role in this app, admin doubles as organizer.
 export async function listAttendeesForEvents(eventIds) {
   if (eventIds.length === 0) return new Map();
   const placeholders = eventIds.map(() => '?').join(',');
   const result = await getDb().execute({
-    sql: `SELECT event_rsvps.event_id AS event_id, users.id AS user_id, users.display_name AS display_name
+    sql: `SELECT event_rsvps.event_id AS event_id, users.id AS user_id,
+                 users.display_name AS display_name, users.is_admin AS is_admin
           FROM event_rsvps
           JOIN users ON users.id = event_rsvps.user_id
           WHERE event_rsvps.event_id IN (${placeholders}) AND event_rsvps.status = 'attending'
-          ORDER BY users.display_name COLLATE NOCASE ASC`,
+          ORDER BY users.is_admin DESC, users.display_name COLLATE NOCASE ASC`,
     args: eventIds,
   });
   const byEvent = new Map();
   for (const row of result.rows) {
     if (!byEvent.has(row.event_id)) byEvent.set(row.event_id, []);
-    byEvent.get(row.event_id).push({ userId: row.user_id, displayName: row.display_name });
+    byEvent.get(row.event_id).push({
+      userId: row.user_id,
+      displayName: row.display_name,
+      isOrganizer: Boolean(row.is_admin),
+    });
   }
   return byEvent;
 }

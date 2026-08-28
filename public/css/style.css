@@ -1985,6 +1985,18 @@ main {
   font-style: italic;
 }
 
+.rsvp-organizer-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  white-space: nowrap;
+}
+
 .rsvp-login-hint {
   flex-basis: 100%;
   font-family: var(--font-mono);
