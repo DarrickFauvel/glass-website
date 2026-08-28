@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS users (
   email_verified INTEGER NOT NULL DEFAULT 0,
   is_admin INTEGER NOT NULL DEFAULT 0,
   privacy_consent_at TEXT,
+  -- Double opt-in gate for reminder emails specifically, separate from
+  -- email_verified (account ownership) — set only after clicking the
+  -- confirmation link, never inferred from having offsets selected.
+  reminder_confirmed_at TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
@@ -45,6 +49,14 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE INDEX IF NOT EXISTS idx_prt_user_id ON password_reset_tokens(user_id);
+
+CREATE TABLE IF NOT EXISTS reminder_confirmation_tokens (
+  token TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
+);
+CREATE INDEX IF NOT EXISTS idx_rct_user_id ON reminder_confirmation_tokens(user_id);
 
 -- starts_at is stored as the naive local wall-clock string submitted by the
 -- <input type="datetime-local"> admin form ("YYYY-MM-DDTHH:mm"), not a UTC

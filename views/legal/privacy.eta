@@ -18,8 +18,9 @@
         <li><strong>Account data</strong> — email address, display name, and a securely hashed password (we never
           store or have access to your password in plain text) when you register for an account.</li>
         <li><strong>Event reminder preferences</strong> — which reminder timings (e.g. 7 days before, 2 days before,
-          the day of) you've opted into for upcoming GLASS events. None by default; only set if you check the box at
-          signup or choose timings from your account page.</li>
+          the day of) you've opted into for upcoming GLASS events, and whether you've confirmed that opt-in via the
+          link we email you. None by default; only set if you check the box at signup or choose timings from your
+          account page, and reminder emails don't start until you confirm.</li>
         <li><strong>Session cookie</strong> — a single strictly-necessary cookie (<code>sid</code>) that keeps you
           logged in. It is not used for tracking or advertising, and no consent banner is required for it under
           ePrivacy rules. We do not use analytics or advertising cookies.</li>
@@ -32,8 +33,9 @@
       <ul>
         <li><strong>Providing your account</strong> (email, name, password) — necessary to perform our contract
           with you as a registered member (Art. 6(1)(b) GDPR).</li>
-        <li><strong>Event reminder emails</strong> — your explicit consent, given by checking the opt-in box (Art.
-          6(1)(a) GDPR). You can withdraw it any time from your <a href="/account">account page</a>.</li>
+        <li><strong>Event reminder emails</strong> — your explicit consent, given by checking the opt-in box and then
+          confirming via the emailed link (double opt-in) (Art. 6(1)(a) GDPR). You can withdraw it any time from your
+          <a href="/account">account page</a>.</li>
         <li><strong>Keeping you logged in / account security</strong> — our legitimate interest in running a
           functioning, secure website (Art. 6(1)(f) GDPR).</li>
         <li><strong>Responding to contact form messages</strong> — your consent, given by submitting the form.</li>
@@ -43,7 +45,8 @@
       <p>We use a small number of third-party processors to run the site. Data may be processed on servers located
         in the United States.</p>
       <ul>
-        <li><strong>Resend</strong> — sends account verification and password-reset emails.</li>
+        <li><strong>Namecheap Private Email</strong> — sends account verification, password-reset, and event
+          reminder (including confirmation) emails.</li>
         <li><strong>Web3Forms</strong> — delivers contact form submissions to us by email.</li>
         <li><strong>Turso</strong> — hosts our database (account records, sessions, tokens).</li>
       </ul>
@@ -53,8 +56,8 @@
       <ul>
         <li>Account data is kept until you delete your account or ask us to.</li>
         <li>Login sessions expire automatically after 30 days.</li>
-        <li>Email verification links expire after 24 hours; password reset links after 1 hour. Expired or used
-          tokens are purged automatically.</li>
+        <li>Email verification and reminder-confirmation links expire after 24 hours; password reset links after 1
+          hour. Expired or used tokens are purged automatically.</li>
         <li>An account that never verifies its email is automatically deleted after 30 days.</li>
       </ul>
 

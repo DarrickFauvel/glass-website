@@ -53,3 +53,28 @@ export async function markPasswordResetTokenUsed(token) {
     args: [token],
   });
 }
+
+export async function createReminderConfirmationToken(userId) {
+  const token = nanoid();
+  const expiresAt = new Date(Date.now() + VERIFICATION_TTL_MS).toISOString();
+  await getDb().execute({
+    sql: 'INSERT INTO reminder_confirmation_tokens (token, user_id, expires_at) VALUES (?, ?, ?)',
+    args: [token, userId, expiresAt],
+  });
+  return token;
+}
+
+export async function consumeReminderConfirmationToken(token) {
+  const result = await getDb().execute({
+    sql: 'SELECT * FROM reminder_confirmation_tokens WHERE token = ?',
+    args: [token],
+  });
+  const row = result.rows[0];
+  if (!row) return null;
+  await getDb().execute({
+    sql: 'DELETE FROM reminder_confirmation_tokens WHERE token = ?',
+    args: [token],
+  });
+  if (new Date(row.expires_at).getTime() < Date.now()) return null;
+  return row;
+}

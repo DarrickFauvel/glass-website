@@ -12,6 +12,7 @@ export async function cleanupExpiredData() {
 
   await db.execute({ sql: 'DELETE FROM sessions WHERE expires_at < ?', args: [now] });
   await db.execute({ sql: 'DELETE FROM email_verification_tokens WHERE expires_at < ?', args: [now] });
+  await db.execute({ sql: 'DELETE FROM reminder_confirmation_tokens WHERE expires_at < ?', args: [now] });
   await db.execute({
     sql: 'DELETE FROM password_reset_tokens WHERE expires_at < ? OR used_at IS NOT NULL',
     args: [now],

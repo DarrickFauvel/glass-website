@@ -24,14 +24,18 @@ export async function sendDueEventReminders() {
       if (sentKeys.has(`${event.id}:${offsetDays}`)) continue; // already sent
 
       const recipients = await listReminderRecipientEmails(offsetDays);
-      if (recipients.length > 0) {
-        await sendEventReminderEmail(
-          recipients,
-          event,
-          formatEventDateLabel(event.starts_at),
-          formatEventTimeLabel(event.starts_at),
-        );
-      }
+      // Nobody eligible *yet* isn't the same as nobody ever — a member who's opted
+      // into this offset but hasn't confirmed (double opt-in) should still get it
+      // once they do, so this offset stays open (not marked sent) until someone
+      // actually receives it.
+      if (recipients.length === 0) continue;
+
+      await sendEventReminderEmail(
+        recipients,
+        event,
+        formatEventDateLabel(event.starts_at),
+        formatEventTimeLabel(event.starts_at),
+      );
       await markReminderSent(event.id, offsetDays);
     }
   }

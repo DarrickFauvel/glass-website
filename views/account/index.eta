@@ -60,6 +60,13 @@
 <% }); %>
           </div>
           <span class="account-toggle-saved" data-show="$reminderPrefs.saved">Saved</span>
+          <p class="form-hint" data-show="$reminderPrefs.pendingConfirmation">
+            Check your inbox at <%= it.user.email %> to confirm these reminders — you won't receive any until you
+            click the link.
+            <button type="button" class="account-inline-edit" data-show="!$reminderPrefs.resent"
+              data-on:click="@post('/account/resend-reminder-confirmation')">Resend confirmation email</button>
+            <span class="account-toggle-saved" data-show="$reminderPrefs.resent">Sent — check your inbox.</span>
+          </p>
         </div>
 
         <div class="account-section"

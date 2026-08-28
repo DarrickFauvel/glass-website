@@ -21,6 +21,11 @@ const COLUMN_ADDITIONS = [
     column: 'is_recurring',
     ddl: 'ALTER TABLE events ADD COLUMN is_recurring INTEGER NOT NULL DEFAULT 0',
   },
+  {
+    table: 'users',
+    column: 'reminder_confirmed_at',
+    ddl: 'ALTER TABLE users ADD COLUMN reminder_confirmed_at TEXT',
+  },
 ];
 
 // Superseded by user_reminder_offsets / event_reminders_sent (multi-offset reminders) —

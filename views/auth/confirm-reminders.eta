@@ -1,0 +1,20 @@
+  <main id="main-content">
+    <div class="auth-page">
+      <div class="auth-card">
+<% if (it.success) { %>
+        <h1>Reminders Confirmed</h1>
+        <p class="auth-subtitle">You're all set — we'll email you at the timings you selected on your account page.</p>
+        <div class="auth-links">
+          <a href="/account">Go to your account</a>
+        </div>
+<% } else { %>
+        <h1>Link Expired</h1>
+        <p class="auth-subtitle">This confirmation link is invalid or has expired. You can resend it from your
+          account page.</p>
+        <div class="auth-links">
+          <a href="/account">Go to your account</a>
+        </div>
+<% } %>
+      </div>
+    </div>
+  </main>
