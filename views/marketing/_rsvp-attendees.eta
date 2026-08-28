@@ -1,5 +1,5 @@
 <details class="rsvp-attendees" id="rsvp-attendees-<%= it.event.id %>">
-  <summary><%= it.attending.length %> attending</summary>
+  <summary><%= it.attending.length %> attending<% if (it.notAttending.length) { %> &middot; <%= it.notAttending.length %> not attending<% } %></summary>
   <ul class="rsvp-attendee-list">
 <% it.attending.forEach(function (a) { %>
     <li>
@@ -14,7 +14,7 @@
 <% } %>
   </ul>
 <% if (it.notAttending.length) { %>
-  <p class="rsvp-not-attending-label"><%= it.notAttending.length %> not attending</p>
+  <p class="rsvp-not-attending-label">Not attending</p>
   <ul class="rsvp-attendee-list rsvp-attendee-list--declined">
 <% it.notAttending.forEach(function (a) { %>
     <li>

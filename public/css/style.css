@@ -1694,19 +1694,24 @@ main {
   color: var(--ink);
   background: var(--cream);
   border: 1px solid var(--border);
-  padding: 0.55rem 1rem;
+  padding: 0.6rem 1rem;
   letter-spacing: 0.03em;
   transition: border-color 0.2s, background 0.2s;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .upcoming-dates li:hover {
   border-color: var(--crimson);
   background: var(--crimson-pale);
+}
+
+.upcoming-date-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .upcoming-date-text {
@@ -1883,19 +1888,27 @@ main {
 }
 
 @media (max-width: 540px) {
-  .upcoming-dates li {
+  .upcoming-date-primary {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 
-.rsvp-controls {
+.rsvp-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  flex-basis: 100%;
-  margin-top: 0.5rem;
+  gap: 0.6rem;
+}
+
+.rsvp-buttons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.rsvp-note-toggle {
+  font-size: 0.78rem;
 }
 
 .rsvp-btn {
@@ -1941,19 +1954,7 @@ main {
   background: var(--ink-dim);
 }
 
-.rsvp-status-note {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
-  color: var(--ink-dim);
-}
-
-.rsvp-status-note--declined {
-  color: var(--ink-mid);
-}
-
 .rsvp-attendees {
-  flex-basis: 100%;
   font-family: var(--font-mono);
   font-size: 0.78rem;
 }
@@ -2007,12 +2008,10 @@ main {
 }
 
 .rsvp-comment {
-  flex-basis: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 0.5rem;
-  margin-top: 0.35rem;
 }
 
 .rsvp-comment-input {
@@ -2047,11 +2046,9 @@ main {
 }
 
 .rsvp-login-hint {
-  flex-basis: 100%;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--ink-dim);
-  margin: 0.5rem 0 0;
 }
 
 .rsvp-login-hint a {
