@@ -79,5 +79,6 @@ export async function deleteUser(userId) {
   await db.execute({ sql: 'DELETE FROM password_reset_tokens WHERE user_id = ?', args: [userId] });
   await db.execute({ sql: 'DELETE FROM reminder_confirmation_tokens WHERE user_id = ?', args: [userId] });
   await db.execute({ sql: 'DELETE FROM user_reminder_offsets WHERE user_id = ?', args: [userId] });
+  await db.execute({ sql: 'DELETE FROM event_rsvps WHERE user_id = ?', args: [userId] });
   await db.execute({ sql: 'DELETE FROM users WHERE id = ?', args: [userId] });
 }

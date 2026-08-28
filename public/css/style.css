@@ -1698,6 +1698,7 @@ main {
   letter-spacing: 0.03em;
   transition: border-color 0.2s, background 0.2s;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -1886,6 +1887,114 @@ main {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+.rsvp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  flex-basis: 100%;
+  margin-top: 0.5rem;
+}
+
+.rsvp-btn {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  background: transparent;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.3rem 0.65rem;
+  min-height: 36px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.rsvp-btn:hover {
+  background: var(--crimson-pale);
+}
+
+.rsvp-btn:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+.rsvp-btn--active {
+  background: var(--crimson);
+  color: var(--white);
+}
+
+.rsvp-btn--active:hover {
+  background: var(--crimson-hi);
+}
+
+.rsvp-btn--decline.rsvp-btn--active {
+  background: var(--ink-mid);
+  border-color: var(--ink-mid);
+}
+
+.rsvp-btn--decline.rsvp-btn--active:hover {
+  background: var(--ink-dim);
+}
+
+.rsvp-status-note {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-dim);
+}
+
+.rsvp-status-note--declined {
+  color: var(--ink-mid);
+}
+
+.rsvp-attendees {
+  flex-basis: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.rsvp-attendees summary {
+  color: var(--crimson);
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+.rsvp-attendees summary:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+.rsvp-attendee-list {
+  list-style: none;
+  margin-top: 0.35rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid var(--border);
+  color: var(--ink-mid);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rsvp-attendee-empty {
+  color: var(--ink-dim);
+  font-style: italic;
+}
+
+.rsvp-login-hint {
+  flex-basis: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin: 0.5rem 0 0;
+}
+
+.rsvp-login-hint a {
+  color: var(--crimson);
 }
 
 /* ===== JOIN US ===== */

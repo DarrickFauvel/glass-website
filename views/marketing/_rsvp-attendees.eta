@@ -1,0 +1,11 @@
+<details class="rsvp-attendees" id="rsvp-attendees-<%= it.event.id %>">
+  <summary><%= it.attendees.length %> attending</summary>
+  <ul class="rsvp-attendee-list">
+<% it.attendees.forEach(function (a) { %>
+    <li><%= a.displayName %></li>
+<% }); %>
+<% if (!it.attendees.length) { %>
+    <li class="rsvp-attendee-empty">No one has RSVP'd yet.</li>
+<% } %>
+  </ul>
+</details>

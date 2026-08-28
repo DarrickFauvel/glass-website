@@ -81,3 +81,15 @@ CREATE TABLE IF NOT EXISTS event_reminders_sent (
   sent_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   PRIMARY KEY (event_id, offset_days)
 );
+
+-- One row per (event, user) — status is explicit text, not row-presence, so
+-- "haven't responded" (no row) is distinguishable from "responded no" per the
+-- product requirement. Row is upserted in place on status change (no history).
+CREATE TABLE IF NOT EXISTS event_rsvps (
+  event_id TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status TEXT NOT NULL CHECK (status IN ('attending', 'not_attending')),
+  updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+  PRIMARY KEY (event_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_event_rsvps_user_id ON event_rsvps(user_id);
