@@ -34,6 +34,26 @@ export async function findEventById(id) {
   return result.rows[0] ?? null;
 }
 
+// Events starting within the reminder window that haven't been reminded about yet
+// (or been cancelled) — `cutoffDateTimeString` is "now + REMINDER_DAYS_BEFORE days".
+export async function listEventsNeedingReminder(cutoffDateTimeString) {
+  const result = await getDb().execute({
+    sql: `SELECT * FROM events
+          WHERE reminder_sent_at IS NULL AND cancelled_at IS NULL
+            AND starts_at >= ? AND starts_at <= ?
+          ORDER BY starts_at ASC`,
+    args: [nowLocalDateTimeString(), cutoffDateTimeString],
+  });
+  return result.rows;
+}
+
+export async function markReminderSent(id) {
+  await getDb().execute({
+    sql: 'UPDATE events SET reminder_sent_at = ? WHERE id = ?',
+    args: [new Date().toISOString(), id],
+  });
+}
+
 export async function createEvent({ title, startsAt, location, isRecurring = false }) {
   const id = nanoid();
   await getDb().execute({
@@ -43,10 +63,14 @@ export async function createEvent({ title, startsAt, location, isRecurring = fal
   return id;
 }
 
+// Editing an event's date re-arms its reminder (reminder_sent_at resets to NULL)
+// unless the date is unchanged — the CASE compares against the pre-update row,
+// so a title/location-only edit leaves an already-sent reminder alone.
 export async function updateEvent(id, { title, startsAt, location, cancelled }) {
   await getDb().execute({
-    sql: `UPDATE events SET title = ?, starts_at = ?, location = ?, cancelled_at = ?
+    sql: `UPDATE events SET title = ?, starts_at = ?, location = ?, cancelled_at = ?,
+          reminder_sent_at = CASE WHEN starts_at = ? THEN reminder_sent_at ELSE NULL END
           WHERE id = ?`,
-    args: [title, startsAt, location, cancelled ? new Date().toISOString() : null, id],
+    args: [title, startsAt, location, cancelled ? new Date().toISOString() : null, startsAt, id],
   });
 }

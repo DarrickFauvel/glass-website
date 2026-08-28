@@ -14,11 +14,22 @@ export function from24HourTime(hhmm) {
 // Matches the naive local "YYYY-MM-DDTHH:mm" format events.starts_at is stored in,
 // so it can be compared against starts_at directly with string ordering.
 export function nowLocalDateTimeString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
+  return localDateTimeStringFromDate(new Date());
+}
+
+// Same format, offset `days` into the future — used to build the upper bound of
+// the reminder-email lookup window ("send if starts_at is within N days").
+export function localDateTimeStringDaysFromNow(days) {
+  const future = new Date();
+  future.setDate(future.getDate() + days);
+  return localDateTimeStringFromDate(future);
+}
+
+function localDateTimeStringFromDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }

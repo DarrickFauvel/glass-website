@@ -62,6 +62,13 @@ export async function updateReminderOptIn(userId, optIn) {
   });
 }
 
+export async function listReminderRecipientEmails() {
+  const result = await getDb().execute(
+    'SELECT email FROM users WHERE email_verified = 1 AND reminder_opt_in = 1',
+  );
+  return result.rows.map((row) => row.email);
+}
+
 // Explicit per-table deletes rather than relying on ON DELETE CASCADE —
 // erasure must be guaranteed even if foreign_keys enforcement is ever off.
 export async function deleteUser(userId) {
