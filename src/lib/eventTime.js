@@ -17,12 +17,16 @@ export function nowLocalDateTimeString() {
   return localDateTimeStringFromDate(new Date());
 }
 
-// Same format, offset `days` into the future — used to build the upper bound of
-// the reminder-email lookup window ("send if starts_at is within N days").
-export function localDateTimeStringDaysFromNow(days) {
-  const future = new Date();
-  future.setDate(future.getDate() + days);
-  return localDateTimeStringFromDate(future);
+// Whole calendar days between today and an event's date, ignoring time-of-day —
+// e.g. an event later today is 0, tomorrow is 1, even though a full 24h hasn't
+// elapsed. Used to decide which reminder offsets (7/2/0 days) are due for an event.
+export function daysUntilDate(startsAt) {
+  const [datePart] = startsAt.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const eventDate = new Date(year, month - 1, day);
+  const now = new Date();
+  const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((eventDate - todayDate) / (24 * 60 * 60 * 1000));
 }
 
 function localDateTimeStringFromDate(date) {

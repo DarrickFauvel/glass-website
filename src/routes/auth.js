@@ -4,6 +4,8 @@ import { requireAuth } from '../middleware/requireAuth.js';
 import { hashPassword, verifyPassword } from '../services/auth.js';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.js';
 import { createUser, findUserByEmail, markEmailVerified, updatePassword } from '../db/queries/users.js';
+import { setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
+import { DEFAULT_REMINDER_OFFSET_DAYS } from '../lib/reminderOffsets.js';
 import { createSession, deleteSession } from '../db/queries/sessions.js';
 import {
   createVerificationToken,
@@ -57,9 +59,11 @@ authRouter.post('/register', async (req, res) => {
     passwordHash,
     name: cleanName,
     displayName: cleanDisplayName,
-    reminderOptIn: Boolean(reminderOptIn),
     consentAt: new Date().toISOString(),
   });
+  if (reminderOptIn) {
+    await setUserReminderOffsets(userId, [DEFAULT_REMINDER_OFFSET_DAYS]);
+  }
   const token = await createVerificationToken(userId);
   await sendVerificationEmail(cleanEmail, token).catch((err) => {
     console.error('Failed to send verification email:', err);

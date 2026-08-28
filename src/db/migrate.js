@@ -21,12 +21,11 @@ const COLUMN_ADDITIONS = [
     column: 'is_recurring',
     ddl: 'ALTER TABLE events ADD COLUMN is_recurring INTEGER NOT NULL DEFAULT 0',
   },
-  {
-    table: 'events',
-    column: 'reminder_sent_at',
-    ddl: 'ALTER TABLE events ADD COLUMN reminder_sent_at TEXT',
-  },
 ];
+
+// Superseded by user_reminder_offsets / event_reminders_sent (multi-offset reminders) —
+// migrates any existing single-preference data over, then drops the old columns.
+const REMINDER_MIGRATION_DEFAULT_OFFSET_DAYS = 2;
 
 async function applyColumnAdditions() {
   const db = getDb();
@@ -39,10 +38,35 @@ async function applyColumnAdditions() {
   }
 }
 
+async function migrateReminderPreferences() {
+  const db = getDb();
+
+  const { rows: userColumns } = await db.execute('PRAGMA table_info(users)');
+  if (userColumns.some((row) => row.name === 'reminder_opt_in')) {
+    await db.execute({
+      sql: `INSERT OR IGNORE INTO user_reminder_offsets (user_id, offset_days)
+            SELECT id, ? FROM users WHERE reminder_opt_in = 1`,
+      args: [REMINDER_MIGRATION_DEFAULT_OFFSET_DAYS],
+    });
+    await db.execute('ALTER TABLE users DROP COLUMN reminder_opt_in');
+  }
+
+  const { rows: eventColumns } = await db.execute('PRAGMA table_info(events)');
+  if (eventColumns.some((row) => row.name === 'reminder_sent_at')) {
+    await db.execute({
+      sql: `INSERT OR IGNORE INTO event_reminders_sent (event_id, offset_days)
+            SELECT id, ? FROM events WHERE reminder_sent_at IS NOT NULL`,
+      args: [REMINDER_MIGRATION_DEFAULT_OFFSET_DAYS],
+    });
+    await db.execute('ALTER TABLE events DROP COLUMN reminder_sent_at');
+  }
+}
+
 export async function migrate() {
   const sql = await readFile(path.join(__dirname, 'schema.sql'), 'utf-8');
   await getDb().executeMultiple(sql);
   await applyColumnAdditions();
+  await migrateReminderPreferences();
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

@@ -2527,6 +2527,12 @@ main {
   gap: 1rem;
 }
 
+.account-checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
 .account-inline-edit {
   font-family: var(--font-mono);
   font-size: 0.85rem;
