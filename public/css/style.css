@@ -335,10 +335,14 @@ nav a.nav-active::after {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding-left: 0.85rem;
+  margin-left: 0.15rem;
+  border-left: 1px solid var(--border);
 }
 
-/* ===== THEME TOGGLE ===== */
-.theme-toggle {
+/* Shared shape/hover for every icon-only header control (theme toggle, QR,
+   Discord) — one definition instead of three copies that happened to agree. */
+.icon-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -348,18 +352,19 @@ nav a.nav-active::after {
   border-radius: 6px;
   background: transparent;
   color: var(--ink-mid);
+  text-decoration: none;
   cursor: pointer;
   transition: color 0.2s, background 0.2s, border-color 0.2s;
   flex-shrink: 0;
 }
 
-.theme-toggle:hover {
+.icon-btn:hover {
   color: var(--crimson);
   background: var(--crimson-pale);
   border-color: var(--crimson);
 }
 
-.theme-toggle:focus-visible {
+.icon-btn:focus-visible {
   outline: 2px solid var(--crimson);
   outline-offset: 2px;
 }
@@ -392,32 +397,6 @@ nav a.nav-active::after {
 }
 
 
-/* ===== QR BUTTON ===== */
-.qr-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--ink-mid);
-  cursor: pointer;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
-  flex-shrink: 0;
-}
-
-.qr-btn:hover {
-  color: var(--crimson);
-  background: var(--crimson-pale);
-  border-color: var(--crimson);
-}
-
-.qr-btn:focus-visible {
-  outline: 2px solid var(--crimson);
-  outline-offset: 2px;
-}
 
 /* ===== AVATAR =====
    Tint colors are deliberately static (not theme-driven custom properties) so
@@ -536,32 +515,6 @@ nav a.nav-active::after {
   font-weight: 600;
 }
 
-/* ===== DISCORD NAV LINK ===== */
-.discord-nav-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--ink-mid);
-  text-decoration: none;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
-  flex-shrink: 0;
-}
-
-.discord-nav-link:hover {
-  color: var(--crimson);
-  background: var(--crimson-pale);
-  border-color: var(--crimson);
-}
-
-.discord-nav-link:focus-visible {
-  outline: 2px solid var(--crimson);
-  outline-offset: 2px;
-}
 
 /* ===== TOOLTIPS ===== */
 [data-tooltip] {
@@ -932,9 +885,13 @@ nav a.nav-active::after {
 
   #primary-nav .nav-tools {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
     gap: 1rem;
     padding: 0.75rem var(--gutter);
+    margin-left: 0;
     border-top: 1px solid var(--border);
+    border-left: none;
     opacity: 0;
     transform: translateX(-8px);
   }
