@@ -6,7 +6,7 @@
       <div class="account-sections">
 
         <div class="account-section"
-          data-signals="{accountName: {value: <%= JSON.stringify(it.user.name) %>, editing: false, submitting: false, error: ''}, profileName: {value: <%= JSON.stringify(it.user.display_name) %>, editing: false, submitting: false, error: ''}, emailVerify: {resent: false}}">
+          data-signals="{accountName: {value: <%= JSON.stringify(it.user.name) %>, editing: false, submitting: false, error: ''}, profileName: {value: <%= JSON.stringify(it.user.display_name) %>, editing: false, submitting: false, error: ''}, emailVerify: {resent: false}, changeEmail: {newEmail: '', password: '', editing: false, submitting: false, error: ''}}">
           <h2 class="account-section-title">Profile</h2>
           <p class="form-hint">Name is private. Display Name is shown publicly in the site nav.</p>
 
@@ -43,11 +43,28 @@
                   data-on:click="$profileName.editing = true">Edit</button>
               </dd>
             </div>
-            <div><dt>Email</dt><dd><%= it.user.email %>
+            <div>
+              <dt>Email</dt>
+              <dd>
+                <span data-show="!$changeEmail.editing"><%= it.user.email %>
 <% if (it.user.email_verified) { %>
-              <span class="account-toggle-saved">Verified</span>
+                  <span class="account-toggle-saved">Verified</span>
 <% } %>
-            </dd></div>
+                </span>
+                <form class="account-inline-edit-form" data-show="$changeEmail.editing"
+                  data-on:submit__prevent="$changeEmail.submitting = true; @post('/account/email', {contentType: 'json'})">
+                  <input type="email" class="account-inline-input" data-bind="changeEmail.newEmail"
+                    required autocomplete="email" aria-label="New email address" placeholder="New email address">
+                  <input type="password" class="account-inline-input" data-bind="changeEmail.password"
+                    required autocomplete="current-password" aria-label="Current password" placeholder="Current password">
+                  <button type="submit" class="account-inline-save" data-attr:disabled="$changeEmail.submitting">Save</button>
+                  <button type="button" class="account-inline-edit" data-on:click="$changeEmail.editing = false">Cancel</button>
+                  <span class="field-error" data-text="$changeEmail.error" role="alert"></span>
+                </form>
+                <button type="button" class="account-inline-edit" data-show="!$changeEmail.editing"
+                  data-on:click="$changeEmail.editing = true">Change</button>
+              </dd>
+            </div>
           </dl>
 <% if (!it.user.email_verified) { %>
           <p class="form-hint">
