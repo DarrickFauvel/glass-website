@@ -21,6 +21,11 @@ const COLUMN_ADDITIONS = [
     column: 'is_recurring',
     ddl: 'ALTER TABLE events ADD COLUMN is_recurring INTEGER NOT NULL DEFAULT 0',
   },
+  {
+    table: 'events',
+    column: 'reminder_sent_at',
+    ddl: 'ALTER TABLE events ADD COLUMN reminder_sent_at TEXT',
+  },
 ];
 
 async function applyColumnAdditions() {

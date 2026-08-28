@@ -7,6 +7,7 @@ import { config } from './config.js';
 import { migrate } from './db/migrate.js';
 import { cleanupExpiredData } from './db/cleanup.js';
 import { ensureUpcomingRecurringMeetups } from './services/eventMaintenance.js';
+import { sendDueEventReminders } from './services/reminders.js';
 import { sessionMiddleware } from './middleware/session.js';
 import { marketingRouter } from './routes/marketing.js';
 import { authRouter } from './routes/auth.js';
@@ -22,7 +23,7 @@ export function createApp() {
   const app = express();
 
   migrate()
-    .then(() => Promise.all([cleanupExpiredData(), ensureUpcomingRecurringMeetups()]))
+    .then(() => Promise.all([cleanupExpiredData(), ensureUpcomingRecurringMeetups(), sendDueEventReminders()]))
     .catch((err) => {
       console.error('Migration failed at boot (continuing anyway):', err.message);
     });
@@ -31,6 +32,9 @@ export function createApp() {
   }, DAILY_INTERVAL_MS);
   setInterval(() => {
     ensureUpcomingRecurringMeetups().catch((err) => console.error('Recurring meetup maintenance failed:', err.message));
+  }, DAILY_INTERVAL_MS);
+  setInterval(() => {
+    sendDueEventReminders().catch((err) => console.error('Event reminder send failed:', err.message));
   }, DAILY_INTERVAL_MS);
 
   app.engine('eta', (filePath, data, callback) => {

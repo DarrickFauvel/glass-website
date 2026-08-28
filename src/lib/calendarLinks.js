@@ -41,6 +41,12 @@ export function formatEventDateLabelShort(startsAt) {
   }).format(parseLocalDateTime(startsAt));
 }
 
+export function formatEventTimeLabel(startsAt) {
+  return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(
+    parseLocalDateTime(startsAt),
+  );
+}
+
 function googleCalendarUrl(event, { recurring }) {
   const start = parseLocalDateTime(event.starts_at);
   const end = new Date(start.getTime() + DURATION_MINUTES * 60000);
