@@ -87,16 +87,25 @@
                 </div>
                 <button type="button" class="account-inline-edit rsvp-note-toggle"
                   data-show="$rsvps.<%= signalKey %>.status !== '' &amp;&amp; !$rsvps.<%= signalKey %>.noteOpen"
-                  data-on:click="$rsvps.<%= signalKey %>.noteOpen = true">+ Add a note</button>
+                  data-on:click="$rsvps.<%= signalKey %>.noteOpen = true"
+                  data-text="$rsvps.<%= signalKey %>.comment !== '' ? 'Update note' : '+ Add a note'"></button>
               </div>
               <div class="rsvp-comment" data-show="$rsvps.<%= signalKey %>.status !== '' &amp;&amp; $rsvps.<%= signalKey %>.noteOpen">
-                <textarea class="rsvp-comment-input" data-bind="rsvps.<%= signalKey %>.comment"
-                  data-on:input="$rsvps.<%= signalKey %>.saved = false"
-                  maxlength="280" rows="2" placeholder="Optional note — excited to come, scheduling conflict, etc."
-                  aria-label="Optional note about your RSVP"></textarea>
-                <button type="button" class="account-inline-edit"
+                <div class="rsvp-comment-field">
+                  <textarea class="rsvp-comment-input" data-bind="rsvps.<%= signalKey %>.comment"
+                    data-on:input="$rsvps.<%= signalKey %>.saved = false"
+                    maxlength="280" rows="2" placeholder="Optional note — excited to come, scheduling conflict, etc."
+                    aria-label="Optional note about your RSVP"></textarea>
+                  <button type="button" class="rsvp-comment-clear"
+                    data-show="$rsvps.<%= signalKey %>.comment !== ''"
+                    data-on:click="$rsvps.<%= signalKey %>.comment = ''; $rsvps.<%= signalKey %>.savedComment = ''; $rsvps.<%= signalKey %>.saved = false; $rsvps.<%= signalKey %>.noteOpen = false; @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})"
+                    aria-label="Delete note" title="Delete note">&times;</button>
+                </div>
+                <button type="button" class="rsvp-btn"
+                  data-show="$rsvps.<%= signalKey %>.comment !== $rsvps.<%= signalKey %>.savedComment"
                   data-on:click="@post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">Save note</button>
-                <span class="account-toggle-saved" data-show="$rsvps.<%= signalKey %>.saved">Saved</span>
+                <span class="account-toggle-saved" data-show="$rsvps.<%= signalKey %>.saved"
+                  data-effect="$rsvps.<%= signalKey %>.saved &amp;&amp; setTimeout(() =&gt; { $rsvps.<%= signalKey %>.saved = false }, 2000)">Saved</span>
               </div>
 <%~ include("_rsvp-attendees", (function () {
       const rsvps = it.rsvpsByEvent.get(event.id) || {};

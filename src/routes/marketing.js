@@ -30,7 +30,13 @@ marketingRouter.get('/', async (req, res) => {
     events.forEach((event, i) => {
       const userRsvp = userRsvps.get(event.id);
       const comment = userRsvp?.comment ?? '';
-      rsvps[`e${i}`] = { status: userRsvp?.status ?? '', comment, saved: false, noteOpen: Boolean(comment) };
+      rsvps[`e${i}`] = {
+        status: userRsvp?.status ?? '',
+        comment,
+        savedComment: comment,
+        saved: false,
+        noteOpen: Boolean(comment),
+      };
     });
     rsvpSignalsJson = JSON.stringify({ rsvps });
   }

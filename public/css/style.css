@@ -2014,12 +2014,17 @@ main {
   gap: 0.5rem;
 }
 
+.rsvp-comment-field {
+  position: relative;
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
 .rsvp-comment-input {
   font-family: var(--font-mono);
   font-size: 0.82rem;
-  flex: 1 1 220px;
-  min-width: 0;
-  padding: 0.4rem 0.6rem;
+  width: 100%;
+  padding: 0.4rem 1.9rem 0.4rem 0.6rem;
   border: 1px solid var(--border-hi);
   border-radius: 4px;
   background: var(--cream);
@@ -2031,6 +2036,35 @@ main {
   outline: 2px solid var(--crimson);
   outline-offset: 1px;
   border-color: var(--crimson);
+}
+
+.rsvp-comment-clear {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--ink-dim);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.rsvp-comment-clear:hover {
+  color: var(--crimson);
+  background: var(--crimson-pale);
+}
+
+.rsvp-comment-clear:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 1px;
 }
 
 .rsvp-organizer-badge {
