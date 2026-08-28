@@ -51,39 +51,45 @@
      const signalKey = 'e' + i;
 %>
             <li<%~ cancelled ? ' class="upcoming-date-cancelled"' : '' %>>
-              <span class="upcoming-date-text<%= cancelled ? ' upcoming-date-text--cancelled' : '' %>">
-                <span class="upcoming-date-text-full"><%= label %></span>
-                <span class="upcoming-date-text-short"><%= shortLabel %></span>
-              </span>
-<% if (cancelled) { %>
-              <span class="upcoming-date-badge">Cancelled</span>
-<% } else { %>
-              <span class="cal-dropdown">
-                <button class="cal-trigger" type="button">Add to calendar</button>
-                <span class="cal-links" role="list">
-                  <a href="<%= it.googleCalUrl(event) %>" target="_blank" rel="noopener noreferrer" class="cal-link" role="listitem" aria-label="Add <%= label %> to Google Calendar">Google</a>
-                  <span class="cal-or" aria-hidden="true">or</span>
-                  <a href="<%= it.icsDataUri(event) %>" download="glass-meetup-<%= event.starts_at.slice(0, 10) %>.ics" class="cal-link" role="listitem" aria-label="Download <%= label %> as .ics">Apple / Outlook</a>
+              <div class="upcoming-date-primary">
+                <span class="upcoming-date-text<%= cancelled ? ' upcoming-date-text--cancelled' : '' %>">
+                  <span class="upcoming-date-text-full"><%= label %></span>
+                  <span class="upcoming-date-text-short"><%= shortLabel %></span>
                 </span>
-              </span>
-<% if (it.user) { %>
-              <div class="rsvp-controls">
-                <button type="button" class="rsvp-btn"
-                  data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'attending'"
-                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'attending'"
-                  data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'attending' ? '' : 'attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
-                  Attending
-                </button>
-                <button type="button" class="rsvp-btn rsvp-btn--decline"
-                  data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'not_attending'"
-                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'not_attending'"
-                  data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'not_attending' ? '' : 'not_attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
-                  Not Attending
-                </button>
-                <span class="rsvp-status-note" data-show="$rsvps.<%= signalKey %>.status === 'attending'">You're marked attending.</span>
-                <span class="rsvp-status-note rsvp-status-note--declined" data-show="$rsvps.<%= signalKey %>.status === 'not_attending'">You marked yourself not attending.</span>
+<% if (cancelled) { %>
+                <span class="upcoming-date-badge">Cancelled</span>
+<% } else { %>
+                <span class="cal-dropdown">
+                  <button class="cal-trigger" type="button">Add to calendar</button>
+                  <span class="cal-links" role="list">
+                    <a href="<%= it.googleCalUrl(event) %>" target="_blank" rel="noopener noreferrer" class="cal-link" role="listitem" aria-label="Add <%= label %> to Google Calendar">Google</a>
+                    <span class="cal-or" aria-hidden="true">or</span>
+                    <a href="<%= it.icsDataUri(event) %>" download="glass-meetup-<%= event.starts_at.slice(0, 10) %>.ics" class="cal-link" role="listitem" aria-label="Download <%= label %> as .ics">Apple / Outlook</a>
+                  </span>
+                </span>
+<% } %>
               </div>
-              <div class="rsvp-comment" data-show="$rsvps.<%= signalKey %>.status !== ''">
+<% if (!cancelled && it.user) { %>
+              <div class="rsvp-row">
+                <div class="rsvp-buttons">
+                  <button type="button" class="rsvp-btn"
+                    data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'attending'"
+                    data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'attending'"
+                    data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'attending' ? '' : 'attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
+                    Attending
+                  </button>
+                  <button type="button" class="rsvp-btn rsvp-btn--decline"
+                    data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'not_attending'"
+                    data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'not_attending'"
+                    data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'not_attending' ? '' : 'not_attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
+                    Not Attending
+                  </button>
+                </div>
+                <button type="button" class="account-inline-edit rsvp-note-toggle"
+                  data-show="$rsvps.<%= signalKey %>.status !== '' &amp;&amp; !$rsvps.<%= signalKey %>.noteOpen"
+                  data-on:click="$rsvps.<%= signalKey %>.noteOpen = true">+ Add a note</button>
+              </div>
+              <div class="rsvp-comment" data-show="$rsvps.<%= signalKey %>.status !== '' &amp;&amp; $rsvps.<%= signalKey %>.noteOpen">
                 <textarea class="rsvp-comment-input" data-bind="rsvps.<%= signalKey %>.comment"
                   data-on:input="$rsvps.<%= signalKey %>.saved = false"
                   maxlength="280" rows="2" placeholder="Optional note — excited to come, scheduling conflict, etc."
@@ -96,9 +102,8 @@
       const rsvps = it.rsvpsByEvent.get(event.id) || {};
       return { event: event, attending: rsvps.attending || [], notAttending: rsvps.notAttending || [] };
     })()) %>
-<% } else { %>
+<% } else if (!cancelled) { %>
               <p class="rsvp-login-hint"><a href="/login">Log in</a> to RSVP and see who's attending.</p>
-<% } %>
 <% } %>
             </li>
 <% }); %>
