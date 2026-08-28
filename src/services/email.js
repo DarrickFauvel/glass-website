@@ -45,6 +45,17 @@ export async function sendPasswordResetEmail(to, token) {
   });
 }
 
+export async function sendReminderConfirmationEmail(to, token) {
+  const link = `${config.baseUrl}/confirm-reminders?token=${token}`;
+  await getTransporter().sendMail({
+    from: FROM_EMAIL,
+    to,
+    subject: 'Confirm your GLASS event reminder emails',
+    text: `Please confirm you'd like to receive event reminder emails from GLASS:\n\n${link}\n\nThis link expires in 24 hours. If you didn't request this, you can ignore it — you won't receive reminder emails unless you click the link.`,
+    html: `<p>Please confirm you'd like to receive event reminder emails from GLASS:</p><p><a href="${link}">${link}</a></p><p>This link expires in 24 hours. If you didn't request this, you can ignore it — you won't receive reminder emails unless you click the link.</p>`,
+  });
+}
+
 // Sent to self with everyone else bcc'd — one API call per event, and no recipient
 // sees anyone else's address. Callers should skip calling this when recipients is empty.
 export async function sendEventReminderEmail(recipients, event, dateLabel, timeLabel) {

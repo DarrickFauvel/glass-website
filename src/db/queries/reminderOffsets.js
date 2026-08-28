@@ -21,12 +21,15 @@ export async function setUserReminderOffsets(userId, offsetDaysList) {
   }
 }
 
-// Verified members who want a reminder at this specific offset.
+// Verified members who want a reminder at this specific offset and have confirmed
+// (double opt-in) they want reminder emails at all — selecting an offset alone
+// isn't enough to receive anything until reminder_confirmed_at is set.
 export async function listReminderRecipientEmails(offsetDays) {
   const result = await getDb().execute({
     sql: `SELECT users.email FROM users
           JOIN user_reminder_offsets ON user_reminder_offsets.user_id = users.id
-          WHERE users.email_verified = 1 AND user_reminder_offsets.offset_days = ?`,
+          WHERE users.email_verified = 1 AND users.reminder_confirmed_at IS NOT NULL
+            AND user_reminder_offsets.offset_days = ?`,
     args: [offsetDays],
   });
   return result.rows.map((row) => row.email);

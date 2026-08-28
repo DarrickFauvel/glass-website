@@ -10,6 +10,8 @@ import {
   updatePassword,
 } from '../db/queries/users.js';
 import { getUserReminderOffsets, setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
+import { createReminderConfirmationToken } from '../db/queries/tokens.js';
+import { sendReminderConfirmationEmail } from '../services/email.js';
 import { REMINDER_OFFSET_OPTIONS } from '../lib/reminderOffsets.js';
 
 const SESSION_COOKIE = 'sid';
@@ -18,7 +20,11 @@ export const accountRouter = Router();
 
 accountRouter.get('/account', requireAuth, async (req, res) => {
   const selectedOffsets = await getUserReminderOffsets(req.user.id);
-  const reminderPrefsSignal = { saved: false };
+  const reminderPrefsSignal = {
+    saved: false,
+    resent: false,
+    pendingConfirmation: selectedOffsets.length > 0 && !req.user.reminder_confirmed_at,
+  };
   for (const option of REMINDER_OFFSET_OPTIONS) {
     reminderPrefsSignal[`d${option.days}`] = selectedOffsets.includes(option.days);
   }
@@ -32,7 +38,8 @@ accountRouter.get('/account', requireAuth, async (req, res) => {
 
 // GDPR Art. 20 data portability — everything we hold on the account, as JSON.
 accountRouter.get('/account/export', requireAuth, async (req, res) => {
-  const { id, email, name, display_name, email_verified, privacy_consent_at, created_at } = req.user;
+  const { id, email, name, display_name, email_verified, reminder_confirmed_at, privacy_consent_at, created_at } =
+    req.user;
   const reminderOffsetDays = await getUserReminderOffsets(req.user.id);
   res.setHeader('Content-Disposition', 'attachment; filename="glass-account-data.json"');
   res.json({
@@ -42,6 +49,7 @@ accountRouter.get('/account/export', requireAuth, async (req, res) => {
     displayName: display_name,
     emailVerified: Boolean(email_verified),
     reminderOffsetDays,
+    reminderConfirmedAt: reminder_confirmed_at,
     privacyConsentAt: privacy_consent_at,
     accountCreatedAt: created_at,
   });
@@ -117,10 +125,39 @@ accountRouter.post('/account/reminder-preferences', requireAuth, async (req, res
   const offsetDays = REMINDER_OFFSET_OPTIONS.filter((option) => Boolean(prefs[`d${option.days}`])).map(
     (option) => option.days,
   );
+
+  const previousOffsets = await getUserReminderOffsets(req.user.id);
   await setUserReminderOffsets(req.user.id, offsetDays);
 
+  // Double opt-in: going from no reminders to at least one only counts as a fresh
+  // subscription (worth a confirmation email) the first time — a member who's
+  // already confirmed can freely add/remove timings without re-confirming.
+  const isFreshOptIn = offsetDays.length > 0 && previousOffsets.length === 0 && !req.user.reminder_confirmed_at;
+  if (isFreshOptIn) {
+    const token = await createReminderConfirmationToken(req.user.id);
+    await sendReminderConfirmationEmail(req.user.email, token).catch((err) => {
+      console.error('Failed to send reminder confirmation email:', err);
+    });
+  }
+
   startSSE(res);
-  patchSignals(res, { reminderPrefs: { saved: true } });
+  patchSignals(res, {
+    reminderPrefs: {
+      saved: true,
+      pendingConfirmation: offsetDays.length > 0 && !req.user.reminder_confirmed_at,
+    },
+  });
+  res.end();
+});
+
+accountRouter.post('/account/resend-reminder-confirmation', requireAuth, async (req, res) => {
+  const token = await createReminderConfirmationToken(req.user.id);
+  await sendReminderConfirmationEmail(req.user.email, token).catch((err) => {
+    console.error('Failed to send reminder confirmation email:', err);
+  });
+
+  startSSE(res);
+  patchSignals(res, { reminderPrefs: { resent: true } });
   res.end();
 });
 
