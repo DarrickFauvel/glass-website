@@ -33,9 +33,12 @@ rsvpsRouter.post('/rsvps/:eventId/:signalKey', requireAuth, async (req, res) => 
   if (!event || event.cancelled_at) {
     const current = await getUserRsvpsForEvents(req.user.id, [eventId]);
     const currentRsvp = current.get(eventId);
+    const currentComment = currentRsvp?.comment ?? '';
     startSSE(res);
     patchSignals(res, {
-      rsvps: { [signalKey]: { status: currentRsvp?.status ?? '', comment: currentRsvp?.comment ?? '', saved: false } },
+      rsvps: {
+        [signalKey]: { status: currentRsvp?.status ?? '', comment: currentComment, savedComment: currentComment, saved: false },
+      },
     });
     return res.end();
   }
@@ -50,8 +53,11 @@ rsvpsRouter.post('/rsvps/:eventId/:signalKey', requireAuth, async (req, res) => 
   const { attending, notAttending } = rsvpsByEvent.get(eventId) ?? { attending: [], notAttending: [] };
   const attendeesHtml = eta.render('marketing/_rsvp-attendees', { event, attending, notAttending });
 
+  const savedComment = comment ?? '';
   startSSE(res);
-  patchSignals(res, { rsvps: { [signalKey]: { status, comment: comment ?? '', saved: status !== '' } } });
+  patchSignals(res, {
+    rsvps: { [signalKey]: { status, comment: savedComment, savedComment, saved: status !== '' } },
+  });
   patchElements(res, attendeesHtml, { selector: `#rsvp-attendees-${eventId}`, mode: 'outer' });
   res.end();
 });
