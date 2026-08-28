@@ -1,0 +1,15 @@
+<%
+  const displayName = String(it.displayName || '').trim();
+  const words = displayName.split(/\s+/).filter(Boolean);
+  const initials = words.length
+    ? (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase()
+    : '?';
+  let tint = it.avatarColor;
+  if (tint === null || tint === undefined) {
+    let hash = 0;
+    for (const ch of String(it.userId || displayName)) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+    tint = hash % 6;
+  }
+  const size = it.size || 'md';
+%>
+<span<%~ it.id ? ' id="' + it.id + '"' : '' %> class="avatar avatar--<%= size %> avatar--tint-<%= tint %>" aria-hidden="true"><%= initials %></span>

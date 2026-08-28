@@ -419,8 +419,85 @@ nav a.nav-active::after {
   outline-offset: 2px;
 }
 
+/* ===== AVATAR =====
+   Tint colors are deliberately static (not theme-driven custom properties) so
+   a member's identity color stays constant across light/dark mode, matching
+   the white initials text contrast we've verified against each one. */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #fdfaf6;
+  line-height: 1;
+}
+
+.avatar--sm {
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 0.65rem;
+}
+
+.avatar--md {
+  width: 1.4rem;
+  height: 1.4rem;
+  font-size: 0.58rem;
+}
+
+.avatar--lg {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.3rem;
+}
+
+.avatar--tint-0 { background: #9b2020; }
+.avatar--tint-1 { background: #b8622f; }
+.avatar--tint-2 { background: #6b4423; }
+.avatar--tint-3 { background: #454141; }
+.avatar--tint-4 { background: #8a6d1f; }
+.avatar--tint-5 { background: #7a3b3b; }
+
+.avatar-color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.avatar-swatch-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.avatar-swatch {
+  display: block;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--cream);
+  transition: box-shadow 0.15s;
+}
+
+.avatar-swatch-input:checked + .avatar-swatch {
+  box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--crimson);
+}
+
+.avatar-swatch-input:focus-visible + .avatar-swatch {
+  outline: 2px solid var(--crimson);
+  outline-offset: 3px;
+}
+
 /* ===== NAV AUTH STATE ===== */
 .nav-user-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--ink-mid);
@@ -1978,12 +2055,24 @@ main {
   color: var(--ink-mid);
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.4rem;
+}
+
+.rsvp-attendee-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .rsvp-attendee-empty {
   color: var(--ink-dim);
   font-style: italic;
+}
+
+.rsvp-attendee-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .rsvp-attendee-name {
@@ -2599,6 +2688,13 @@ main {
   font-size: clamp(1.9rem, 4vw, 2.4rem);
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.account-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 2rem;
 }
 
 .account-sections {

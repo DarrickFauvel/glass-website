@@ -62,6 +62,13 @@ export async function updateDisplayName(userId, displayName) {
   });
 }
 
+export async function updateAvatarColor(userId, avatarColor) {
+  await getDb().execute({
+    sql: 'UPDATE users SET avatar_color = ? WHERE id = ?',
+    args: [avatarColor, userId],
+  });
+}
+
 // Resets verification since we can't assume the account owner controls the new address yet.
 export async function updateEmail(userId, email) {
   await getDb().execute({

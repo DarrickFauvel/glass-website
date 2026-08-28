@@ -31,6 +31,11 @@ const COLUMN_ADDITIONS = [
     column: 'comment',
     ddl: 'ALTER TABLE event_rsvps ADD COLUMN comment TEXT',
   },
+  {
+    table: 'users',
+    column: 'avatar_color',
+    ddl: 'ALTER TABLE users ADD COLUMN avatar_color INTEGER',
+  },
 ];
 
 // Superseded by user_reminder_offsets / event_reminders_sent (multi-offset reminders) —

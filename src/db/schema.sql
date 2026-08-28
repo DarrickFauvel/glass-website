@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
   -- email_verified (account ownership) — set only after clicking the
   -- confirmation link, never inferred from having offsets selected.
   reminder_confirmed_at TEXT,
+  -- NULL means "use the default color derived from the user id" — only set
+  -- once a member deliberately picks one on the account page.
+  avatar_color INTEGER,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
