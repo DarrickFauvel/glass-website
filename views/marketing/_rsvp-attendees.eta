@@ -1,11 +1,29 @@
 <details class="rsvp-attendees" id="rsvp-attendees-<%= it.event.id %>">
-  <summary><%= it.attendees.length %> attending</summary>
+  <summary><%= it.attending.length %> attending</summary>
   <ul class="rsvp-attendee-list">
-<% it.attendees.forEach(function (a) { %>
-    <li><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></li>
+<% it.attending.forEach(function (a) { %>
+    <li>
+      <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
+<% if (a.comment) { %>
+      <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
+<% } %>
+    </li>
 <% }); %>
-<% if (!it.attendees.length) { %>
+<% if (!it.attending.length) { %>
     <li class="rsvp-attendee-empty">No one has RSVP'd yet.</li>
 <% } %>
   </ul>
+<% if (it.notAttending.length) { %>
+  <p class="rsvp-not-attending-label"><%= it.notAttending.length %> not attending</p>
+  <ul class="rsvp-attendee-list rsvp-attendee-list--declined">
+<% it.notAttending.forEach(function (a) { %>
+    <li>
+      <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
+<% if (a.comment) { %>
+      <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
+<% } %>
+    </li>
+<% }); %>
+  </ul>
+<% } %>
 </details>

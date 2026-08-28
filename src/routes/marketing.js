@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { listUpcomingEvents } from '../db/queries/events.js';
-import { getUserRsvpStatusesForEvents, listAttendeesForEvents } from '../db/queries/eventRsvps.js';
+import { getUserRsvpsForEvents, listRsvpsForEvents } from '../db/queries/eventRsvps.js';
 import {
   formatEventDateLabel,
   formatEventDateLabelShort,
@@ -18,24 +18,25 @@ marketingRouter.get('/', async (req, res) => {
 
   // RSVP status/attendees are only fetched for logged-in visitors — most
   // homepage traffic is anonymous, so this avoids two extra queries per hit.
-  let attendeesByEvent = new Map();
+  let rsvpsByEvent = new Map();
   let rsvpSignalsJson = JSON.stringify({});
   if (req.user) {
-    const [userStatuses, attendees] = await Promise.all([
-      getUserRsvpStatusesForEvents(req.user.id, eventIds),
-      listAttendeesForEvents(eventIds),
+    const [userRsvps, allRsvps] = await Promise.all([
+      getUserRsvpsForEvents(req.user.id, eventIds),
+      listRsvpsForEvents(eventIds),
     ]);
-    attendeesByEvent = attendees;
+    rsvpsByEvent = allRsvps;
     const rsvps = {};
     events.forEach((event, i) => {
-      rsvps[`e${i}`] = userStatuses.get(event.id) ?? '';
+      const userRsvp = userRsvps.get(event.id);
+      rsvps[`e${i}`] = { status: userRsvp?.status ?? '', comment: userRsvp?.comment ?? '', saved: false };
     });
     rsvpSignalsJson = JSON.stringify({ rsvps });
   }
 
   res.render('marketing/home', {
     events,
-    attendeesByEvent,
+    rsvpsByEvent,
     rsvpSignalsJson,
     formatEventDateLabel,
     formatEventDateLabelShort,

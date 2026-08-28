@@ -6,8 +6,9 @@ import { findEventById } from '../db/queries/events.js';
 import {
   setRsvpStatus,
   clearRsvpStatus,
-  getUserRsvpStatusesForEvents,
-  listAttendeesForEvents,
+  getUserRsvpsForEvents,
+  listRsvpsForEvents,
+  normalizeComment,
 } from '../db/queries/eventRsvps.js';
 
 export const rsvpsRouter = Router();
@@ -17,7 +18,9 @@ const VALID_STATUSES = new Set(['attending', 'not_attending']);
 
 rsvpsRouter.post('/rsvps/:eventId/:signalKey', requireAuth, async (req, res) => {
   const { eventId, signalKey } = req.params;
-  const status = req.body?.rsvps?.[signalKey] ?? '';
+  const submitted = req.body?.rsvps?.[signalKey] ?? {};
+  const status = submitted.status ?? '';
+  const comment = normalizeComment(submitted.comment);
 
   if (!SIGNAL_KEY_RE.test(signalKey) || (status !== '' && !VALID_STATUSES.has(status))) {
     return res.status(400).send('Invalid RSVP request.');
@@ -28,26 +31,27 @@ rsvpsRouter.post('/rsvps/:eventId/:signalKey', requireAuth, async (req, res) => 
   // Unknown or (meanwhile) cancelled event — nothing to RSVP to. Self-heal the
   // client's optimistic flip back to whatever's actually on record.
   if (!event || event.cancelled_at) {
-    const current = await getUserRsvpStatusesForEvents(req.user.id, [eventId]);
+    const current = await getUserRsvpsForEvents(req.user.id, [eventId]);
+    const currentRsvp = current.get(eventId);
     startSSE(res);
-    patchSignals(res, { rsvps: { [signalKey]: current.get(eventId) ?? '' } });
+    patchSignals(res, {
+      rsvps: { [signalKey]: { status: currentRsvp?.status ?? '', comment: currentRsvp?.comment ?? '', saved: false } },
+    });
     return res.end();
   }
 
   if (status === '') {
     await clearRsvpStatus(eventId, req.user.id);
   } else {
-    await setRsvpStatus(eventId, req.user.id, status);
+    await setRsvpStatus(eventId, req.user.id, status, comment);
   }
 
-  const attendeesByEvent = await listAttendeesForEvents([eventId]);
-  const attendeesHtml = eta.render('marketing/_rsvp-attendees', {
-    event,
-    attendees: attendeesByEvent.get(eventId) ?? [],
-  });
+  const rsvpsByEvent = await listRsvpsForEvents([eventId]);
+  const { attending, notAttending } = rsvpsByEvent.get(eventId) ?? { attending: [], notAttending: [] };
+  const attendeesHtml = eta.render('marketing/_rsvp-attendees', { event, attending, notAttending });
 
   startSSE(res);
-  patchSignals(res, { rsvps: { [signalKey]: status } });
+  patchSignals(res, { rsvps: { [signalKey]: { status, comment: comment ?? '', saved: status !== '' } } });
   patchElements(res, attendeesHtml, { selector: `#rsvp-attendees-${eventId}`, mode: 'outer' });
   res.end();
 });

@@ -69,21 +69,33 @@
 <% if (it.user) { %>
               <div class="rsvp-controls">
                 <button type="button" class="rsvp-btn"
-                  data-attr:aria-pressed="$rsvps.<%= signalKey %> === 'attending'"
-                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %> === 'attending'"
-                  data-on:click="$rsvps.<%= signalKey %> = ($rsvps.<%= signalKey %> === 'attending' ? '' : 'attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
+                  data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'attending'"
+                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'attending'"
+                  data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'attending' ? '' : 'attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
                   Attending
                 </button>
                 <button type="button" class="rsvp-btn rsvp-btn--decline"
-                  data-attr:aria-pressed="$rsvps.<%= signalKey %> === 'not_attending'"
-                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %> === 'not_attending'"
-                  data-on:click="$rsvps.<%= signalKey %> = ($rsvps.<%= signalKey %> === 'not_attending' ? '' : 'not_attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
+                  data-attr:aria-pressed="$rsvps.<%= signalKey %>.status === 'not_attending'"
+                  data-class:rsvp-btn--active="$rsvps.<%= signalKey %>.status === 'not_attending'"
+                  data-on:click="$rsvps.<%= signalKey %>.status = ($rsvps.<%= signalKey %>.status === 'not_attending' ? '' : 'not_attending'); @post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">
                   Not Attending
                 </button>
-                <span class="rsvp-status-note" data-show="$rsvps.<%= signalKey %> === 'attending'">You're marked attending.</span>
-                <span class="rsvp-status-note rsvp-status-note--declined" data-show="$rsvps.<%= signalKey %> === 'not_attending'">You marked yourself not attending.</span>
+                <span class="rsvp-status-note" data-show="$rsvps.<%= signalKey %>.status === 'attending'">You're marked attending.</span>
+                <span class="rsvp-status-note rsvp-status-note--declined" data-show="$rsvps.<%= signalKey %>.status === 'not_attending'">You marked yourself not attending.</span>
               </div>
-<%~ include("_rsvp-attendees", { event: event, attendees: it.attendeesByEvent.get(event.id) || [] }) %>
+              <div class="rsvp-comment" data-show="$rsvps.<%= signalKey %>.status !== ''">
+                <textarea class="rsvp-comment-input" data-bind="rsvps.<%= signalKey %>.comment"
+                  data-on:input="$rsvps.<%= signalKey %>.saved = false"
+                  maxlength="280" rows="2" placeholder="Optional note — excited to come, scheduling conflict, etc."
+                  aria-label="Optional note about your RSVP"></textarea>
+                <button type="button" class="account-inline-edit"
+                  data-on:click="@post('/rsvps/<%= event.id %>/<%= signalKey %>', {contentType: 'json'})">Save note</button>
+                <span class="account-toggle-saved" data-show="$rsvps.<%= signalKey %>.saved">Saved</span>
+              </div>
+<%~ include("_rsvp-attendees", (function () {
+      const rsvps = it.rsvpsByEvent.get(event.id) || {};
+      return { event: event, attending: rsvps.attending || [], notAttending: rsvps.notAttending || [] };
+    })()) %>
 <% } else { %>
               <p class="rsvp-login-hint"><a href="/login">Log in</a> to RSVP and see who's attending.</p>
 <% } %>
