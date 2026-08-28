@@ -53,11 +53,13 @@
     header.classList.contains('nav-open') ? closeMenu() : openMenu();
   });
 
-  // Close when a nav link or the logo is clicked
+  // Close when a nav link, the logo, or the theme toggle is clicked
   nav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeMenu);
   });
   document.querySelector('.header-logo').addEventListener('click', closeMenu);
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) themeToggle.addEventListener('click', closeMenu);
 
   // Close on outside click
   document.addEventListener('click', (e) => {
@@ -248,7 +250,6 @@ if (prefersReducedMotion) {
   }
 
   setTimeout(triggerSheen, 2000);
-  headerEl.addEventListener('mouseenter', triggerSheen);
 }());
 
 // ===== Card Border Spotlight =====
