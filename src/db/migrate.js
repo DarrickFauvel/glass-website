@@ -26,6 +26,11 @@ const COLUMN_ADDITIONS = [
     column: 'reminder_confirmed_at',
     ddl: 'ALTER TABLE users ADD COLUMN reminder_confirmed_at TEXT',
   },
+  {
+    table: 'event_rsvps',
+    column: 'comment',
+    ddl: 'ALTER TABLE event_rsvps ADD COLUMN comment TEXT',
+  },
 ];
 
 // Superseded by user_reminder_offsets / event_reminders_sent (multi-offset reminders) —

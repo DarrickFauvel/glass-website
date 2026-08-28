@@ -1985,6 +1985,55 @@ main {
   font-style: italic;
 }
 
+.rsvp-attendee-name {
+  display: block;
+}
+
+.rsvp-attendee-comment {
+  display: block;
+  color: var(--ink-dim);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.rsvp-not-attending-label {
+  margin: 0.6rem 0 0;
+  color: var(--ink-dim);
+  letter-spacing: 0.03em;
+}
+
+.rsvp-attendee-list--declined {
+  color: var(--ink-dim);
+}
+
+.rsvp-comment {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.rsvp-comment-input {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border-hi);
+  border-radius: 4px;
+  background: var(--cream);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.rsvp-comment-input:focus {
+  outline: 2px solid var(--crimson);
+  outline-offset: 1px;
+  border-color: var(--crimson);
+}
+
 .rsvp-organizer-badge {
   font-family: var(--font-mono);
   font-size: 0.65rem;
