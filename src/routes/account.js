@@ -4,9 +4,11 @@ import { requireAuth } from '../middleware/requireAuth.js';
 import { hashPassword, verifyPassword } from '../services/auth.js';
 import {
   findUserById,
+  findUserByEmail,
   deleteUser,
   updateName,
   updateDisplayName,
+  updateEmail,
   updatePassword,
 } from '../db/queries/users.js';
 import { getUserReminderOffsets, setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
@@ -15,6 +17,11 @@ import { sendReminderConfirmationEmail, sendVerificationEmail } from '../service
 import { REMINDER_OFFSET_OPTIONS } from '../lib/reminderOffsets.js';
 
 const SESSION_COOKIE = 'sid';
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function normalizeEmail(email) {
+  return String(email ?? '').trim().toLowerCase();
+}
 
 export const accountRouter = Router();
 
@@ -85,6 +92,38 @@ accountRouter.post('/account/display-name', requireAuth, async (req, res) => {
 
   startSSE(res);
   patchSignals(res, { profileName: { value: displayName, editing: false, submitting: false, error: '' } });
+  res.end();
+});
+
+accountRouter.post('/account/email', requireAuth, async (req, res) => {
+  const { newEmail, password } = req.body.changeEmail ?? {};
+  const cleanEmail = normalizeEmail(newEmail);
+  const fullUser = await findUserById(req.user.id);
+  const valid = fullUser && (await verifyPassword(fullUser.password_hash, password ?? ''));
+
+  let error;
+  if (!valid) error = 'Current password is incorrect.';
+  else if (!EMAIL_RE.test(cleanEmail)) error = 'Please enter a valid email address.';
+  else if (cleanEmail === req.user.email) error = 'That is already your email address.';
+  else if (await findUserByEmail(cleanEmail)) error = 'An account with that email already exists.';
+
+  if (error) {
+    startSSE(res);
+    patchSignals(res, { changeEmail: { submitting: false, error } });
+    return res.end();
+  }
+
+  await updateEmail(req.user.id, cleanEmail);
+  const token = await createVerificationToken(req.user.id);
+  await sendVerificationEmail(cleanEmail, token).catch((err) => {
+    console.error('Failed to send verification email:', err);
+  });
+
+  // Several server-rendered elements (verified badge, unverified notice, the
+  // reminder-confirmation copy that quotes the email) depend on the email —
+  // reload rather than trying to patch them all individually client-side.
+  startSSE(res);
+  redirectClient(res, '/account');
   res.end();
 });
 

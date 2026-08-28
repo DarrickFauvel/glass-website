@@ -62,6 +62,14 @@ export async function updateDisplayName(userId, displayName) {
   });
 }
 
+// Resets verification since we can't assume the account owner controls the new address yet.
+export async function updateEmail(userId, email) {
+  await getDb().execute({
+    sql: 'UPDATE users SET email = ?, email_verified = 0 WHERE id = ?',
+    args: [email, userId],
+  });
+}
+
 // Explicit per-table deletes rather than relying on ON DELETE CASCADE —
 // erasure must be guaranteed even if foreign_keys enforcement is ever off.
 export async function deleteUser(userId) {
