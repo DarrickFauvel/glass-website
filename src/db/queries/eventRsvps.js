@@ -50,7 +50,8 @@ export async function listRsvpsForEvents(eventIds) {
   const placeholders = eventIds.map(() => '?').join(',');
   const result = await getDb().execute({
     sql: `SELECT event_rsvps.event_id AS event_id, event_rsvps.status AS status, event_rsvps.comment AS comment,
-                 users.id AS user_id, users.display_name AS display_name, users.is_admin AS is_admin
+                 users.id AS user_id, users.display_name AS display_name, users.is_admin AS is_admin,
+                 users.avatar_color AS avatar_color
           FROM event_rsvps
           JOIN users ON users.id = event_rsvps.user_id
           WHERE event_rsvps.event_id IN (${placeholders})
@@ -60,7 +61,13 @@ export async function listRsvpsForEvents(eventIds) {
   const byEvent = new Map();
   for (const row of result.rows) {
     if (!byEvent.has(row.event_id)) byEvent.set(row.event_id, empty());
-    const entry = { userId: row.user_id, displayName: row.display_name, isOrganizer: Boolean(row.is_admin), comment: row.comment };
+    const entry = {
+      userId: row.user_id,
+      displayName: row.display_name,
+      isOrganizer: Boolean(row.is_admin),
+      comment: row.comment,
+      avatarColor: row.avatar_color,
+    };
     byEvent.get(row.event_id)[row.status === 'attending' ? 'attending' : 'notAttending'].push(entry);
   }
   return byEvent;

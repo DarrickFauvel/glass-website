@@ -1,7 +1,33 @@
   <main id="main-content">
     <div class="account-shell">
-      <h1>Your Account</h1>
-      <p class="auth-subtitle">Manage your profile, notifications, and security settings.</p>
+      <div class="account-header-row">
+        <%~ include("../partials/avatar", { displayName: it.user.display_name, userId: it.user.id, avatarColor: it.user.avatar_color, size: 'lg', id: 'avatar-account-header' }) %>
+        <div>
+          <h1>Your Account</h1>
+          <p class="auth-subtitle">Manage your profile, notifications, and security settings.</p>
+        </div>
+      </div>
+
+<%
+  let currentTint = it.user.avatar_color;
+  if (currentTint === null || currentTint === undefined) {
+    let hash = 0;
+    for (const ch of String(it.user.id)) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+    currentTint = hash % 6;
+  }
+%>
+      <div class="account-section">
+        <h2 class="account-section-title">Avatar Color</h2>
+        <p class="form-hint">Pick the color for your initials avatar.</p>
+        <div class="avatar-color-picker" role="radiogroup" aria-label="Avatar color">
+<% for (let tintIndex = 0; tintIndex < 6; tintIndex++) { %>
+          <input type="radio" id="avatar-tint-<%= tintIndex %>" name="avatarColorPick" value="<%= tintIndex %>"
+            class="avatar-swatch-input"<%~ currentTint === tintIndex ? ' checked' : '' %>
+            data-on:change="@post('/account/avatar-color/<%= tintIndex %>')">
+          <label for="avatar-tint-<%= tintIndex %>" class="avatar-swatch avatar--tint-<%= tintIndex %>" aria-label="Color <%= tintIndex + 1 %>"></label>
+<% } %>
+        </div>
+      </div>
 
       <div class="account-sections">
 

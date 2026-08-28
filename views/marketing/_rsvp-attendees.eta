@@ -3,10 +3,13 @@
   <ul class="rsvp-attendee-list">
 <% it.attending.forEach(function (a) { %>
     <li>
-      <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
+      <%~ include("../partials/avatar", { displayName: a.displayName, userId: a.userId, avatarColor: a.avatarColor, size: 'md' }) %>
+      <span class="rsvp-attendee-text">
+        <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
 <% if (a.comment) { %>
-      <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
+        <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
 <% } %>
+      </span>
     </li>
 <% }); %>
 <% if (!it.attending.length) { %>
@@ -18,10 +21,13 @@
   <ul class="rsvp-attendee-list rsvp-attendee-list--declined">
 <% it.notAttending.forEach(function (a) { %>
     <li>
-      <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
+      <%~ include("../partials/avatar", { displayName: a.displayName, userId: a.userId, avatarColor: a.avatarColor, size: 'md' }) %>
+      <span class="rsvp-attendee-text">
+        <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
 <% if (a.comment) { %>
-      <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
+        <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
 <% } %>
+      </span>
     </li>
 <% }); %>
   </ul>

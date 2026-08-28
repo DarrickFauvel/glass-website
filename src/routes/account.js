@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { startSSE, patchSignals, redirectClient } from '../middleware/datastar.js';
+import { startSSE, patchSignals, patchElements, redirectClient } from '../middleware/datastar.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { hashPassword, verifyPassword } from '../services/auth.js';
+import { eta } from '../eta.js';
 import {
   findUserById,
   findUserByEmail,
@@ -10,6 +11,7 @@ import {
   updateDisplayName,
   updateEmail,
   updatePassword,
+  updateAvatarColor,
 } from '../db/queries/users.js';
 import { getUserReminderOffsets, setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
 import { createReminderConfirmationToken, createVerificationToken } from '../db/queries/tokens.js';
@@ -92,6 +94,37 @@ accountRouter.post('/account/display-name', requireAuth, async (req, res) => {
 
   startSSE(res);
   patchSignals(res, { profileName: { value: displayName, editing: false, submitting: false, error: '' } });
+  res.end();
+});
+
+const AVATAR_TINT_COUNT = 6;
+
+accountRouter.post('/account/avatar-color/:index', requireAuth, async (req, res) => {
+  const index = Number(req.params.index);
+  if (!Number.isInteger(index) || index < 0 || index >= AVATAR_TINT_COUNT) {
+    return res.status(400).send('Invalid avatar color.');
+  }
+
+  await updateAvatarColor(req.user.id, index);
+
+  const navAvatarHtml = eta.render('partials/avatar', {
+    displayName: req.user.display_name,
+    userId: req.user.id,
+    avatarColor: index,
+    size: 'sm',
+    id: 'avatar-nav',
+  });
+  const accountAvatarHtml = eta.render('partials/avatar', {
+    displayName: req.user.display_name,
+    userId: req.user.id,
+    avatarColor: index,
+    size: 'lg',
+    id: 'avatar-account-header',
+  });
+
+  startSSE(res);
+  patchElements(res, navAvatarHtml, { selector: '#avatar-nav', mode: 'outer' });
+  patchElements(res, accountAvatarHtml, { selector: '#avatar-account-header', mode: 'outer' });
   res.end();
 });
 
