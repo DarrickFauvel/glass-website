@@ -47,7 +47,7 @@
           </dl>
         </div>
 
-        <div class="account-section" data-signals="<%~ it.reminderPrefsSignalsJson %>">
+        <div class="account-section" data-signals="<%= it.reminderPrefsSignalsJson %>">
           <h2 class="account-section-title">Notifications</h2>
           <p class="form-hint">Email me a reminder about upcoming GLASS meetups:</p>
           <div class="account-checkbox-list">
