@@ -8,6 +8,7 @@ import { migrate } from './db/migrate.js';
 import { cleanupExpiredData } from './db/cleanup.js';
 import { ensureUpcomingRecurringMeetups } from './services/eventMaintenance.js';
 import { sendDueEventReminders } from './services/reminders.js';
+import { scheduleDaily } from './lib/dailySchedule.js';
 import { sessionMiddleware } from './middleware/session.js';
 import { marketingRouter } from './routes/marketing.js';
 import { authRouter } from './routes/auth.js';
@@ -33,9 +34,7 @@ export function createApp() {
   setInterval(() => {
     ensureUpcomingRecurringMeetups().catch((err) => console.error('Recurring meetup maintenance failed:', err.message));
   }, DAILY_INTERVAL_MS);
-  setInterval(() => {
-    sendDueEventReminders().catch((err) => console.error('Event reminder send failed:', err.message));
-  }, DAILY_INTERVAL_MS);
+  scheduleDaily(9, 0, 'America/New_York', sendDueEventReminders);
 
   app.engine('eta', (filePath, data, callback) => {
     try {

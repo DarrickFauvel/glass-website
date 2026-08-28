@@ -10,8 +10,8 @@ import {
   updatePassword,
 } from '../db/queries/users.js';
 import { getUserReminderOffsets, setUserReminderOffsets } from '../db/queries/reminderOffsets.js';
-import { createReminderConfirmationToken } from '../db/queries/tokens.js';
-import { sendReminderConfirmationEmail } from '../services/email.js';
+import { createReminderConfirmationToken, createVerificationToken } from '../db/queries/tokens.js';
+import { sendReminderConfirmationEmail, sendVerificationEmail } from '../services/email.js';
 import { REMINDER_OFFSET_OPTIONS } from '../lib/reminderOffsets.js';
 
 const SESSION_COOKIE = 'sid';
@@ -24,6 +24,7 @@ accountRouter.get('/account', requireAuth, async (req, res) => {
     saved: false,
     resent: false,
     pendingConfirmation: selectedOffsets.length > 0 && !req.user.reminder_confirmed_at,
+    confirmed: selectedOffsets.length > 0 && Boolean(req.user.reminder_confirmed_at),
   };
   for (const option of REMINDER_OFFSET_OPTIONS) {
     reminderPrefsSignal[`d${option.days}`] = selectedOffsets.includes(option.days);
@@ -145,6 +146,7 @@ accountRouter.post('/account/reminder-preferences', requireAuth, async (req, res
     reminderPrefs: {
       saved: true,
       pendingConfirmation: offsetDays.length > 0 && !req.user.reminder_confirmed_at,
+      confirmed: offsetDays.length > 0 && Boolean(req.user.reminder_confirmed_at),
     },
   });
   res.end();
@@ -158,6 +160,17 @@ accountRouter.post('/account/resend-reminder-confirmation', requireAuth, async (
 
   startSSE(res);
   patchSignals(res, { reminderPrefs: { resent: true } });
+  res.end();
+});
+
+accountRouter.post('/account/resend-verification', requireAuth, async (req, res) => {
+  const token = await createVerificationToken(req.user.id);
+  await sendVerificationEmail(req.user.email, token).catch((err) => {
+    console.error('Failed to send verification email:', err);
+  });
+
+  startSSE(res);
+  patchSignals(res, { emailVerify: { resent: true } });
   res.end();
 });
 

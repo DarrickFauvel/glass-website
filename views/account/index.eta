@@ -6,7 +6,7 @@
       <div class="account-sections">
 
         <div class="account-section"
-          data-signals="{accountName: {value: <%= JSON.stringify(it.user.name) %>, editing: false, submitting: false, error: ''}, profileName: {value: <%= JSON.stringify(it.user.display_name) %>, editing: false, submitting: false, error: ''}}">
+          data-signals="{accountName: {value: <%= JSON.stringify(it.user.name) %>, editing: false, submitting: false, error: ''}, profileName: {value: <%= JSON.stringify(it.user.display_name) %>, editing: false, submitting: false, error: ''}, emailVerify: {resent: false}}">
           <h2 class="account-section-title">Profile</h2>
           <p class="form-hint">Name is private. Display Name is shown publicly in the site nav.</p>
 
@@ -43,13 +43,26 @@
                   data-on:click="$profileName.editing = true">Edit</button>
               </dd>
             </div>
-            <div><dt>Email</dt><dd><%= it.user.email %></dd></div>
+            <div><dt>Email</dt><dd><%= it.user.email %>
+<% if (it.user.email_verified) { %>
+              <span class="account-toggle-saved">Verified</span>
+<% } %>
+            </dd></div>
           </dl>
+<% if (!it.user.email_verified) { %>
+          <p class="form-hint">
+            Your email address is not verified.
+            <button type="button" class="account-inline-edit" data-show="!$emailVerify.resent"
+              data-on:click="@post('/account/resend-verification')">Resend verification email</button>
+            <span class="account-toggle-saved" data-show="$emailVerify.resent">Sent — check your inbox.</span>
+          </p>
+<% } %>
         </div>
 
         <div class="account-section" data-signals="<%= it.reminderPrefsSignalsJson %>">
           <h2 class="account-section-title">Notifications</h2>
           <p class="form-hint">Email me a reminder about upcoming GLASS meetups:</p>
+          <p class="form-hint">Reminders are sent at 9:00 AM Eastern on the day they're due.</p>
           <div class="account-checkbox-list">
 <% it.offsetOptions.forEach(function (option) { %>
             <label class="form-checkbox">
@@ -60,6 +73,7 @@
 <% }); %>
           </div>
           <span class="account-toggle-saved" data-show="$reminderPrefs.saved">Saved</span>
+          <span class="account-toggle-saved" data-show="$reminderPrefs.confirmed">Confirmed</span>
           <p class="form-hint" data-show="$reminderPrefs.pendingConfirmation">
             Check your inbox at <%= it.user.email %> to confirm these reminders — you won't receive any until you
             click the link.
