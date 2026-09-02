@@ -2,7 +2,7 @@
     <div class="legal-page">
       <span class="section-label">Legal</span>
       <h1>Privacy Policy</h1>
-      <p class="legal-updated">Last updated: August 16, 2026</p>
+      <p class="legal-updated">Last updated: September 2, 2026</p>
 
       <p>The Greater Lowell Area Science-based Skeptics (GLASS) respects your privacy. This policy explains what
         personal data we collect through this website, why, how long we keep it, and the rights you have over it
@@ -27,6 +27,8 @@
         <li><strong>Contact form submissions</strong> — if you use the contact form, your name, email, and message
           are sent directly to our form processor, Web3Forms, and forwarded to us by email. We don't store these
           submissions in our own database.</li>
+        <li><strong>Event RSVPs</strong> — if you mark yourself attending or not attending an event, and any optional
+          note you add. This is only recorded if you use the RSVP buttons on an event.</li>
       </ul>
 
       <h2>Why we process it, and on what basis</h2>
@@ -39,11 +41,16 @@
         <li><strong>Keeping you logged in / account security</strong> — our legitimate interest in running a
           functioning, secure website (Art. 6(1)(f) GDPR).</li>
         <li><strong>Responding to contact form messages</strong> — your consent, given by submitting the form.</li>
+        <li><strong>Event RSVPs</strong> — our legitimate interest in running the RSVP feature you choose to use, so
+          members can coordinate around who's attending (Art. 6(1)(f) GDPR).</li>
       </ul>
 
       <h2>Who else sees it</h2>
-      <p>We use a small number of third-party processors to run the site. Data may be processed on servers located
-        in the United States.</p>
+      <p>If you RSVP to an event, your display name, avatar, RSVP status, and any note you add are visible to other
+        logged-in members on that event's listing — that's the point of RSVPing, so people can see who's coming.
+        They are not visible to signed-out visitors.</p>
+      <p>We also use a small number of third-party processors to run the site. Data may be processed on servers
+        located in the United States.</p>
       <ul>
         <li><strong>Namecheap Private Email</strong> — sends account verification, password-reset, and event
           reminder (including confirmation) emails.</li>
@@ -59,6 +66,8 @@
         <li>Email verification and reminder-confirmation links expire after 24 hours; password reset links after 1
           hour. Expired or used tokens are purged automatically.</li>
         <li>An account that never verifies its email is automatically deleted after 30 days.</li>
+        <li>RSVPs are kept until you change or clear your response, the event is deleted, or you delete your
+          account.</li>
       </ul>
 
       <h2>Your rights</h2>

@@ -1044,6 +1044,93 @@ if (prefersReducedMotion) {
   }
 }());
 
+// ===== Animated attendee list expand/collapse =====
+// Delegated (not bound per-element) because the RSVP attendee <details> is
+// re-rendered wholesale by a Datastar SSE patch after every RSVP change.
+(function () {
+  const DURATION_MS = 240;
+
+  function animate(details, opening) {
+    const summary = details.querySelector(':scope > summary');
+    const body = details.querySelector(':scope > .rsvp-attendees-body');
+    if (!summary || !body) return;
+
+    if (details._rsvpAnim) details._rsvpAnim.cancel();
+
+    const startHeight = details.offsetHeight;
+    details.style.overflow = 'hidden';
+    if (opening) details.open = true;
+    const endHeight = opening ? summary.offsetHeight + body.offsetHeight : summary.offsetHeight;
+
+    details._rsvpAnim = details.animate(
+      { height: [`${startHeight}px`, `${endHeight}px`] },
+      { duration: DURATION_MS, easing: 'ease-out' }
+    );
+    details._rsvpAnim.onfinish = () => {
+      if (!opening) details.open = false;
+      details.style.overflow = '';
+      details._rsvpAnim = null;
+    };
+    details._rsvpAnim.oncancel = () => {
+      details.style.overflow = '';
+    };
+  }
+
+  document.addEventListener('click', (e) => {
+    const summary = e.target.closest('.rsvp-attendees > summary');
+    if (!summary) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    e.preventDefault();
+    animate(summary.parentElement, !summary.parentElement.open);
+  });
+})();
+
+// ===== RSVP avatar stack tooltip =====
+// Delegated for the same reason as the accordion above: the stack is
+// re-rendered by a Datastar SSE patch after every RSVP change.
+(function () {
+  function showTooltip(el) {
+    const stack = el.closest('.rsvp-avatar-stack');
+    const tooltip = stack?.querySelector('.rsvp-stack-tooltip');
+    if (!stack || !tooltip) return;
+
+    const rect = stack.getBoundingClientRect();
+    tooltip.style.left = `${rect.left}px`;
+    tooltip.style.top = `${rect.bottom + 10}px`;
+
+    tooltip.replaceChildren();
+    const name = document.createElement('span');
+    name.className = 'rsvp-stack-tooltip-name';
+    name.textContent = el.dataset.name || '';
+    tooltip.appendChild(name);
+
+    if (el.dataset.comment) {
+      const comment = document.createElement('span');
+      comment.className = 'rsvp-stack-tooltip-comment';
+      comment.textContent = `“${el.dataset.comment}”`;
+      tooltip.appendChild(comment);
+    }
+    if (!tooltip.matches(':popover-open')) tooltip.showPopover();
+  }
+
+  function hideTooltip(el) {
+    const tooltip = el.closest('.rsvp-avatar-stack')?.querySelector('.rsvp-stack-tooltip');
+    if (tooltip && tooltip.matches(':popover-open')) tooltip.hidePopover();
+  }
+
+  document.addEventListener('mouseover', (e) => {
+    const el = e.target.closest('.rsvp-stack-avatar');
+    if (!el || el.contains(e.relatedTarget)) return;
+    showTooltip(el);
+  });
+  document.addEventListener('mouseout', (e) => {
+    const el = e.target.closest('.rsvp-stack-avatar');
+    if (!el || el.contains(e.relatedTarget)) return;
+    hideTooltip(el);
+  });
+})();
+
 // ===== "Add to calendar" dropdown interactions =====
 // Dates and calendar links (Google Calendar / .ics) are rendered server-side
 // from the events table (see events-preview.eta, src/lib/calendarLinks.js) —
