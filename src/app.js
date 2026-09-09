@@ -11,6 +11,7 @@ import { sendDueEventReminders } from './services/reminders.js';
 import { scheduleDaily } from './lib/dailySchedule.js';
 import { sessionMiddleware } from './middleware/session.js';
 import { marketingRouter } from './routes/marketing.js';
+import { eventsRouter } from './routes/events.js';
 import { authRouter } from './routes/auth.js';
 import { accountRouter } from './routes/account.js';
 import { rsvpsRouter } from './routes/rsvps.js';
@@ -61,6 +62,7 @@ export function createApp() {
   });
 
   app.use(marketingRouter);
+  app.use(eventsRouter);
   app.use(authRouter);
   app.use(accountRouter);
   app.use(rsvpsRouter);

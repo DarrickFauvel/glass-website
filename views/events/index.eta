@@ -1,0 +1,70 @@
+  <main id="main-content">
+    <div class="events-page-shell">
+      <div class="events-page-header">
+        <span class="section-label">Events</span>
+        <h1>All Events</h1>
+        <p class="auth-subtitle">Every upcoming GLASS meetup, plus our history of past events.</p>
+      </div>
+
+      <section class="events-page-section" aria-labelledby="events-page-upcoming-heading">
+        <h2 id="events-page-upcoming-heading" class="events-page-section-title">Upcoming Dates</h2>
+<%~ include("../marketing/_upcoming-dates-list", {
+      events: it.upcomingEvents,
+      rsvpsByEvent: it.rsvpsByEvent,
+      user: it.user,
+      rsvpSignalsJson: it.rsvpSignalsJson,
+      formatEventDateLabel: it.formatEventDateLabel,
+      formatEventDateLabelShort: it.formatEventDateLabelShort,
+      googleCalUrl: it.googleCalUrl,
+      icsDataUri: it.icsDataUri,
+    }) %>
+      </section>
+
+      <section class="events-page-section" aria-labelledby="events-page-past-heading">
+        <h2 id="events-page-past-heading" class="events-page-section-title">Past Events</h2>
+<% if (it.pastEvents.length) { %>
+        <ul class="past-events-list">
+<% it.pastEvents.forEach(function (event) {
+     const cancelled = Boolean(event.cancelled_at);
+%>
+          <li class="past-event<%= cancelled ? ' past-event--cancelled' : '' %>">
+            <div class="past-event-header">
+              <span class="past-event-date"><%= it.formatEventDateLabel(event.starts_at) %></span>
+              <span class="past-event-location"><%= event.location %></span>
+<% if (cancelled) { %>
+              <span class="upcoming-date-badge">Cancelled</span>
+<% } %>
+            </div>
+<% if (!cancelled) { %>
+<% if (it.user) { %>
+<%~ include("../marketing/_rsvp-attendees", (function () {
+      const rsvps = it.rsvpsByEvent.get(event.id) || {};
+      return { event: event, attending: rsvps.attending || [], notAttending: rsvps.notAttending || [] };
+    })()) %>
+<% } else { %>
+            <p class="rsvp-login-hint"><a href="/login">Log in</a> to see who attended.</p>
+<% } %>
+<% } %>
+          </li>
+<% }); %>
+        </ul>
+<% } else { %>
+        <p class="form-hint">No past events yet.</p>
+<% } %>
+<% if (it.hasOlder || it.hasNewer) { %>
+        <nav class="pagination" aria-label="Past events pages">
+<% if (it.hasNewer) { %>
+          <a href="/events?page=<%= it.page - 1 %>" class="pagination-link">&larr; Newer</a>
+<% } else { %>
+          <span class="pagination-link pagination-link--disabled" aria-disabled="true">&larr; Newer</span>
+<% } %>
+<% if (it.hasOlder) { %>
+          <a href="/events?page=<%= it.page + 1 %>" class="pagination-link">Older &rarr;</a>
+<% } else { %>
+          <span class="pagination-link pagination-link--disabled" aria-disabled="true">Older &rarr;</span>
+<% } %>
+        </nav>
+<% } %>
+      </section>
+    </div>
+  </main>
