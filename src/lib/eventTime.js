@@ -17,6 +17,15 @@ export function nowLocalDateTimeString() {
   return localDateTimeStringFromDate(new Date());
 }
 
+// Midnight of today in the same "YYYY-MM-DDTHH:mm" format — used to decide whether
+// an event should still show as upcoming. Comparing against this instead of the
+// current time keeps an event visible (with its RSVP status) for its whole calendar
+// day, even after its starts_at time has passed, rather than dropping it mid-day.
+export function startOfTodayLocalDateTimeString() {
+  const now = new Date();
+  return localDateTimeStringFromDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+}
+
 // Whole calendar days between today and an event's date, ignoring time-of-day —
 // e.g. an event later today is 0, tomorrow is 1, even though a full 24h hasn't
 // elapsed. Used to decide which reminder offsets (7/2/0 days) are due for an event.
