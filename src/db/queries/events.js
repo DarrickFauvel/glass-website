@@ -28,6 +28,27 @@ export async function listUpcomingEvents(targetActiveCount) {
   return events;
 }
 
+// All upcoming events (including cancelled ones), no cap — for the dedicated
+// /events page, unlike listUpcomingEvents() which is capped for the homepage
+// teaser. Passing Infinity means the targetActiveCount stop-condition never
+// triggers, so every row from the underlying query is returned.
+export async function listAllUpcomingEvents() {
+  return listUpcomingEvents(Infinity);
+}
+
+// Events strictly before today (starts_at < startOfTodayLocalDateTimeString()),
+// most recent first, offset/limit-paginated. Fetches one extra row beyond
+// `limit` so callers know whether an older page exists without a separate
+// COUNT query; the extra row is stripped before returning.
+export async function listPastEvents({ limit, offset }) {
+  const result = await getDb().execute({
+    sql: 'SELECT * FROM events WHERE starts_at < ? ORDER BY starts_at DESC LIMIT ? OFFSET ?',
+    args: [startOfTodayLocalDateTimeString(), limit + 1, offset],
+  });
+  const hasOlder = result.rows.length > limit;
+  return { events: hasOlder ? result.rows.slice(0, limit) : result.rows, hasOlder };
+}
+
 export async function findEventById(id) {
   const result = await getDb().execute({
     sql: 'SELECT * FROM events WHERE id = ?',

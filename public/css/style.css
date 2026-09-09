@@ -3067,6 +3067,110 @@ main {
 .event-cancel-field:has(input:checked) .event-cancel-indicator--inactive { display: none; }
 .event-cancel-field:has(input:checked) .event-cancel-indicator--active { display: block; }
 
+/* ===== EVENTS PAGE ===== */
+.events-page-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter) clamp(3rem, 8vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.events-page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.events-page-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 1.25rem;
+}
+
+.past-events-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.past-event {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.past-event--cancelled {
+  opacity: 0.65;
+}
+
+.past-event-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.past-event-date {
+  letter-spacing: 0.03em;
+}
+
+.past-event-location {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.pagination-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--crimson);
+  text-decoration: underline;
+}
+
+.pagination-link:hover {
+  color: var(--crimson-hi);
+}
+
+.pagination-link--disabled {
+  color: var(--ink-dim);
+  text-decoration: none;
+  opacity: 0.5;
+}
+
+.events-see-all {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  text-decoration: underline;
+  margin-bottom: 1rem;
+}
+
+.events-see-all:hover {
+  color: var(--crimson);
+}
+
 /* ===== LEGAL PAGES ===== */
 .legal-page {
   max-width: 720px;
