@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { getDb } from '../client.js';
-import { nowLocalDateTimeString } from '../../lib/eventTime.js';
+import { startOfTodayLocalDateTimeString } from '../../lib/eventTime.js';
 import { clearRemindersSent } from './eventReminders.js';
 
 export async function listEvents() {
@@ -8,13 +8,14 @@ export async function listEvents() {
   return result.rows;
 }
 
-// Returns events from now onward, ordered by date, stopping once `targetActiveCount`
+// Returns events from the start of today onward (so today's event stays visible all
+// day, even after it has started), ordered by date, stopping once `targetActiveCount`
 // non-cancelled events have been collected — so a cancelled date still shows up
 // (marked cancelled) if it falls before that count is reached, instead of being hidden.
 export async function listUpcomingEvents(targetActiveCount) {
   const result = await getDb().execute({
     sql: 'SELECT * FROM events WHERE starts_at >= ? ORDER BY starts_at ASC',
-    args: [nowLocalDateTimeString()],
+    args: [startOfTodayLocalDateTimeString()],
   });
 
   const events = [];
@@ -35,12 +36,12 @@ export async function findEventById(id) {
   return result.rows[0] ?? null;
 }
 
-// All non-cancelled events that haven't started yet — the reminder job evaluates
+// All non-cancelled events from the start of today onward — the reminder job evaluates
 // every offset a member might be opted into against this set itself.
 export async function listUpcomingActiveEvents() {
   const result = await getDb().execute({
     sql: 'SELECT * FROM events WHERE starts_at >= ? AND cancelled_at IS NULL ORDER BY starts_at ASC',
-    args: [nowLocalDateTimeString()],
+    args: [startOfTodayLocalDateTimeString()],
   });
   return result.rows;
 }
