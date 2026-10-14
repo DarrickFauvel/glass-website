@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import { config } from '../config.js';
 
 const FROM_EMAIL = `GLASS <${config.smtp.fromEmail}>`;
+const REPLY_TO = config.smtp.fromEmail;
 
 let transporter;
 
@@ -27,6 +28,7 @@ export async function sendVerificationEmail(to, token) {
   const link = `${config.baseUrl}/verify-email?token=${token}`;
   await getTransporter().sendMail({
     from: FROM_EMAIL,
+    replyTo: REPLY_TO,
     to,
     subject: 'Verify your GLASS account',
     text: `Welcome to GLASS! Verify your email to finish creating your account:\n\n${link}\n\nThis link expires in 24 hours.`,
@@ -38,6 +40,7 @@ export async function sendPasswordResetEmail(to, token) {
   const link = `${config.baseUrl}/reset-password?token=${token}`;
   await getTransporter().sendMail({
     from: FROM_EMAIL,
+    replyTo: REPLY_TO,
     to,
     subject: 'Reset your GLASS password',
     text: `Reset your GLASS password:\n\n${link}\n\nThis link expires in 1 hour. If you didn't request this, you can ignore this email.`,
@@ -49,6 +52,7 @@ export async function sendReminderConfirmationEmail(to, token) {
   const link = `${config.baseUrl}/confirm-reminders?token=${token}`;
   await getTransporter().sendMail({
     from: FROM_EMAIL,
+    replyTo: REPLY_TO,
     to,
     subject: 'Confirm your GLASS event reminder emails',
     text: `Please confirm you'd like to receive event reminder emails from GLASS:\n\n${link}\n\nThis link expires in 24 hours. If you didn't request this, you can ignore it — you won't receive reminder emails unless you click the link.`,
@@ -63,10 +67,14 @@ export async function sendEventReminderEmail(recipients, event, dateLabel, timeL
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
   await getTransporter().sendMail({
     from: FROM_EMAIL,
+    replyTo: REPLY_TO,
     to: FROM_EMAIL,
     bcc: recipients,
     subject: `Reminder: GLASS meetup — ${dateLabel}`,
     text: `${event.title}\n\n${dateLabel} at ${timeLabel}\n${event.location}\n${mapsLink}\n\nHope to see you there!\n\nYou're receiving this because you opted into this reminder. Change which reminders you get at ${accountLink}.`,
     html: `<p><strong>${event.title}</strong></p><p>${dateLabel} at ${timeLabel}<br>${event.location}<br><a href="${mapsLink}">View on Google Maps</a></p><p>Hope to see you there!</p><p style="color:#666;font-size:0.9em;">You're receiving this because you opted into this reminder. Change which reminders you get at <a href="${accountLink}">${accountLink}</a>.</p>`,
+    headers: {
+      'List-Unsubscribe': `<${accountLink}>, <mailto:${config.smtp.fromEmail}?subject=unsubscribe>`,
+    },
   });
 }
