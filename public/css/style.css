@@ -3157,18 +3157,32 @@ main {
   opacity: 0.5;
 }
 
-.events-see-all {
-  display: inline-block;
+.events-see-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-mid);
-  text-decoration: underline;
-  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  background: transparent;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.55rem 1.1rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
-.events-see-all:hover {
-  color: var(--crimson);
+.events-see-all-btn:hover {
+  background: var(--crimson-pale);
+}
+
+.events-see-all-btn:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
 }
 
 /* ===== LEGAL PAGES ===== */

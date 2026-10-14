@@ -29,7 +29,6 @@
         </div>
         <div class="upcoming-section">
           <h4>Upcoming Dates</h4>
-          <a href="/events" class="events-see-all">See all events &rarr;</a>
 <% if (it.events.length) { %>
 <% const recurringAnchor = it.events.find(function (event) { return event.is_recurring && !event.cancelled_at; })
      || it.events.find(function (event) { return !event.cancelled_at; })
@@ -55,6 +54,7 @@
       googleCalUrl: it.googleCalUrl,
       icsDataUri: it.icsDataUri,
     }) %>
+          <a href="/events" class="events-see-all-btn">See all events &rarr;</a>
         </div>
       </div>
     </section>
