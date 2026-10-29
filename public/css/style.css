@@ -774,6 +774,26 @@ nav a.nav-active::after {
   font-style: italic;
 }
 
+.secrets-modal-article {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--crimson);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.secrets-modal-article:hover { color: var(--crimson-hi); }
+
+.secrets-modal-article:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+.secrets-modal-article[hidden] { display: none; }
+
 /* Boost grid visibility inside the lens */
 .hero-mag .hero-bg-grid {
   mask-image: none;
@@ -3246,6 +3266,400 @@ main {
   background: var(--cream-2);
   padding: 0.15em 0.4em;
   border-radius: 3px;
+}
+
+/* ===== UTILITIES ===== */
+/* Hidden visually but still announced by screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== BLOG ===== */
+.blog-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blog-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.4rem;
+  transition: border-color 0.2s;
+}
+
+.blog-card:hover {
+  border-color: var(--crimson);
+}
+
+.blog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+.blog-topic {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--crimson);
+}
+
+.blog-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0.4rem 0 0.5rem;
+}
+
+.blog-card-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.blog-card-title a:hover {
+  color: var(--crimson);
+}
+
+.blog-card-summary {
+  color: var(--ink-mid);
+  line-height: 1.7;
+}
+
+.article-page {
+  position: relative; /* anchors the read-aloud word underline */
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter) clamp(4rem, 8vw, 6rem);
+}
+
+.article-back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--crimson);
+  margin-bottom: 1.5rem;
+}
+
+.article-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0.6rem 0 0.75rem;
+}
+
+.listen-bar {
+  /* Sticks just below the sticky site header; `top` is set from the header's
+     measured height in main.js, with this as the fallback. */
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 2.25rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+
+.listen-bar.is-stuck {
+  box-shadow: 0 4px 12px rgba(28, 20, 16, 0.12);
+}
+
+.listen-bar[hidden] {
+  display: none;
+}
+
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  background: transparent;
+  border: 1px solid var(--crimson);
+  border-radius: 3px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.listen-btn:hover,
+.listen-btn.is-playing {
+  background: var(--crimson-pale);
+}
+
+.listen-btn:focus-visible,
+.listen-rate:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+.listen-btn--icon {
+  padding: 0.45rem 0.6rem;
+}
+
+.listen-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: transparent;
+}
+
+.listen-btn[hidden] {
+  display: none;
+}
+
+.listen-icon-pause,
+.listen-btn.is-playing .listen-icon-play {
+  display: none;
+}
+
+.listen-btn.is-playing .listen-icon-pause {
+  display: inline;
+}
+
+.listen-rate {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: 3px;
+  padding: 0.4rem 0.5rem;
+}
+
+.listen-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  cursor: pointer;
+}
+
+.listen-follow input {
+  accent-color: var(--crimson);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.listen-follow input:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+.listen-voice {
+  max-width: 14rem;
+  text-overflow: ellipsis;
+}
+
+.listen-rate[hidden] {
+  display: none;
+}
+
+.listen-time {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-mid);
+  margin-left: auto;
+}
+
+.listen-status {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+
+/* Muted underline under the word being spoken; positioned per word by
+   main.js. Sits below the sticky listen bar (z-index 50). */
+.reading-underline {
+  position: absolute;
+  height: 2px;
+  margin-top: 1px;
+  border-radius: 1px;
+  background: var(--ink-dim);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.reading-underline.is-visible {
+  opacity: 0.4;
+}
+
+/* While a listening session is active, any paragraph can be clicked to jump there. */
+.listen-session .listen-chunk {
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.listen-session .listen-chunk:hover:not(.is-reading) {
+  background: var(--cream-2);
+  box-shadow: 0 0 0 0.4rem var(--cream-2);
+}
+
+.is-reading {
+  background: var(--crimson-pale);
+  box-shadow: 0 0 0 0.4rem var(--crimson-pale);
+  border-radius: 2px;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.article-prose h2 {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 600;
+  margin: 2.5rem 0 0.75rem;
+}
+
+.article-prose p,
+.article-prose li {
+  font-size: 1rem;
+  color: var(--ink-mid);
+  line-height: 1.85;
+}
+
+.article-prose p {
+  margin-bottom: 1.1rem;
+}
+
+.article-prose ul,
+.article-prose ol {
+  margin: 0 0 1.1rem;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.article-prose strong {
+  color: var(--ink);
+}
+
+.article-prose blockquote {
+  border-left: 3px solid var(--crimson);
+  background: var(--crimson-pale);
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+}
+
+.article-prose blockquote p {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.article-prose a {
+  color: var(--crimson);
+  overflow-wrap: anywhere;
+}
+
+.article-prose a:hover {
+  color: var(--crimson-hi);
+}
+
+.external-link-icon {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  margin-left: 0.15em;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Footnote references (marked-footnote) */
+/* Footnote jumps land below the sticky header and listen bar, not under them. */
+.article-prose [id] {
+  scroll-margin-top: 9rem;
+}
+
+.article-prose sup a {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+
+.article-prose .footnotes {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-hi);
+}
+
+.article-prose .footnotes h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 0 0 1rem;
+}
+
+.article-prose .footnotes li {
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.article-prose .footnotes li p {
+  margin: 0;
+}
+
+.article-prose .footnotes li:target {
+  background: var(--crimson-pale);
+  outline: 1px solid var(--crimson);
+  outline-offset: 4px;
+}
+
+.article-prose [data-footnote-backref] {
+  text-decoration: none;
+  margin-left: 0.3em;
+}
+
+.article-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.article-disclosure {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--ink-dim);
+}
+
+.article-disclosure a {
+  color: var(--crimson);
 }
 
 /* ===== Reduced Motion ===== */

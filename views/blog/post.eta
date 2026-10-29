@@ -1,0 +1,56 @@
+  <main id="main-content">
+    <article class="article-page">
+      <div class="article-header">
+        <a href="/blog" class="article-back">&larr; All posts</a>
+        <p class="blog-meta">
+          <time datetime="<%= it.post.date %>"><%= it.formatPostDate(it.post.date) %></time>
+<% if (it.post.topic) { %>
+          <span class="blog-topic"><%= it.post.topic %></span>
+<% } %>
+        </p>
+        <h1><%= it.post.title %></h1>
+        <p class="auth-subtitle"><%= it.post.summary %></p>
+      </div>
+
+      <div class="listen-bar" id="listen-bar" role="group" aria-label="Listen to this article" hidden>
+        <button type="button" class="listen-btn" id="listen-toggle" aria-pressed="false">
+          <svg class="listen-icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+          <svg class="listen-icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15"/><rect x="14" y="4.5" width="4" height="15"/></svg>
+          <span class="listen-label">Listen</span>
+        </button>
+        <button type="button" class="listen-btn listen-btn--icon" id="listen-prev" aria-label="Previous paragraph" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="5" width="3" height="14"/><path d="M20 5v14L8.5 12z"/></svg>
+        </button>
+        <button type="button" class="listen-btn listen-btn--icon" id="listen-next" aria-label="Next paragraph" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 5v14l11.5-7z"/><rect x="17" y="5" width="3" height="14"/></svg>
+        </button>
+        <button type="button" class="listen-btn listen-btn--icon" id="listen-stop" aria-label="Stop reading" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14"/></svg>
+        </button>
+        <select class="listen-rate" id="listen-rate" aria-label="Reading speed">
+          <option value="0.85">0.85×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option>
+          <option value="1.5">1.5×</option>
+        </select>
+        <select class="listen-rate listen-voice" id="listen-voice" aria-label="Voice" hidden></select>
+        <label class="listen-follow">
+          <input type="checkbox" id="listen-follow" checked />
+          <span>Auto-scroll</span>
+        </label>
+        <span class="listen-time" id="listen-time"></span>
+        <span class="listen-status" id="listen-status" aria-live="polite"></span>
+      </div>
+
+      <div class="article-prose">
+<%~ it.post.html %>
+      </div>
+
+      <div class="article-footer">
+<% if (it.post.aiAssisted) { %>
+        <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
+<% } %>
+        <a href="/#events" class="events-see-all-btn">Discuss this at our next meetup &rarr;</a>
+      </div>
+    </article>
+  </main>

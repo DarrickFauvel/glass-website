@@ -362,51 +362,61 @@ if (prefersReducedMotion) {
   const clues = [
       {
         text: 'bigfoot?',
+        topic: 'bigfoot', // matches content/topics.md and post frontmatter
         belief: 'Many believe Bigfoot is an undiscovered great ape roaming remote North American forests, supported by alleged footprints and blurry footage like the Patterson–Gimlin film.',
         question: 'If a large primate exists in North America, why has no confirmed physical evidence — bones, tissue, or definitive DNA — ever been recovered despite millions of acres under constant surveillance by hunters and cameras?',
       },
       {
         text: 'chemtrails?',
+        topic: 'chemtrails', // matches content/topics.md and post frontmatter
         belief: 'Some believe the white trails left by aircraft are chemical or biological agents deliberately sprayed by governments for population control, weather manipulation, or mass sedation.',
         question: 'Contrails are well-understood water vapor condensation. How would a program requiring the silence of hundreds of thousands of pilots, engineers, and ground crews across competing nations remain secret?',
       },
       {
         text: 'GMOs?',
+        topic: 'gmos', // matches content/topics.md and post frontmatter
         belief: 'Some believe genetically modified organisms pose unique dangers to human health, biodiversity, and ecosystems, and that safety data is suppressed by corporations.',
         question: 'Over 2,000 peer-reviewed studies and scientific consensus from WHO, NAS, and the EU find no evidence of GMO-specific health risks. What specific biological mechanism would make a gene-edited crop inherently harmful?',
       },
       {
         text: 'psychics?',
+        topic: 'psychics', // matches content/topics.md and post frontmatter
         belief: 'Many believe certain individuals possess extrasensory abilities — reading minds, predicting futures, or communicating with the deceased — often demonstrated in readings.',
         question: 'The JREF offered $1 million for demonstrated psychic ability under controlled conditions for over a decade. No one claimed it. Why do psychic powers vanish when double-blind testing eliminates cold reading and confirmation bias?',
       },
       {
         text: 'ufo?',
+        topic: 'ufos', // matches content/topics.md and post frontmatter
         belief: 'Many believe unidentified aerial phenomena are evidence of extraterrestrial spacecraft visiting Earth, sometimes citing government cover-ups of recovered craft and bodies.',
         question: '"We don\'t know what this is" is a legitimate scientific position — but what specific evidence distinguishes an unexplained atmospheric phenomenon from an alien spacecraft?',
       },
       {
         text: 'astrology?',
+        topic: 'astrology', // matches content/topics.md and post frontmatter
         belief: 'Millions believe the positions of celestial bodies at birth shape personality, compatibility, and destiny through the twelve zodiac signs.',
         question: 'Controlled studies find no correlation between birth date and personality traits. If astrology is valid, why do identical twins — born minutes apart under the same sky — often lead strikingly different lives?',
       },
       {
         text: 'spirits?',
+        topic: 'spirits', // matches content/topics.md and post frontmatter
         belief: 'Many cultures believe spirits of the deceased can interact with the living, haunt locations, or communicate through mediums and séances.',
         question: 'In controlled studies, mediums perform at chance level when verifiable specifics are required. What physical mechanism allows a non-corporeal entity to move objects, affect EMF readings, or produce sound?',
       },
       {
         text: 'aliens?',
+        topic: 'aliens', // matches content/topics.md and post frontmatter
         belief: 'Some believe extraterrestrial beings have visited Earth, made contact with governments, and that evidence is actively suppressed at the highest levels.',
         question: 'The universe almost certainly harbors other life — but what testable, reproducible evidence supports the claim that intelligent aliens have specifically visited Earth rather than any of the billions of other planets?',
       },
       {
         text: 'ghosts?',
+        topic: 'ghosts', // matches content/topics.md and post frontmatter
         belief: 'Many believe ghosts are spirits of the deceased that linger in the physical world, detectable by temperature drops, EVP recordings, or visual apparitions.',
         question: 'EMF detectors measure electromagnetic fields from electrical appliances — they were never designed for spirit detection. What peer-reviewed evidence links EMF fluctuations to anything other than wiring and electronics?',
       },
       {
         text: 'flat earth?',
+        topic: 'flat-earth', // matches content/topics.md and post frontmatter
         belief: 'Some believe Earth is a flat disc enclosed by a dome, and that space agencies worldwide collaborate in an elaborate deception to hide its true shape.',
         question: 'GPS, satellite imagery, circumnavigation, eclipses, and the physics of gravity all depend on a spherical Earth and make accurate predictions. What model of a flat Earth makes equally precise, testable predictions?',
       },
@@ -497,6 +507,7 @@ if (prefersReducedMotion) {
             <p class="secrets-modal-label">Scientific question</p>
             <p class="secrets-modal-text secrets-modal-text--question" id="secrets-question"></p>
           </div>
+          <a class="secrets-modal-article" id="secrets-article" hidden></a>
         </div>
         <div class="secrets-modal-tape" aria-hidden="true"></div>
       </div>`;
@@ -507,11 +518,26 @@ if (prefersReducedMotion) {
     const sTitle    = sModal.querySelector('#secrets-modal-title');
     const sBelief   = sModal.querySelector('#secrets-belief');
     const sQuestion = sModal.querySelector('#secrets-question');
+    const sArticle  = sModal.querySelector('#secrets-article');
+
+    // Published blog posts by topic, rendered server-side into home.eta (only
+    // posts already live). A clue links to its article once one exists.
+    let clueArticles = {};
+    try {
+      const dataEl = document.getElementById('clue-articles');
+      if (dataEl) clueArticles = JSON.parse(dataEl.textContent);
+    } catch (e) { /* malformed data — just show no links */ }
 
     openSecretModal = function (clue) {
       sTitle.textContent    = clue.text;
       sBelief.textContent   = clue.belief;
       sQuestion.textContent = clue.question;
+      const article = clueArticles[clue.topic];
+      sArticle.hidden = !article;
+      if (article) {
+        sArticle.href = `/blog/${article.slug}`;
+        sArticle.textContent = `Read: ${article.title} →`;
+      }
       lensLocked = true;
       sModal.hidden = false;
       sClose.focus();
@@ -1130,6 +1156,534 @@ if (prefersReducedMotion) {
     hideTooltip(el);
   });
 })();
+
+// ===== Blog article read-aloud =====
+// Uses the browser's built-in speech synthesis, so there are no audio files or
+// API keys — the bar stays hidden where speechSynthesis isn't supported. Text
+// is spoken one block (paragraph/heading/list item) at a time: long single
+// utterances get cut off in Chrome, and per-block chunks let us highlight the
+// block being read and resume from it. Footnote markers and the References
+// list are skipped.
+(function () {
+  const bar = document.getElementById('listen-bar');
+  const prose = document.querySelector('.article-prose');
+  if (!bar || !prose || !('speechSynthesis' in window)) return;
+
+  const synth = window.speechSynthesis;
+  const toggle = document.getElementById('listen-toggle');
+  const stopBtn = document.getElementById('listen-stop');
+  const rateSelect = document.getElementById('listen-rate');
+  const status = document.getElementById('listen-status');
+  const label = toggle.querySelector('.listen-label');
+  const prevBtn = document.getElementById('listen-prev');
+  const nextBtn = document.getElementById('listen-next');
+  const article = bar.closest('article');
+
+  const header = document.querySelector('.article-header');
+  const blocks = [
+    ...header.querySelectorAll('h1, .auth-subtitle'),
+    ...Array.from(prose.querySelectorAll('h2, p, li')).filter(
+      (el) => !el.closest('.footnotes') && !(el.tagName === 'P' && el.closest('li'))
+    ),
+  ];
+  // Builds the spoken text for a block (footnote <sup>s and link hints dropped, whitespace
+  // collapsed) alongside a map from each spoken character back to its DOM text
+  // node + offset, so word-boundary events can be turned into a highlight Range.
+  function readableText(el) {
+    let text = '';
+    const positions = [];
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      // Skip footnote markers and the new-tab hint on external links.
+      acceptNode: (node) => (node.parentElement.closest('sup, .external-link-icon, .visually-hidden')
+        ? NodeFilter.FILTER_REJECT
+        : NodeFilter.FILTER_ACCEPT),
+    });
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      for (let offset = 0; offset < node.data.length; offset++) {
+        const ch = node.data[offset];
+        if (/\s/.test(ch)) {
+          if (!text || text.endsWith(' ')) continue;
+          text += ' ';
+        } else {
+          text += ch;
+        }
+        positions.push({ node, offset });
+      }
+    }
+    if (text.endsWith(' ')) {
+      text = text.slice(0, -1);
+      positions.pop();
+    }
+    return { text, positions };
+  }
+
+  const chunks = blocks
+    .map((el) => ({ el, ...readableText(el) }))
+    .filter((chunk) => chunk.text);
+  const chunkIndex = new Map(chunks.map((chunk, i) => [chunk.el, i]));
+  chunks.forEach((chunk) => chunk.el.classList.add('listen-chunk'));
+
+  let index = 0;
+  let playing = false;
+  // True from the first Listen until Stop/the end — paused still counts.
+  let sessionActive = false;
+  // Bumped on every cancel so the onend of a cancelled utterance can't advance playback.
+  let generation = 0;
+  let voice = null;
+  let voices = [];
+
+  // Offers the device's English voices, higher-quality US ones first. The
+  // reader's pick is remembered per browser (by voiceURI); otherwise we default
+  // to the best-sounding US voice available. Voices load asynchronously in
+  // some browsers, hence re-running this on `voiceschanged`.
+  const voiceSelect = document.getElementById('listen-voice');
+  const VOICE_KEY = 'glass-listen-voice';
+  const PREFERRED_VOICE = /natural|neural|google|samantha|premium|enhanced/i;
+
+  // macOS ships joke/effect voices ("Bubbles", "Zarvox", …) that read an
+  // article badly — leave them out of the picker entirely.
+  const NOVELTY_VOICES = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|junior|ralph|fred|kathy|princess)\b/i;
+
+  const ACCENTS = {
+    US: 'American', GB: 'British', UK: 'British', AU: 'Australian', CA: 'Canadian',
+    IE: 'Irish', IN: 'Indian', NZ: 'New Zealand', ZA: 'South African', SG: 'Singaporean',
+    PH: 'Filipino', NG: 'Nigerian', KE: 'Kenyan', HK: 'Hong Kong', SC: 'Scottish',
+  };
+
+  // eSpeak (Chrome/Firefox on Linux) names voices after the language, e.g.
+  // "English (Scotland)" or "English (America)+Annie" — the accent lives in the
+  // parentheses and the voice's identity in the "+variant" suffix.
+  const ESPEAK_ACCENTS = {
+    'america': 'American', 'united states': 'American', 'great britain': 'British',
+    'united kingdom': 'British', 'received pronunciation': 'British RP', 'scotland': 'Scottish',
+    'caribbean': 'Caribbean', 'lancaster': 'Lancashire', 'west midlands': 'West Midlands',
+  };
+  const ESPEAK_NOVELTY_VARIANTS = /^(whisper|whisperf|croak|klatt\d*|robot|universalrobot|mr ?serious)$/i;
+
+  function espeakVariantName(variant) {
+    const code = variant.match(/^([fm])(\d+)$/i);
+    if (code) return `${code[1].toLowerCase() === 'f' ? 'Female' : 'Male'} ${code[2]}`;
+    return variant
+      .replace(/[_-]+/g, ' ')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')   // "AnxiousAndy" → "Anxious Andy"
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  // Turns engine names like "Microsoft Aria Online (Natural) - English (United States)",
+  // "Google UK English Female" or "English (America)+Annie" into
+  // "Aria (American, natural)", "Google female (British)" and "Annie (American)".
+  function friendlyVoiceName(v) {
+    const region = (v.lang.split(/[-_]/)[1] || '').toUpperCase();
+    let accent = ACCENTS[region] || 'English';
+    const [base, variant] = v.name.split('+');
+    const quality = (base.match(/\b(natural|neural|enhanced|premium)\b/i) || [])[1];
+    const gender = (base.match(/\b(female|male)\b/i) || [])[1];
+
+    const espeakAccent = (base.match(/^english\s*\(([^)]+)\)/i) || [])[1];
+    if (espeakAccent && ESPEAK_ACCENTS[espeakAccent.toLowerCase()]) {
+      accent = ESPEAK_ACCENTS[espeakAccent.toLowerCase()];
+    }
+
+    let name = base
+      .replace(/\s+-\s+English.*$/i, '')            // " - English (United States)"
+      .replace(/\((natural|neural|enhanced|premium)\)/gi, '')
+      .replace(/\b(online|desktop|multilingual|compact)\b/gi, '')
+      .replace(/^(microsoft|apple|com\.apple\S*)\s+/i, '')
+      .replace(/\(.*?\)/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // ChromeOS names its voices "Chrome OS US English 1", "Chrome OS UK English 2", …
+    // and Android-backed ones "Android Speech Recognition and Synthesis from Google
+    // en-us-x-tpf-local" — neither carries a person's name, so number them instead.
+    const chromeOS = base.match(/^chrome ?os\b.*?english\s*(\d+)?\s*$/i);
+    const android = /^android speech/i.test(base);
+
+    if (variant) {
+      name = espeakVariantName(variant.trim());
+    } else if (chromeOS) {
+      name = chromeOS[1] ? `Voice ${chromeOS[1]}` : 'Voice';
+    } else if (android) {
+      // Distinct from ChromeOS's own numbered voices so the two can't collide.
+      name = 'Android voice';
+    } else if (/^google\b/i.test(name)) {
+      name = gender ? `Google ${gender.toLowerCase()}` : 'Google';
+    } else if (!name || /english|^en[-_]|^default$/i.test(name)) {
+      name = 'Voice';
+    }
+
+    const details = [accent, quality && quality.toLowerCase()].filter(Boolean).join(', ');
+    return `${name} (${details})`;
+  }
+
+  function isNoveltyVoice(v) {
+    const variant = v.name.split('+')[1];
+    return NOVELTY_VOICES.test(v.name) || Boolean(variant && ESPEAK_NOVELTY_VARIANTS.test(variant.trim()));
+  }
+
+  function voiceRank(v) {
+    const us = /^en[-_]US/i.test(v.lang);
+    const preferred = PREFERRED_VOICE.test(v.name);
+    return (us && preferred ? 0 : us ? 1 : preferred ? 2 : 3);
+  }
+
+  function loadVoices() {
+    voices = synth
+      .getVoices()
+      .filter((v) => /^en[-_]/i.test(v.lang) && !isNoveltyVoice(v))
+      .sort((a, b) => voiceRank(a) - voiceRank(b) || a.name.localeCompare(b.name));
+
+    let savedURI = null;
+    try { savedURI = localStorage.getItem(VOICE_KEY); } catch (e) { /* storage unavailable */ }
+    voice = voices.find((v) => v.voiceURI === (voice ? voice.voiceURI : savedURI)) || voices[0] || null;
+
+    // Unnamed voices tidy down to the same label (e.g. several "Voice (American)"),
+    // so number every member of a repeated label: Voice 1, Voice 2, …
+    const labels = voices.map(friendlyVoiceName);
+    const totals = new Map();
+    labels.forEach((text) => totals.set(text, (totals.get(text) || 0) + 1));
+    const seen = new Map();
+    voiceSelect.replaceChildren(
+      ...voices.map((v, i) => {
+        const option = document.createElement('option');
+        option.value = v.voiceURI;
+        let text = labels[i];
+        if (totals.get(text) > 1) {
+          const n = (seen.get(text) || 0) + 1;
+          seen.set(text, n);
+          text = text.replace(/ \(/, ` ${n} (`);
+        }
+        option.textContent = text;
+        option.title = v.name;
+        option.selected = v === voice;
+        return option;
+      })
+    );
+    // With zero or one voice there's nothing to choose between.
+    voiceSelect.hidden = voices.length < 2;
+  }
+  loadVoices();
+  synth.addEventListener('voiceschanged', loadVoices);
+
+  voiceSelect.addEventListener('change', () => {
+    voice = voices.find((v) => v.voiceURI === voiceSelect.value) || voice;
+    try { localStorage.setItem(VOICE_KEY, voice.voiceURI); } catch (e) { /* storage unavailable */ }
+    if (playing) speakFrom(index);
+  });
+
+  // Follow along by scrolling the block being read to mid-screen, but back off
+  // for a few seconds whenever the reader scrolls on their own.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const USER_SCROLL_GRACE_MS = 4000;
+  let userScrolledAt = 0;
+  ['wheel', 'touchmove'].forEach((type) =>
+    window.addEventListener(type, () => { userScrolledAt = Date.now(); }, { passive: true })
+  );
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
+      userScrolledAt = Date.now();
+    }
+  });
+
+  // Keep the bar pinned directly under the sticky site header, whose height
+  // varies with viewport width.
+  const siteHeader = document.querySelector('header');
+  function pinBelowHeader() {
+    bar.style.top = (siteHeader ? siteHeader.offsetHeight : 0) + 'px';
+    updateStuck();
+  }
+  function updateStuck() {
+    const pinnedTop = parseFloat(bar.style.top) || 0;
+    bar.classList.toggle('is-stuck', bar.getBoundingClientRect().top <= pinnedTop + 1);
+  }
+  window.addEventListener('resize', pinBelowHeader);
+  window.addEventListener('scroll', updateStuck, { passive: true });
+
+  // Auto-scroll is on by default; the reader's choice is remembered per browser.
+  const followToggle = document.getElementById('listen-follow');
+  const FOLLOW_KEY = 'glass-listen-autoscroll';
+  try {
+    if (localStorage.getItem(FOLLOW_KEY) === 'off') followToggle.checked = false;
+  } catch (e) { /* storage unavailable — keep the default */ }
+  followToggle.addEventListener('change', () => {
+    try {
+      localStorage.setItem(FOLLOW_KEY, followToggle.checked ? 'on' : 'off');
+    } catch (e) { /* storage unavailable — choice lasts for this page only */ }
+    if (followToggle.checked && playing && chunks[index]) {
+      userScrolledAt = 0;
+      followAlong(chunks[index].el);
+    }
+  });
+
+  function followAlong(el) {
+    if (!followToggle.checked) return;
+    if (Date.now() - userScrolledAt < USER_SCROLL_GRACE_MS) return;
+    const rect = el.getBoundingClientRect();
+    const viewH = window.innerHeight;
+    // The header and pinned bar cover the top of the screen. Measure from where
+    // the bar's bottom edge will be once it's pinned (it may not be yet), so the
+    // block never lands underneath it.
+    const coveredTop = (parseFloat(bar.style.top) || 0) + bar.offsetHeight;
+    const available = viewH - coveredTop;
+    const GAP = 16;
+    // Leave it alone while its top is clear of the bar and it's reasonably in view.
+    const topClear = rect.top >= coveredTop + GAP;
+    if (topClear && (rect.bottom <= viewH - GAP || rect.top <= coveredTop + available * 0.35)) return;
+    // Short blocks sit centred in the space below the bar; tall ones align their
+    // top just under it, so the start of the paragraph is always visible.
+    const targetTop = rect.height <= available - GAP * 2
+      ? coveredTop + (available - rect.height) / 2
+      : coveredTop + GAP;
+    window.scrollTo({
+      top: window.scrollY + rect.top - targetTop,
+      behavior: reducedMotion.matches ? 'auto' : 'smooth',
+    });
+  }
+
+  // A muted underline under the word being spoken. It's a
+  // single absolutely-positioned element placed from the word's Range rects, so
+  // the article's HTML is never touched. Needs a voice that fires word-boundary
+  // events — network voices such as Chrome's "Google" ones don't, in which case
+  // only the paragraph highlight shows.
+  const underline = document.createElement('span');
+  underline.className = 'reading-underline';
+  underline.setAttribute('aria-hidden', 'true');
+  article.appendChild(underline);
+  let currentWordRange = null;
+
+  function wordRange(chunk, charIndex, charLength) {
+    const { text, positions } = chunk;
+    let end = charLength ? charIndex + charLength : charIndex;
+    if (!charLength) while (end < text.length && !/\s/.test(text[end])) end++;
+    // Don't underline trailing punctuation or spaces.
+    while (end > charIndex && /[\s.,;:!?"'”’)\]]/.test(text[end - 1])) end--;
+    const start = positions[charIndex];
+    const last = positions[end - 1];
+    if (!start || !last) return null;
+    const range = new Range();
+    range.setStart(start.node, start.offset);
+    range.setEnd(last.node, last.offset + 1);
+    return range;
+  }
+
+  function placeUnderline(range) {
+    const rect = range.getClientRects()[0];
+    if (!rect) return false;
+    const base = article.getBoundingClientRect();
+    underline.style.left = `${rect.left - base.left}px`;
+    underline.style.top = `${rect.bottom - base.top}px`;
+    underline.style.width = `${rect.width}px`;
+    return true;
+  }
+
+  function underlineWord(chunk, charIndex, charLength) {
+    const range = wordRange(chunk, charIndex, charLength);
+    if (!range) return;
+    currentWordRange = range;
+    underline.classList.toggle('is-visible', placeUnderline(range));
+  }
+
+  function clearWord() {
+    currentWordRange = null;
+    underline.classList.remove('is-visible');
+  }
+
+  // Text reflows on resize, so move the underline with its word.
+  window.addEventListener('resize', () => {
+    if (currentWordRange) placeUnderline(currentWordRange);
+  });
+
+  function setHighlight(i) {
+    clearWord();
+    chunks.forEach((chunk, j) => chunk.el.classList.toggle('is-reading', j === i));
+    if (i >= 0 && playing) followAlong(chunks[i].el);
+  }
+
+  // Listening-time estimate: total, and what's left from the current position.
+  // Starts from a typical speech-synthesis pace and then calibrates to the
+  // actual voice by timing each block that's read to the end. Progress within
+  // a block comes from word-boundary events when the voice sends them,
+  // otherwise from elapsed time.
+  const timeEl = document.getElementById('listen-time');
+  const wordCount = (text) => text.split(' ').length;
+  chunks.forEach((chunk) => { chunk.words = wordCount(chunk.text); });
+  const totalWords = chunks.reduce((sum, chunk) => sum + chunk.words, 0);
+  let baseWpm = 170; // words per minute at 1×
+  let chunkStartedAt = 0;
+  let spokenInChunk = 0;
+  let boundaryWords = false;
+  let timeTimer = null;
+
+  const wordsPerSecond = () => (baseWpm * Number(rateSelect.value)) / 60;
+
+  function formatClock(seconds) {
+    const s = Math.max(0, Math.round(seconds));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  function formatMinutes(seconds) {
+    return `${Math.max(1, Math.round(seconds / 60))} min`;
+  }
+
+  function updateTime() {
+    const totalSeconds = totalWords / wordsPerSecond();
+    if (!sessionActive) {
+      timeEl.textContent = `${formatMinutes(totalSeconds)} listen`;
+      return;
+    }
+    let doneInChunk = 0;
+    if (playing) {
+      doneInChunk = boundaryWords
+        ? spokenInChunk
+        : ((performance.now() - chunkStartedAt) / 1000) * wordsPerSecond();
+    }
+    const current = chunks[index];
+    const wordsBefore = chunks.slice(0, index).reduce((sum, chunk) => sum + chunk.words, 0);
+    const remainingWords = totalWords - wordsBefore - Math.min(doneInChunk, current ? current.words : 0);
+    timeEl.textContent = `${formatClock(remainingWords / wordsPerSecond())} left of ${formatMinutes(totalSeconds)}`;
+  }
+
+  function startTimeTicker() {
+    if (!timeTimer) timeTimer = setInterval(updateTime, 1000);
+  }
+
+  function stopTimeTicker() {
+    clearInterval(timeTimer);
+    timeTimer = null;
+  }
+
+  // Blend each fully-read block's measured pace into the estimate; tiny blocks
+  // (headings, one-liners) are too noisy to learn from.
+  function calibrate(chunk) {
+    const seconds = (performance.now() - chunkStartedAt) / 1000;
+    if (chunk.words < 8 || seconds < 1) return;
+    const measured = (chunk.words / (seconds / 60)) / Number(rateSelect.value);
+    if (measured > 60 && measured < 400) baseWpm = baseWpm * 0.6 + measured * 0.4;
+  }
+
+  function render() {
+    updateTime();
+    toggle.setAttribute('aria-pressed', String(playing));
+    toggle.classList.toggle('is-playing', playing);
+    label.textContent = playing ? 'Pause' : sessionActive ? 'Resume' : 'Listen';
+    stopBtn.hidden = !sessionActive;
+    prevBtn.hidden = !sessionActive;
+    nextBtn.hidden = !sessionActive;
+    prevBtn.disabled = index <= 0;
+    article.classList.toggle('listen-session', sessionActive);
+  }
+
+  function speakFrom(i) {
+    synth.cancel();
+    const myGeneration = ++generation;
+    if (i >= chunks.length) {
+      finish();
+      return;
+    }
+    index = i;
+    setHighlight(i);
+    chunkStartedAt = performance.now();
+    spokenInChunk = 0;
+    boundaryWords = false;
+    updateTime();
+    const utterance = new SpeechSynthesisUtterance(chunks[i].text);
+    utterance.rate = Number(rateSelect.value);
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+    }
+    utterance.onboundary = (e) => {
+      if (myGeneration !== generation || e.name !== 'word') return;
+      underlineWord(chunks[i], e.charIndex, e.charLength);
+      boundaryWords = true;
+      spokenInChunk = e.charIndex ? wordCount(chunks[i].text.slice(0, e.charIndex).trim()) : 0;
+    };
+    utterance.onend = () => {
+      if (myGeneration !== generation || !playing) return;
+      calibrate(chunks[i]);
+      speakFrom(i + 1);
+    };
+    utterance.onerror = (e) => {
+      if (myGeneration !== generation || e.error === 'interrupted' || e.error === 'canceled') return;
+      playing = false;
+      status.textContent = 'Audio playback isn’t available right now.';
+      render();
+    };
+    synth.speak(utterance);
+  }
+
+  // Pausing cancels and later restarts the current block, rather than using
+  // synth.pause(), which is unreliable on mobile browsers.
+  function pause() {
+    playing = false;
+    generation++;
+    synth.cancel();
+    clearWord();
+    stopTimeTicker();
+    status.textContent = 'Paused';
+    render();
+  }
+
+  function finish() {
+    playing = false;
+    sessionActive = false;
+    generation++;
+    synth.cancel();
+    stopTimeTicker();
+    index = 0;
+    setHighlight(-1);
+    status.textContent = '';
+    render();
+  }
+
+  function playFrom(i) {
+    if (!sessionActive) status.textContent = 'Tip: click any paragraph to jump there.';
+    else status.textContent = '';
+    playing = true;
+    sessionActive = true;
+    render();
+    startTimeTicker();
+    speakFrom(i);
+  }
+
+  toggle.addEventListener('click', () => {
+    if (playing) pause();
+    else playFrom(index);
+  });
+  prevBtn.addEventListener('click', () => playFrom(Math.max(0, index - 1)));
+  nextBtn.addEventListener('click', () => playFrom(index + 1));
+
+  // Clicking a block jumps playback there — but only mid-session, so ordinary
+  // clicks (or text selection) on the page never start audio unexpectedly.
+  article.addEventListener('click', (e) => {
+    if (!sessionActive) return;
+    if (e.target.closest('a, button, input, select, label')) return;
+    const selection = window.getSelection();
+    if (selection && !selection.isCollapsed) return;
+    const el = e.target.closest('.listen-chunk');
+    if (!el || !chunkIndex.has(el)) return;
+    userScrolledAt = 0;
+    playFrom(chunkIndex.get(el));
+  });
+  stopBtn.addEventListener('click', finish);
+  // Reading speed is remembered per browser, like the voice and auto-scroll choices.
+  const RATE_KEY = 'glass-listen-rate';
+  try {
+    const savedRate = localStorage.getItem(RATE_KEY);
+    if (savedRate && [...rateSelect.options].some((o) => o.value === savedRate)) rateSelect.value = savedRate;
+  } catch (e) { /* storage unavailable — keep 1× */ }
+  rateSelect.addEventListener('change', () => {
+    try { localStorage.setItem(RATE_KEY, rateSelect.value); } catch (e) { /* storage unavailable */ }
+    if (playing) speakFrom(index);
+    else updateTime();
+  });
+  window.addEventListener('pagehide', () => synth.cancel());
+
+  synth.cancel(); // clear anything still queued from a previous page
+  bar.hidden = false;
+  pinBelowHeader();
+  render();
+}());
 
 // ===== "Add to calendar" dropdown interactions =====
 // Dates and calendar links (Google Calendar / .ics) are rendered server-side

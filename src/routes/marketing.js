@@ -9,6 +9,7 @@ import {
   icsDataUri,
   icsRecurDataUri,
 } from '../lib/calendarLinks.js';
+import { listPosts } from '../lib/posts.js';
 
 export const marketingRouter = Router();
 
@@ -42,6 +43,7 @@ marketingRouter.get('/', async (req, res) => {
   }
 
   res.render('marketing/home', {
+    clueArticlesJson: await clueArticlesJson(),
     events,
     rsvpsByEvent,
     rsvpSignalsJson,
@@ -53,6 +55,24 @@ marketingRouter.get('/', async (req, res) => {
     icsRecurDataUri,
   });
 });
+
+// Topic → published post, for linking the hero "secrets" modals to their
+// articles. A broken post file shouldn't take the homepage down with it.
+async function clueArticlesJson() {
+  try {
+    const posts = await listPosts();
+    const byTopic = {};
+    posts.forEach((post) => {
+      // listPosts is newest-first, so the first post per topic wins.
+      if (post.topic && !byTopic[post.topic]) byTopic[post.topic] = { slug: post.slug, title: post.title };
+    });
+    // Escape "<" so a title can never close the surrounding <script> tag.
+    return JSON.stringify(byTopic).replace(/</g, '\\u003c');
+  } catch (err) {
+    console.error('Could not load blog posts for hero links:', err.message);
+    return '{}';
+  }
+}
 
 marketingRouter.get('/privacy', (req, res) => {
   res.render('legal/privacy');
