@@ -1,0 +1,28 @@
+  <main id="main-content">
+    <div class="events-page-shell">
+      <div class="events-page-header">
+        <span class="section-label">Blog</span>
+        <h1>Questioning Everything</h1>
+        <p class="auth-subtitle">Evidence-based looks at popular claims: what people believe, why it's compelling, and what the science actually shows.</p>
+      </div>
+
+<% if (it.posts.length) { %>
+      <ul class="blog-list">
+<% it.posts.forEach(function (post) { %>
+        <li class="blog-card">
+          <p class="blog-meta">
+            <time datetime="<%= post.date %>"><%= it.formatPostDate(post.date) %></time>
+<% if (post.topic) { %>
+            <span class="blog-topic"><%= post.topic %></span>
+<% } %>
+          </p>
+          <h2 class="blog-card-title"><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
+          <p class="blog-card-summary"><%= post.summary %></p>
+        </li>
+<% }); %>
+      </ul>
+<% } else { %>
+      <p class="form-hint">No posts yet. Check back soon.</p>
+<% } %>
+    </div>
+  </main>

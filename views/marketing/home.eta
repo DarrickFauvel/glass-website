@@ -1,4 +1,5 @@
 <%~ include("hero", it) %>
+<script type="application/json" id="clue-articles"><%~ it.clueArticlesJson %></script>
 
 <%~ include("quote-band", it) %>
 

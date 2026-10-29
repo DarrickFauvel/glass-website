@@ -16,6 +16,7 @@ import { authRouter } from './routes/auth.js';
 import { accountRouter } from './routes/account.js';
 import { rsvpsRouter } from './routes/rsvps.js';
 import { adminRouter } from './routes/admin.js';
+import { blogRouter } from './routes/blog.js';
 
 const DAILY_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
@@ -63,6 +64,7 @@ export function createApp() {
 
   app.use(marketingRouter);
   app.use(eventsRouter);
+  app.use(blogRouter);
   app.use(authRouter);
   app.use(accountRouter);
   app.use(rsvpsRouter);
