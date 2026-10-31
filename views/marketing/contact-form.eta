@@ -1,11 +1,8 @@
   <section id="contact" class="contact" aria-labelledby="contact-heading">
     <div class="contact-inner">
-      <div class="section-header reveal">
-        <span class="section-label">Contact</span>
-      </div>
       <div class="contact-layout">
         <div class="contact-intro reveal">
-          <h2 id="contact-heading">Get in<br><em>Touch</em></h2>
+          <h2 id="contact-heading">Get in<br>Touch</h2>
           <p>Have a question, suggestion, or just want to say hello? Send us a message and we'll get back to you.</p>
         </div>
         <form class="contact-form reveal" id="contact-form" novalidate>

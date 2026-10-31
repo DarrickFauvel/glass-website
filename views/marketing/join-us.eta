@@ -1,8 +1,7 @@
   <section class="join-us" aria-labelledby="join-us-heading">
     <div class="join-us-inner">
       <div class="join-us-header reveal">
-        <span class="section-label">Get Involved</span>
-        <h2 id="join-us-heading">Two Ways<br><em>to Connect</em></h2>
+        <h2 id="join-us-heading">Two Ways<br>to Connect</h2>
       </div>
       <div class="join-us-cards">
         <div class="join-card reveal">
