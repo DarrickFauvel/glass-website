@@ -1854,21 +1854,40 @@ main {
 }
 
 .places-step {
-  width: 2.25rem;
-  height: 2.25rem;
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-top: -1.375rem;
   border: 0;
   border-radius: 50%;
-  background: none;
-  font: inherit;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--ink);
+  background: rgba(28, 20, 16, 0.55);
+  color: #fdfaf6;
   cursor: pointer;
+  transition: opacity 0.25s, background-color 0.2s;
 }
 
+/* Controls only work with JS, which unhides them. */
+.places-controls[hidden],
+.places-step[hidden],
+.places-pause[hidden] { display: none; }
+
+.places-step--prev { left: 1rem; }
+.places-step--next { right: 1rem; }
+
 .places-step:hover {
-  color: var(--crimson);
-  background: var(--crimson-pale);
+  background: rgba(155, 32, 32, 0.85);
+}
+
+/* With a mouse, the arrows appear on hover or keyboard focus; on touch
+   screens they stay visible. */
+@media (hover: hover) {
+  .places-step { opacity: 0; }
+  .places-frame:hover .places-step,
+  .places-step:focus-visible { opacity: 1; }
 }
 
 .places-dots {
@@ -1905,7 +1924,7 @@ main {
 }
 
 .places-pause {
-  margin-left: 0.5rem;
+  margin-left: 0.75rem;
   padding: 0.25rem 0;
   border: 0;
   background: none;
@@ -1948,7 +1967,8 @@ main {
 @media (prefers-reduced-motion: reduce) {
   .places-frame .place,
   .places-set,
-  .places-dot::before { transition: none; }
+  .places-dot::before,
+  .places-step { transition: none; }
 }
 
 

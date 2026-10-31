@@ -8,6 +8,8 @@
             <img class="place<%= current ? ' is-current' : '' %>" data-set="<%= set %>" <%~ current ? 'src="' + p.src + '"' : 'data-src="' + p.src + '"' %>
               width="1180" height="600" decoding="async" alt="<%= p.alt %>" data-label="<%= p.caption.split(':')[0] %>"<%~ current ? '' : ' aria-hidden="true"' %>>
 <% }); }); %>
+            <button type="button" class="places-step places-step--prev" data-step="-1" aria-label="Previous picture" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="places-step places-step--next" data-step="1" aria-label="Next picture" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
           <figcaption class="places-caption">
 <% ['region', 'skeptical'].forEach(function (set) { places[set].forEach(function (p, i) { const current = set === 'region' && i === places.start; %>
@@ -21,9 +23,7 @@
               <button type="button" class="places-set" data-set="skeptical" aria-pressed="false">Skeptical landmarks</button>
             </div>
             <div class="places-nav">
-              <button type="button" class="places-step" data-step="-1" aria-label="Previous picture">‹</button>
               <div class="places-dots"></div>
-              <button type="button" class="places-step" data-step="1" aria-label="Next picture">›</button>
               <button type="button" class="places-pause">Pause</button>
             </div>
           </div>
