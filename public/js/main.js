@@ -252,29 +252,11 @@ if (prefersReducedMotion) {
   setTimeout(triggerSheen, 2000);
 }());
 
-// ===== Card Border Spotlight =====
-(function () {
-  document.querySelectorAll('.join-card').forEach((card) => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty('--mx', `${x}%`);
-      card.style.setProperty('--my', `${y}%`);
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.setProperty('--mx', '50%');
-      card.style.setProperty('--my', '-50%');
-    });
-  });
-}());
-
 // ===== Button Ripple =====
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  document.querySelectorAll('.hero-btn, .join-card-btn, .form-submit').forEach((btn) => {
+  document.querySelectorAll('.hero-btn, .form-submit').forEach((btn) => {
     btn.addEventListener('mouseenter', (e) => {
       const rect = btn.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
