@@ -10,7 +10,8 @@
         <nav id="primary-nav" aria-label="Primary">
           <a href="/#about">About</a>
           <a href="/#events">Events</a>
-          <a href="/blog">Blog</a>
+<% const path = it.currentPath || ''; const blogCurrent = path === '/blog' ? 'page' : path.startsWith('/blog/') ? 'true' : ''; %>
+          <a href="/blog"<%~ blogCurrent ? ' class="nav-active" aria-current="' + blogCurrent + '"' : '' %>>Blog</a>
           <a href="/#contact">Contact</a>
           <div class="nav-tools">
             <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" data-tooltip="Toggle dark mode">

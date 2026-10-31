@@ -1,7 +1,1 @@
-        <div class="section-rule" aria-hidden="true">
-          <svg class="section-rule-errorbar" viewBox="0 0 96 16" width="96" height="16" focusable="false">
-            <path d="M1 1V15 M95 1V15 M1 8H95"/>
-            <circle cx="40" cy="8" r="4.5"/>
-          </svg>
-          <span class="section-rule-line"></span>
-        </div>
+        <div class="section-rule" aria-hidden="true"></div>

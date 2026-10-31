@@ -1652,33 +1652,8 @@ nav a.nav-active::after {
   margin-bottom: 0.75rem;
 }
 
-/* Between sections: an error bar (a measurement and the range around it),
-   whose line runs on as a hairline. Muted so it doesn't compete with the
-   section titles. Decorative only. */
+/* Between sections: a plain hairline. Decorative only. */
 .section-rule {
-  display: flex;
-  align-items: center;
-}
-
-.section-rule-errorbar {
-  flex: none;
-  display: block;
-  overflow: visible;
-  opacity: 0.45;
-}
-
-.section-rule-errorbar path {
-  fill: none;
-  stroke: var(--crimson);
-  stroke-width: 1.5;
-}
-
-.section-rule-errorbar circle {
-  fill: var(--crimson);
-}
-
-.section-rule-line {
-  flex: 1;
   height: 1px;
   background: var(--border-hi);
 }
