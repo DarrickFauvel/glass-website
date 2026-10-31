@@ -1063,6 +1063,12 @@ nav a.nav-active::after {
   padding: inherit; /* passed on to .hero-mag, which lays out like .hero */
 }
 
+/* Until main.js first places the beam, show none of it: otherwise the warm
+   tint covers the whole hero for a moment on load. */
+[data-theme="dark"] .hero-beam {
+  clip-path: circle(0px at 50% 50%);
+}
+
 .hero-beam-warm,
 .hero-beam-falloff,
 .hero-beam-spill {
