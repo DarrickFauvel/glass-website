@@ -1,29 +1,17 @@
     <section id="about" class="about" aria-labelledby="about-heading">
       <div class="about-grid">
+        <figure class="about-figure reveal">
+          <img src="/images/lowell/mills-merrimack.jpg" width="1180" height="600" loading="lazy" decoding="async"
+            alt="Long brick textile mills and smokestacks along the Merrimack River in Lowell, reflected in the water">
+          <figcaption>Lowell’s mills on the Merrimack River, about 1905.</figcaption>
+        </figure>
         <div class="about-text reveal">
-          <h2 id="about-heading">We Are<br>GLASS</h2>
-          <p>The Greater Lowell Area Science-based Skeptics (GLASS) is a group of curious, open-minded individuals who
-            value evidence, reason, and the scientific method. We meet regularly to discuss topics ranging from
-            pseudoscience and the paranormal to medical myths and critical thinking skills.</p>
-          <p>Whether you're a lifelong skeptic or just starting to question the world around you, GLASS is a welcoming
-            community for anyone who believes that good thinking matters.</p>
+          <h2 id="about-heading">Skeptics from the mill city</h2>
+          <p class="about-statement">GLASS is the Greater Lowell Area Science-based Skeptics: curious people who value evidence,
+            reason and the scientific method.</p>
+          <p>We meet every month to talk through everything from pseudoscience and the paranormal to medical myths and
+            the habits of clear thinking.</p>
+          <p>Lifelong skeptic or just starting to question the world around you, you’re welcome here.</p>
         </div>
-        <ul class="about-values">
-          <li class="reveal">
-            <span class="value-num">01</span>
-            <strong>Science</strong>
-            <span>We trust the scientific method as the best tool for understanding the world.</span>
-          </li>
-          <li class="reveal" style="transition-delay: 0.1s">
-            <span class="value-num">02</span>
-            <strong>Reason</strong>
-            <span>We apply logic and critical thinking to evaluate claims and evidence.</span>
-          </li>
-          <li class="reveal" style="transition-delay: 0.2s">
-            <span class="value-num">03</span>
-            <strong>Community</strong>
-            <span>We foster a welcoming space for curious minds of all backgrounds.</span>
-          </li>
-        </ul>
       </div>
     </section>
