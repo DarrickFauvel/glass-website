@@ -61,6 +61,12 @@ export function createApp() {
   app.use(cookieParser(config.sessionSecret));
   app.use(sessionMiddleware);
 
+  // Lets the header mark the nav item for the page being viewed.
+  app.use((req, res, next) => {
+    res.locals.currentPath = req.path;
+    next();
+  });
+
   app.get('/healthz', (req, res) => {
     res.status(200).send('ok');
   });
