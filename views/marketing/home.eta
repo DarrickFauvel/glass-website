@@ -13,4 +13,3 @@
 
 <%~ include("contact-form", it) %>
 
-<%~ include("join-us", it) %>

@@ -2,8 +2,20 @@
     <div class="contact-inner">
       <div class="contact-layout">
         <div class="contact-intro reveal">
-          <h2 id="contact-heading">Get in<br>Touch</h2>
-          <p>Have a question, suggestion, or just want to say hello? Send us a message and we'll get back to you.</p>
+          <h2 id="contact-heading">Come and say hello</h2>
+<% if (it.nextEvent) { %>
+          <p class="contact-next">The easiest way to meet us is to turn up: <%= it.formatEventDateLabel(it.nextEvent.starts_at).replace(/, \d{4}$/, '') %>, <%= it.formatEventTimeLabel(it.nextEvent.starts_at) %>, at Panera Bread in Billerica.</p>
+<% } else { %>
+          <p class="contact-next">The easiest way to meet us is to turn up, on the second Wednesday of the month at Panera Bread in Billerica.</p>
+<% } %>
+          <p>Between meetups the conversation carries on in our Discord: articles, questions and arguments, any time, from
+            anywhere.</p>
+          <ul class="contact-routes">
+            <li><a href="#events">Meetup details</a></li>
+            <li><a href="https://discord.gg/87g598FJjM" target="_blank" rel="noopener noreferrer">Join the Discord ↗</a></li>
+          </ul>
+          <p class="contact-write">Or write to us with a question, a suggestion or a topic you’d like us to take on.
+            We’ll get back to you.</p>
         </div>
         <form class="contact-form reveal" id="contact-form" novalidate>
           <input type="hidden" name="access_key" value="86d1ed92-70d4-4ec3-a8ec-5a035571767f">
@@ -25,7 +37,7 @@
             <span class="field-error" id="error-message" role="alert" hidden></span>
           </div>
           <div class="form-footer">
-            <button type="submit" class="form-submit">Send Message</button>
+            <button type="submit" class="form-submit">Send message</button>
             <p class="form-status" id="form-status" aria-live="polite" hidden></p>
           </div>
         </form>
