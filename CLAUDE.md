@@ -38,7 +38,7 @@ PWA support via `public/manifest.json` + `public/sw.js` (cache-first strategy, c
 
 CSS custom properties are defined in `:root` in `style.css`. Key tokens:
 - Colors: `--cream`, `--cream-dark`, `--crimson`, `--ink`, `--border`
-- Fonts: `--font-display` (Cormorant Garant), `--font-body` (Libre Baskerville), `--font-mono` (IBM Plex Mono)
+- Fonts: `--font-display` (Cormorant Garamond), `--font-body` (Libre Baskerville), `--font-mono` (now aliased to the body font)
 - Layout max-width: `1080px`, gutter via `clamp()`
 
 ## Accessibility
