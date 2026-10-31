@@ -26,17 +26,9 @@ export const claimPictures = {
   },
 };
 
-// Credit line for every archival picture on the site (claims above, plus the
-// Lowell picture in the About section).
+// Credit line for the claim pictures above. The About section's place
+// pictures carry their own credits in placePictures.js; app.js joins the two.
 export const pictureCredits = [
-  {
-    title: 'Lowell, Mass., mills on Merrimack River',
-    page: 'https://commons.wikimedia.org/wiki/File:Lowell,_Mass.,_mills_on_Merrimack_River;_LOC;_det.4a18323.jpg',
-    creator: 'Detroit Publishing Co. (Library of Congress)',
-    license: 'public domain',
-    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
-    via: 'Wikimedia Commons',
-  },
   {
     title: 'Coulee Corridor Scenic Byway: Sasquatch Welcoming Visitors',
     page: 'https://commons.wikimedia.org/wiki/File:Coulee_Corridor_Scenic_Byway_-_Sasquatch_Welcoming_Visitors_-_NARA_-_7717829.jpg',

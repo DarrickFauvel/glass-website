@@ -1765,32 +1765,192 @@ main {
 }
 
 @media (min-width: 900px) {
-  .about-figure {
+  .about-media {
     margin-left: calc(-1 * max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter)));
   }
 }
 
-.about-figure img {
+/* Places around Greater Lowell, stacked and cross-faded by main.js:
+   everyday places in light mode, skeptical landmarks in dark mode. */
+.places-frame {
+  position: relative;
+  aspect-ratio: 1180 / 600;
+  overflow: hidden;
+  background: var(--cream-3);
+}
+
+.places-frame .place {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 1180 / 600;
+  height: 100%;
   object-fit: cover;
-  background: var(--cream-3);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.places-frame .place.is-current {
+  opacity: 1;
+}
+
+/* Under the picture: its caption, then the controls (which set, as a two-way
+   switch, and carousel nav). Indented to the page grid on wide screens. */
+.places-controls,
+.about-figure figcaption {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+@media (min-width: 900px) {
+  .places-controls,
+  .about-figure figcaption {
+    padding-left: max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter));
+    padding-right: 0;
+  }
+}
+
+.places-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.places-sets {
+  display: inline-flex;
+  border: 1px solid var(--border-hi);
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.places-set {
+  padding: 0.4rem 0.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.places-set:hover {
+  color: var(--ink);
+}
+
+.places-set[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.places-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.places-step {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.places-step:hover {
+  color: var(--crimson);
+  background: var(--crimson-pale);
+}
+
+.places-dots {
+  display: flex;
+}
+
+/* A 24px hit area around each small dot. */
+.places-dot {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.places-dot::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--border-hi);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.places-dot:hover::before {
+  background: var(--ink-mid);
+}
+
+.places-dot[aria-current="true"]::before {
+  background: var(--crimson);
+  transform: scale(1.35);
+}
+
+.places-pause {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  text-decoration: underline;
+  text-decoration-color: var(--crimson);
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+
+.places-pause:hover {
+  color: var(--crimson);
 }
 
 .about-figure figcaption {
   margin-top: 0.75rem;
-  padding-left: var(--gutter);
   font-size: 0.9rem;
+  line-height: 1.5;
   color: var(--ink-mid);
 }
 
-@media (min-width: 900px) {
-  .about-figure figcaption {
-    padding-left: max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter));
-  }
+/* All captions share one grid cell; the cell takes the tallest one's height,
+   so nothing below moves when the caption changes. Hidden ones are also
+   hidden from screen readers (visibility). */
+.places-caption {
+  display: grid;
 }
+
+.place-caption {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.place-caption.is-current {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .places-frame .place,
+  .places-set,
+  .places-dot::before { transition: none; }
+}
+
 
 .about-text h2 {
   font-family: var(--font-display);

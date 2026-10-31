@@ -1,12 +1,35 @@
     <section id="about" class="about" aria-labelledby="about-heading">
       <div class="about-grid">
-        <figure class="about-figure reveal">
-          <img src="/images/lowell/mills-merrimack.jpg" width="1180" height="600" loading="lazy" decoding="async"
-            alt="Long brick textile mills and smokestacks along the Merrimack River in Lowell, reflected in the water">
-          <figcaption>Lowell’s mills on the Merrimack River, about 1905.</figcaption>
+<% const places = it.places; %>
+        <div class="about-media reveal" data-places>
+        <figure class="about-figure places">
+          <div class="places-frame">
+<% ['region', 'skeptical'].forEach(function (set) { places[set].forEach(function (p, i) { const current = set === 'region' && i === places.start; %>
+            <img class="place<%= current ? ' is-current' : '' %>" data-set="<%= set %>" <%~ current ? 'src="' + p.src + '"' : 'data-src="' + p.src + '"' %>
+              width="1180" height="600" decoding="async" alt="<%= p.alt %>" data-label="<%= p.caption.split(':')[0] %>"<%~ current ? '' : ' aria-hidden="true"' %>>
+<% }); }); %>
+          </div>
+          <figcaption class="places-caption">
+<% ['region', 'skeptical'].forEach(function (set) { places[set].forEach(function (p, i) { const current = set === 'region' && i === places.start; %>
+            <span class="place-caption<%= current ? ' is-current' : '' %>"><%= p.caption %></span>
+<% }); }); %>
+          </figcaption>
         </figure>
+          <div class="places-controls" hidden>
+            <div class="places-sets" role="group" aria-label="Pictures to show">
+              <button type="button" class="places-set" data-set="region" aria-pressed="true">Around Greater Lowell</button>
+              <button type="button" class="places-set" data-set="skeptical" aria-pressed="false">Skeptical landmarks</button>
+            </div>
+            <div class="places-nav">
+              <button type="button" class="places-step" data-step="-1" aria-label="Previous picture">‹</button>
+              <div class="places-dots"></div>
+              <button type="button" class="places-step" data-step="1" aria-label="Next picture">›</button>
+              <button type="button" class="places-pause">Pause</button>
+            </div>
+          </div>
+        </div>
         <div class="about-text reveal">
-          <h2 id="about-heading">Skeptics from the mill city</h2>
+          <h2 id="about-heading">Skeptics from around Greater Lowell</h2>
           <p class="about-statement">GLASS is the Greater Lowell Area Science-based Skeptics: curious people who value evidence,
             reason and the scientific method.</p>
           <p>We meet every month to talk through everything from pseudoscience and the paranormal to medical myths and
