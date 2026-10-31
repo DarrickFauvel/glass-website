@@ -1,40 +1,18 @@
     <section id="about" class="about" aria-labelledby="about-heading">
+      <p class="section-title reveal">About</p>
+      <h2 id="about-heading" class="about-heading reveal">Skeptics from around Greater Lowell</h2>
       <div class="about-grid">
-<% const places = it.places; %>
-        <div class="about-media reveal" data-places>
-        <figure class="about-figure places">
-          <div class="places-frame">
-<% ['region', 'skeptical'].forEach(function (set) { places[set].forEach(function (p, i) { const current = set === 'region' && i === places.start; %>
-            <img class="place<%= current ? ' is-current' : '' %>" data-set="<%= set %>" <%~ current ? 'src="' + p.src + '"' : 'data-src="' + p.src + '"' %>
-              width="1180" height="600" decoding="async" alt="<%= p.alt %>" data-label="<%= p.caption.split(':')[0] %>"<%~ current ? '' : ' aria-hidden="true"' %>>
-<% }); }); %>
-            <button type="button" class="places-step places-step--prev" data-step="-1" aria-label="Previous picture" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button type="button" class="places-step places-step--next" data-step="1" aria-label="Next picture" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
-          <figcaption class="places-caption">
-<% ['region', 'skeptical'].forEach(function (set) { places[set].forEach(function (p, i) { const current = set === 'region' && i === places.start; %>
-            <span class="place-caption<%= current ? ' is-current' : '' %>"><%= p.caption %></span>
-<% }); }); %>
-          </figcaption>
-        </figure>
-          <div class="places-controls" hidden>
-            <div class="places-sets" role="group" aria-label="Pictures to show">
-              <button type="button" class="places-set" data-set="region" aria-pressed="true">Around Greater Lowell</button>
-              <button type="button" class="places-set" data-set="skeptical" aria-pressed="false">Skeptical landmarks</button>
-            </div>
-            <div class="places-nav">
-              <div class="places-dots"></div>
-              <button type="button" class="places-pause">Pause</button>
-            </div>
-          </div>
-        </div>
         <div class="about-text reveal">
-          <h2 id="about-heading">Skeptics from around Greater Lowell</h2>
           <p class="about-statement">GLASS is the Greater Lowell Area Science-based Skeptics: curious people who value evidence,
             reason and the scientific method.</p>
           <p>We meet every month to talk through everything from pseudoscience and the paranormal to medical myths and
             the habits of clear thinking.</p>
           <p>Lifelong skeptic or just starting to question the world around you, you’re welcome here.</p>
         </div>
+        <figure class="about-figure reveal">
+          <img src="/images/region/middlesex-1856.jpg" width="1180" height="600" loading="lazy" decoding="async"
+            alt="Hand-coloured 1856 map of the towns around Lowell, from Pepperell and Dunstable in the west to Dracut and Tewksbury in the east, with the Merrimack River winding through">
+          <figcaption>Greater Lowell on Henry F. Walling’s 1856 map of Middlesex County.</figcaption>
+        </figure>
       </div>
     </section>

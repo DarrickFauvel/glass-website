@@ -1506,6 +1506,53 @@ nav a.nav-active::after {
   background: linear-gradient(to right, rgba(155, 32, 32, 0.4), transparent);
 }
 
+/* ===== SECTION TITLES AND RULES ===== */
+/* A small italic title above each section's heading. */
+.section-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--crimson);
+  margin: 0 0 0.5rem;
+}
+
+.about .section-title {
+  margin-bottom: 0.75rem;
+}
+
+/* Between sections: an error bar (a measurement and the range around it),
+   whose line runs on as a hairline. Muted so it doesn't compete with the
+   section titles. Decorative only. */
+.section-rule {
+  display: flex;
+  align-items: center;
+}
+
+.section-rule-errorbar {
+  flex: none;
+  display: block;
+  overflow: visible;
+  opacity: 0.45;
+}
+
+.section-rule-errorbar path {
+  fill: none;
+  stroke: var(--crimson);
+  stroke-width: 1.5;
+}
+
+.section-rule-errorbar circle {
+  fill: var(--crimson);
+}
+
+.section-rule-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-hi);
+}
+
 /* ===== MAIN ===== */
 main {
   max-width: var(--max-width);
@@ -1745,6 +1792,16 @@ main {
   overflow-x: clip; /* the full-bleed picture may meet a scrollbar's width */
 }
 
+.about-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 2.5rem;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1753,233 +1810,42 @@ main {
 
 @media (min-width: 900px) {
   .about-grid {
-    grid-template-columns: 7fr 5fr;
+    grid-template-columns: 5fr 7fr;
     gap: 4rem;
     align-items: center;
   }
 }
 
-/* The picture runs to the page edge on the left; the text keeps the grid. */
+/* The picture runs to the page edge on the right; the text keeps the grid. */
 .about-figure {
   margin: 0;
 }
 
 @media (min-width: 900px) {
-  .about-media {
-    margin-left: calc(-1 * max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter)));
+  .about-figure {
+    margin-right: calc(-1 * max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter)));
   }
 }
 
-/* Places around Greater Lowell, stacked and cross-faded by main.js:
-   everyday places in light mode, skeptical landmarks in dark mode. */
-.places-frame {
-  position: relative;
-  aspect-ratio: 1180 / 600;
-  overflow: hidden;
-  background: var(--cream-3);
-}
-
-.places-frame .place {
-  position: absolute;
-  inset: 0;
+.about-figure img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1180 / 600;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.4s ease;
-}
-
-.places-frame .place.is-current {
-  opacity: 1;
-}
-
-/* Under the picture: its caption, then the controls (which set, as a two-way
-   switch, and carousel nav). Indented to the page grid on wide screens. */
-.places-controls,
-.about-figure figcaption {
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
-}
-
-@media (min-width: 900px) {
-  .places-controls,
-  .about-figure figcaption {
-    padding-left: max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter));
-    padding-right: 0;
-  }
-}
-
-.places-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  margin-top: 0.75rem;
-}
-
-.places-sets {
-  display: inline-flex;
-  border: 1px solid var(--border-hi);
-  border-radius: 999px;
-  padding: 3px;
-}
-
-.places-set {
-  padding: 0.4rem 0.9rem;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  font: inherit;
-  font-size: 0.85rem;
-  color: var(--ink-mid);
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.places-set:hover {
-  color: var(--ink);
-}
-
-.places-set[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--cream);
-}
-
-.places-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.places-step {
-  position: absolute;
-  top: 50%;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-top: -1.375rem;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(28, 20, 16, 0.55);
-  color: #fdfaf6;
-  cursor: pointer;
-  transition: opacity 0.25s, background-color 0.2s;
-}
-
-/* Controls only work with JS, which unhides them. */
-.places-controls[hidden],
-.places-step[hidden],
-.places-pause[hidden] { display: none; }
-
-.places-step--prev { left: 1rem; }
-.places-step--next { right: 1rem; }
-
-.places-step:hover {
-  background: rgba(155, 32, 32, 0.85);
-}
-
-/* With a mouse, the arrows appear on hover or keyboard focus; on touch
-   screens they stay visible. */
-@media (hover: hover) {
-  .places-step { opacity: 0; }
-  .places-frame:hover .places-step,
-  .places-step:focus-visible { opacity: 1; }
-}
-
-.places-dots {
-  display: flex;
-}
-
-/* A 24px hit area around each small dot. */
-.places-dot {
-  width: 1.5rem;
-  height: 1.5rem;
-  display: grid;
-  place-items: center;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.places-dot::before {
-  content: '';
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--border-hi);
-  transition: background-color 0.2s, transform 0.2s;
-}
-
-.places-dot:hover::before {
-  background: var(--ink-mid);
-}
-
-.places-dot[aria-current="true"]::before {
-  background: var(--crimson);
-  transform: scale(1.35);
-}
-
-.places-pause {
-  margin-left: 0.75rem;
-  padding: 0.25rem 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 0.85rem;
-  color: var(--ink-mid);
-  text-decoration: underline;
-  text-decoration-color: var(--crimson);
-  text-underline-offset: 0.25em;
-  cursor: pointer;
-}
-
-.places-pause:hover {
-  color: var(--crimson);
+  background: var(--cream-3);
 }
 
 .about-figure figcaption {
   margin-top: 0.75rem;
   font-size: 0.9rem;
-  line-height: 1.5;
   color: var(--ink-mid);
 }
 
-/* All captions share one grid cell; the cell takes the tallest one's height,
-   so nothing below moves when the caption changes. Hidden ones are also
-   hidden from screen readers (visibility). */
-.places-caption {
-  display: grid;
-}
-
-.place-caption {
-  grid-area: 1 / 1;
-  visibility: hidden;
-}
-
-.place-caption.is-current {
-  visibility: visible;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .places-frame .place,
-  .places-set,
-  .places-dot::before,
-  .places-step { transition: none; }
-}
-
-
-.about-text h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-  margin-bottom: 1.75rem;
+@media (min-width: 900px) {
+  .about-figure figcaption {
+    padding-right: max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter));
+  }
 }
 
 .about-text p {
