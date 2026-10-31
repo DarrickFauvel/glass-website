@@ -12,6 +12,7 @@ import {
 } from '../lib/calendarLinks.js';
 import { listPosts } from '../lib/posts.js';
 import { claimPictures } from '../lib/claimPictures.js';
+import { everydayPlaces, skepticalLandmarks } from '../lib/placePictures.js';
 
 export const marketingRouter = Router();
 
@@ -47,6 +48,8 @@ marketingRouter.get('/', async (req, res) => {
   res.render('marketing/home', {
     clueArticlesJson: await clueArticlesJson(),
     claims: await claimsUnderTheGlass(),
+    // The About section's slideshow starts on a different place each load.
+    places: { region: everydayPlaces, skeptical: skepticalLandmarks, start: Math.floor(Math.random() * everydayPlaces.length) },
     events,
     nextEvent: events.find((event) => !event.cancelled_at) ?? null,
     formatEventTimeLabel,
