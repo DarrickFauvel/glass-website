@@ -3,7 +3,7 @@
     <div class="qr-modal-backdrop" id="qr-backdrop"></div>
     <div class="qr-modal-inner">
       <button class="qr-modal-close" id="qr-close" aria-label="Close">&times;</button>
-      <p class="qr-modal-eyebrow">Scan to Visit</p>
+      <h2 class="qr-modal-title" id="qr-modal-title">Scan to open this page</h2>
       <div class="qr-modal-canvas" id="qr-canvas"></div>
       <p class="qr-modal-url" id="qr-url"></p>
     </div>

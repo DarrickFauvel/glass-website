@@ -4,6 +4,7 @@ import { getUserRsvpsForEvents, listRsvpsForEvents } from '../db/queries/eventRs
 import {
   formatEventDateLabel,
   formatEventDateLabelShort,
+  formatEventTimeLabel,
   googleCalUrl,
   googleCalRecurUrl,
   icsDataUri,
@@ -45,6 +46,8 @@ marketingRouter.get('/', async (req, res) => {
   res.render('marketing/home', {
     clueArticlesJson: await clueArticlesJson(),
     events,
+    nextEvent: events.find((event) => !event.cancelled_at) ?? null,
+    formatEventTimeLabel,
     rsvpsByEvent,
     rsvpSignalsJson,
     formatEventDateLabel,

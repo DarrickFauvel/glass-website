@@ -1,7 +1,4 @@
     <section id="about" class="about" aria-labelledby="about-heading">
-      <div class="section-header reveal">
-        <span class="section-label">About</span>
-      </div>
       <div class="about-grid">
         <div class="about-text reveal">
           <h2 id="about-heading">We Are<br>GLASS</h2>

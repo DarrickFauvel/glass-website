@@ -1,9 +1,6 @@
     <section id="events" class="events" aria-labelledby="events-heading">
-      <div class="section-header reveal">
-        <span class="section-label">Events</span>
-      </div>
       <div class="events-intro-row reveal">
-        <h2 id="events-heading">Monthly<br><em>Meetup</em></h2>
+        <h2 id="events-heading">Monthly<br>Meetup</h2>
         <p class="events-intro">Join us in person every month on the <strong>2nd Wednesday</strong> for an evening of
           science, skepticism, and good conversation.</p>
       </div>

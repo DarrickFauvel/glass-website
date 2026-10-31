@@ -22,7 +22,7 @@
 
   --font-display: 'Cormorant Garant', Georgia, serif;
   --font-body:    'Libre Baskerville', Georgia, serif;
-  --font-mono:    'IBM Plex Mono', monospace;
+  --font-mono:    var(--font-body); /* no monospace outside code */
 
   --max-width: 1080px;
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
@@ -51,22 +51,11 @@
 }
 
 [data-theme="dark"] header {
-  background: rgba(20, 13, 8, 0.72);
-  border-bottom-color: rgba(237, 228, 216, 0.08);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
-              0 4px 12px rgba(0, 0, 0, 0.35),
-              0 1px 3px rgba(0, 0, 0, 0.25);
+  background: var(--cream-2);
 }
 
 [data-theme="dark"] .hero {
   background: var(--cream);
-  background-image: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(212, 64, 64, 0.08) 0%, transparent 65%);
-}
-
-[data-theme="dark"] .hero-bg-grid {
-  background-image:
-    linear-gradient(rgba(237, 228, 216, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(237, 228, 216, 0.06) 1px, transparent 1px);
 }
 
 /* Flashlight — the mag shows light-mode content through the lens */
@@ -103,9 +92,7 @@
 }
 
 [data-theme="dark"] #primary-nav {
-  background: rgba(20, 13, 8, 0.97);
-  border-bottom-color: rgba(237, 228, 216, 0.08);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  background: var(--cream-2);
 }
 
 [data-theme="dark"] .lens-pause-btn {
@@ -190,13 +177,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(253, 250, 246, 0.55);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid rgba(28, 20, 16, 0.08);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
-              0 4px 12px rgba(28, 20, 16, 0.1),
-              0 1px 3px rgba(28, 20, 16, 0.08);
+  background: var(--cream-2);
 }
 
 .header-sheen {
@@ -288,12 +269,10 @@ nav {
 }
 
 nav a {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--ink-mid);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
   text-decoration: none;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   transition: color 0.2s;
   position: relative;
   padding: 0.65rem 0.5rem;
@@ -321,6 +300,31 @@ nav a.nav-active {
 nav a:hover::after,
 nav a.nav-active::after {
   width: 100%;
+}
+
+/* One plain action in the bar: the next meetup. */
+.header-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 1rem;
+  border-radius: 4px;
+  background: var(--crimson);
+  color: #fdfaf6;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.header-action:hover {
+  background: var(--crimson-hi);
+}
+
+.header-action:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 3px;
 }
 
 /* ===== HEADER END GROUP ===== */
@@ -625,12 +629,11 @@ nav a.nav-active::after {
   outline-offset: 2px;
 }
 
-.qr-modal-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-mid);
+.qr-modal-title {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
   margin: 0;
 }
 
@@ -869,11 +872,7 @@ nav a.nav-active::after {
     right: 0;
     flex-direction: column;
     gap: 0;
-    background: rgba(253, 250, 246, 0.97);
-    backdrop-filter: blur(24px) saturate(1.5);
-    -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    border-bottom: 1px solid var(--border-hi);
-    box-shadow: 0 12px 40px rgba(28, 20, 16, 0.1);
+    background: var(--cream-2);
     padding: 0.5rem 0 1rem;
 
     /* Collapsed state */
@@ -893,13 +892,11 @@ nav a.nav-active::after {
   #primary-nav a {
     font-family: var(--font-display);
     font-size: 2rem;
-    font-weight: 300;
-    font-style: italic;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     text-transform: none;
     color: var(--ink);
     padding: 0.7rem var(--gutter);
-    border-bottom: 1px solid var(--border);
     transition: color 0.18s, padding-left 0.22s;
     opacity: 0;
     transform: translateX(-8px);
@@ -970,20 +967,14 @@ nav a.nav-active::after {
   overflow: hidden;
   padding: 4rem var(--gutter);
   background-color: var(--white);
-  background-image:
-    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(155, 32, 32, 0.05) 0%, transparent 65%);
 }
 
 .hero-tagline {
   position: absolute;
   top: 0.5rem;
   left: var(--gutter);
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  opacity: 0.5;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
   z-index: 2;
   pointer-events: none;
 }
@@ -992,11 +983,7 @@ nav a.nav-active::after {
 .hero-bg-grid {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(28, 20, 16, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28, 20, 16, 0.05) 1px, transparent 1px);
   background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 90% at 65% 50%, black 20%, transparent 75%);
 }
 
 
@@ -1243,16 +1230,6 @@ nav a.nav-active::after {
   max-width: 680px;
 }
 
-.hero-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.22em;
-  color: var(--crimson);
-  text-transform: uppercase;
-  margin-bottom: 1.75rem;
-  animation: fadeUp 0.9s ease 0.1s both;
-}
-
 .hero-headline {
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 9.5vw, 8rem);
@@ -1260,7 +1237,7 @@ nav a.nav-active::after {
   line-height: 0.95;
   letter-spacing: -0.025em;
   color: var(--ink);
-  margin-bottom: 2.25rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.08em;
@@ -1277,20 +1254,45 @@ nav a.nav-active::after {
   }
 }
 
-.hero-line--italic {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--crimson);
+.hero-line + .hero-line {
   animation-delay: 0.48s;
 }
 
 .hero-sub {
   font-size: 1.15rem;
-  color: var(--ink-mid);
-  max-width: 440px;
-  line-height: 1.85;
-  margin-bottom: 3rem;
+  color: var(--ink);
+  max-width: 34rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
   animation: fadeUp 0.9s ease 0.65s both;
+}
+
+/* The answer to "when and where?" at the second size, on the first screen. */
+.hero-next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 2.25rem;
+  animation: fadeUp 0.9s ease 0.75s both;
+}
+
+.hero-next-label {
+  font-size: 1rem;
+  color: var(--crimson);
+}
+
+.hero-next-date {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.hero-next-where {
+  font-size: 1.05rem;
+  color: var(--ink);
 }
 
 .hero-btn {
@@ -1303,11 +1305,10 @@ nav a.nav-active::after {
   min-height: 52px;
   border-radius: 4px;
   text-decoration: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
+  font-weight: 700;
+  transition: background 0.22s, transform 0.22s;
   animation: fadeUp 0.9s ease 0.85s both;
   position: relative;
   overflow: hidden;
@@ -1336,8 +1337,25 @@ nav a.nav-active::after {
 
 .hero-btn:hover {
   background: var(--crimson-hi);
-  box-shadow: 0 8px 36px var(--crimson-glow);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+}
+
+.hero-btn:active {
+  transform: translateY(0);
+}
+
+.hero-link {
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--crimson);
+  text-underline-offset: 0.25em;
+  animation: fadeUp 0.9s ease 1s both;
+  transition: color 0.2s;
+}
+
+.hero-link:hover {
+  color: var(--crimson);
 }
 
 .hero-btn:hover::after {
@@ -1347,7 +1365,7 @@ nav a.nav-active::after {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1rem 1.5rem;
   align-items: center;
 }
 
@@ -2705,10 +2723,32 @@ main {
 }
 
 .site-footer p {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-dim);
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+}
+
+.footer-qr {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 0.25rem;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-qr:hover {
+  color: var(--crimson);
+}
+
+.footer-qr:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
 }
 
 .footer-dev a,
