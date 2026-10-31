@@ -1232,7 +1232,13 @@ nav a.nav-active::after {
 
 .hero-headline {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 9.5vw, 8rem);
+  /* Sized so the longer line ("Question everything.") always fits the
+     viewport minus gutters, keeping the headline on exactly two lines.
+     --hero-measure is that line's width in em in the rendered face
+     (Georgia Bold fallback: ~10.23em incl. tracking, plus headroom for the
+     scrollbar). If the display font changes, re-measure and update it. */
+  --hero-measure: 10.6;
+  font-size: min(8rem, calc((100vw - 2 * var(--gutter)) / var(--hero-measure)));
   font-weight: 600;
   line-height: 0.95;
   letter-spacing: -0.025em;
@@ -1245,13 +1251,8 @@ nav a.nav-active::after {
 
 .hero-line {
   display: block;
+  white-space: nowrap;
   animation: fadeUp 0.9s ease 0.3s both;
-}
-
-@media (min-width: 640px) {
-  .hero-line {
-    white-space: nowrap;
-  }
 }
 
 .hero-line + .hero-line {
@@ -1259,7 +1260,7 @@ nav a.nav-active::after {
 }
 
 .hero-sub {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.15rem);
   color: var(--ink);
   max-width: 34rem;
   line-height: 1.6;
@@ -1283,7 +1284,8 @@ nav a.nav-active::after {
 
 .hero-next-date {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
+  /* Scales with the headline so it never outranks it on small screens. */
+  font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1291,7 +1293,7 @@ nav a.nav-active::after {
 }
 
 .hero-next-where {
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.05rem);
   color: var(--ink);
 }
 
