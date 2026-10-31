@@ -582,7 +582,26 @@ if (prefersReducedMotion) {
     const clue = clues.find(c => c.text === clone.dataset.clue);
     if (clue) clone.addEventListener('click', () => openSecretModal(clue));
   });
-  hero.insertBefore(mag, eyepiece);
+
+  // The beam frame around the magnified layer. In light mode it does nothing.
+  // In dark mode the lens is a torch: the frame is masked to a soft-edged
+  // beam, with a warm tint and falloff.
+  const beam = document.createElement('div');
+  beam.className = 'hero-beam';
+  beam.setAttribute('aria-hidden', 'true');
+  beam.appendChild(mag);
+  const beamWarm = document.createElement('div');
+  beamWarm.className = 'hero-beam-warm';
+  const beamFalloff = document.createElement('div');
+  beamFalloff.className = 'hero-beam-falloff';
+  beam.append(beamWarm, beamFalloff);
+  hero.insertBefore(beam, eyepiece);
+
+  // Light the torch spills onto the page around the beam (dark mode only).
+  const spill = document.createElement('div');
+  spill.className = 'hero-beam-spill';
+  spill.setAttribute('aria-hidden', 'true');
+  hero.insertBefore(spill, beam);
 
   // Lens glass-edge overlay
   const overlay = document.createElement('div');
@@ -609,16 +628,47 @@ if (prefersReducedMotion) {
   caustic.setAttribute('aria-hidden', 'true');
   caustic.style.width  = LENS_R * 2.15 + 'px';
   caustic.style.height = LENS_R * 2.15 + 'px';
-  hero.insertBefore(caustic, mag);
+  hero.insertBefore(caustic, beam);
 
   // The lens body and its shadow always show and hide together.
   function setLensOpacity(value) {
+    if (value === '1' && overlay.style.opacity !== '1') flickerOn();
     overlay.style.opacity = value;
     caustic.style.opacity = value;
+    spill.style.opacity   = value;
   }
 
   const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let prevX = null, prevY = null;
+
+  const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+
+  // A short stutter when the torch comes on (dark mode, motion allowed).
+  function flickerOn() {
+    if (!motionOK || !isDark()) return;
+    // Show the light at once: the flicker is its fade-in. (The usual 0.6s
+    // fade would otherwise smooth the flicker's dips away.)
+    [mag, spill].forEach(el => {
+      el.style.transition = 'none';
+      el.style.opacity = '1';
+    });
+    setTimeout(() => {
+      mag.style.transition = 'opacity 0.6s';
+      spill.style.transition = 'opacity 0.6s';
+    }, 750);
+    [beam, spill].forEach(el => {
+      el.classList.remove('is-flickering');
+      void el.offsetWidth;
+      el.classList.add('is-flickering');
+    });
+  }
+
+  // Follow theme changes: redraw the lens as glass or torch, and flick the
+  // torch on when switching to dark.
+  new MutationObserver(() => {
+    applyLens(lensX, lensY);
+    if (isDark() && overlay.style.opacity === '1') flickerOn();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
 
   let targetX = REST.x, targetY = REST.y;
@@ -688,6 +738,7 @@ if (prefersReducedMotion) {
   setLensOpacity('0');
   overlay.style.transition = 'opacity 0.6s';
   caustic.style.transition = 'opacity 0.6s';
+  spill.style.transition   = 'opacity 0.6s';
 
   // Intro sweep: appear at lower-left, glide to resting position
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -726,9 +777,17 @@ if (prefersReducedMotion) {
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   function applyLens(x, y) {
-    mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
-    mag.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
-    mag.style.transform       = `scale(${SCALE})`;
+    const at = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+    if (isDark()) {
+      applyBeam(x, y, at);
+    } else {
+      beam.style.transform = '';
+      beam.style.clipPath = '';
+      beam.style.maskImage = beam.style.webkitMaskImage = '';
+      mag.style.clipPath        = `circle(${(LENS_R / SCALE).toFixed(1)}px at ${at})`;
+      mag.style.transformOrigin = at;
+      mag.style.transform       = `scale(${SCALE})`;
+    }
     overlay.style.left = x + 'px';
     overlay.style.top  = y + 'px';
     caustic.style.left = (x + LENS_R * 0.32) + 'px';
@@ -742,6 +801,25 @@ if (prefersReducedMotion) {
     }
     prevX = x;
     prevY = y;
+  }
+
+  // Dark-mode torch: a soft-edged circle of warm light, brightest in the middle.
+  function applyBeam(x, y, at) {
+    const shape = `circle ${LENS_R}px at ${at}`;
+    beam.style.transform = '';
+    // The clip keeps clicks inside the beam; the mask softens its edge.
+    beam.style.clipPath = `circle(${LENS_R}px at ${at})`;
+    beam.style.maskImage = beam.style.webkitMaskImage =
+      `radial-gradient(${shape}, #000 0%, #000 72%, rgba(0, 0, 0, 0.55) 86%, transparent 100%)`;
+    mag.style.clipPath = 'none';
+    mag.style.transformOrigin = at;
+    mag.style.transform = `scale(${SCALE})`;
+    beamFalloff.style.background = `radial-gradient(${shape}, rgba(24, 17, 12, 0) 25%, rgba(24, 17, 12, 0.22) 65%, rgba(24, 17, 12, 0.5) 100%)`;
+    const size = LENS_R * 4.6;
+    spill.style.width  = size + 'px';
+    spill.style.height = size + 'px';
+    spill.style.left   = (x - size / 2) + 'px';
+    spill.style.top    = (y - size / 2) + 'px';
   }
 
   function followTick() {
