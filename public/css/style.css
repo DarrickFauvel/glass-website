@@ -1540,14 +1540,6 @@ main {
   max-width: 36rem;
 }
 
-@media (min-width: 900px) {
-  .claims-intro {
-    grid-template-columns: 1.2fr 1fr;
-    align-items: end;
-    gap: 3rem;
-  }
-}
-
 .claims-list {
   list-style: none;
   display: grid;
