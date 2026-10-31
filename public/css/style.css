@@ -1830,14 +1830,6 @@ main {
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-@media (min-width: 900px) {
-  .events-head {
-    grid-template-columns: 1.3fr 1fr;
-    align-items: end;
-    gap: 3rem;
-  }
-}
-
 .events h2 {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 6vw, 5rem);
