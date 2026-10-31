@@ -11,6 +11,7 @@ import {
   icsRecurDataUri,
 } from '../lib/calendarLinks.js';
 import { listPosts } from '../lib/posts.js';
+import { claimPictures } from '../lib/claimPictures.js';
 
 export const marketingRouter = Router();
 
@@ -45,6 +46,7 @@ marketingRouter.get('/', async (req, res) => {
 
   res.render('marketing/home', {
     clueArticlesJson: await clueArticlesJson(),
+    claims: await claimsUnderTheGlass(),
     events,
     nextEvent: events.find((event) => !event.cancelled_at) ?? null,
     formatEventTimeLabel,
@@ -58,6 +60,24 @@ marketingRouter.get('/', async (req, res) => {
     icsRecurDataUri,
   });
 });
+
+// The newest posts, as claims examined on the homepage. Like the hero links,
+// a broken post file shouldn't take the homepage down.
+async function claimsUnderTheGlass() {
+  try {
+    const posts = await listPosts();
+    return posts.slice(0, 6).map((post) => ({
+      slug: post.slug,
+      title: post.title,
+      summary: post.summary,
+      sourceCount: post.sourceCount,
+      picture: claimPictures[post.topic] ?? null,
+    }));
+  } catch (err) {
+    console.error('Could not load blog posts for the claims section:', err.message);
+    return [];
+  }
+}
 
 // Topic → published post, for linking the hero "secrets" modals to their
 // articles. A broken post file shouldn't take the homepage down with it.

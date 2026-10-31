@@ -1,0 +1,27 @@
+<% if (it.claims && it.claims.length) { %>
+    <section id="claims" class="claims" aria-labelledby="claims-heading">
+      <div class="claims-intro reveal">
+        <h2 id="claims-heading">Under the glass</h2>
+        <p>Popular claims, examined: what people believe, why it’s compelling, and what the evidence actually shows.
+          Every answer cites its sources.</p>
+      </div>
+      <ul class="claims-list">
+<% it.claims.forEach(function (claim) { %>
+        <li class="claim reveal<%= claim.picture ? '' : ' claim--no-picture' %>">
+<% if (claim.picture) { %>
+          <div class="claim-lens">
+            <img src="<%= claim.picture.src %>" alt="<%= claim.picture.alt %>" loading="lazy" decoding="async"
+              width="400" height="400" style="object-position: <%= claim.picture.position %>">
+          </div>
+<% } %>
+          <div class="claim-body">
+            <h3 class="claim-title"><a href="/blog/<%= claim.slug %>" class="claim-link"><%= claim.title %></a></h3>
+            <p class="claim-summary"><%= claim.summary %></p>
+            <p class="claim-meta"><%= claim.sourceCount %> cited source<%= claim.sourceCount === 1 ? '' : 's' %> · <span class="claim-cta">Read the evidence</span></p>
+          </div>
+        </li>
+<% }); %>
+      </ul>
+      <p class="claims-all reveal"><a href="/blog">Every claim we’ve examined</a></p>
+    </section>
+<% } %>

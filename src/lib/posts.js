@@ -79,6 +79,8 @@ async function loadPost(filename) {
     summary: data.summary,
     topic: data.topic,
     aiAssisted: Boolean(data.aiAssisted),
+    // Each `[^n]:` footnote definition is one cited source.
+    sourceCount: new Set(content.match(/^\[\^[^\]]+\]:/gm) ?? []).size,
     // YAML parses bare dates as UTC-midnight Date objects; keep the plain string.
     date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date ?? fileDate),
     html: marked.parse(content),
