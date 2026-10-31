@@ -103,14 +103,9 @@
     linear-gradient(90deg, rgba(28, 20, 16, 0.18) 1px, transparent 1px);
 }
 
-/* Warm bloom radiating outward from the flashlight beam */
+/* In dark mode the lens is a torch beam, not glass (see .hero-beam). */
 [data-theme="dark"] .hero-lens-overlay {
-  box-shadow:
-    0 0 0 1px rgba(245, 230, 200, 0.3),
-    0 0 0 2px rgba(212, 64, 64, 0.25),
-    0 0 28px 10px rgba(250, 230, 190, 0.22),
-    0 0 65px 28px rgba(250, 220, 160, 0.1),
-    0 0 120px 55px rgba(240, 200, 120, 0.05);
+  display: none;
 }
 
 [data-theme="dark"] .nav-toggle-bar {
@@ -1056,6 +1051,66 @@ nav a.nav-active::after {
 /* In dark mode the lens is the light source, so it casts no shadow. */
 [data-theme="dark"] .hero-lens-caustic {
   display: none;
+}
+
+/* Frame around the magnified layer (added by main.js). Inert in light mode;
+   in dark mode main.js masks it into a soft-edged torch beam. */
+.hero-beam {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  padding: inherit; /* passed on to .hero-mag, which lays out like .hero */
+}
+
+.hero-beam-warm,
+.hero-beam-falloff,
+.hero-beam-spill {
+  display: none;
+  pointer-events: none;
+}
+
+/* Incandescent tint, so the beam isn't white daylight on a dark page. */
+[data-theme="dark"] .hero-beam-warm {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 168, 82, 0.2);
+  mix-blend-mode: multiply;
+}
+
+/* Brightest in the middle, dimmer toward the edge (gradient set by main.js). */
+[data-theme="dark"] .hero-beam-falloff {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* Warm light spilling onto the page around the beam. */
+[data-theme="dark"] .hero-beam-spill {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(255, 196, 120, 0.22),
+    rgba(255, 180, 100, 0.07) 55%,
+    rgba(255, 180, 100, 0) 100%);
+}
+
+/* Switching on: a short stutter, as an old torch's filament catches. */
+@keyframes torch-flicker {
+  0% { opacity: 0; }
+  12% { opacity: 0.9; }
+  20% { opacity: 0.15; }
+  34% { opacity: 1; }
+  44% { opacity: 0.55; }
+  60%, 100% { opacity: 1; }
+}
+
+.hero-beam.is-flickering,
+.hero-beam-spill.is-flickering {
+  animation: torch-flicker 0.7s steps(1, end) both;
 }
 
 /* Hidden secret texts — only visible through the lens */
