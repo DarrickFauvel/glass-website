@@ -20,7 +20,7 @@
   --border:       rgba(28, 20, 16, 0.1);
   --border-hi:    rgba(28, 20, 16, 0.18);
 
-  --font-display: 'Cormorant Garant', Georgia, serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Libre Baskerville', Georgia, serif;
   --font-mono:    var(--font-body); /* no monospace outside code */
 
@@ -1235,9 +1235,9 @@ nav a.nav-active::after {
   /* Sized so the longer line ("Question everything.") always fits the
      viewport minus gutters, keeping the headline on exactly two lines.
      --hero-measure is that line's width in em in the rendered face
-     (Georgia Bold fallback: ~10.23em incl. tracking, plus headroom for the
+     (Cormorant Garamond 600: ~7.72em incl. tracking, plus headroom for the
      scrollbar). If the display font changes, re-measure and update it. */
-  --hero-measure: 10.6;
+  --hero-measure: 8;
   font-size: min(8rem, calc((100vw - 2 * var(--gutter)) / var(--hero-measure)));
   font-weight: 600;
   line-height: 0.95;
