@@ -11,6 +11,9 @@
         </svg>
         QR code for this page
       </button>
+<% if (it.pictureCredits && it.pictureCredits.length) { %>
+      <p class="footer-credits">Pictures: <% it.pictureCredits.forEach(function (c, i) { %><a href="<%= c.page %>" target="_blank" rel="noopener noreferrer">“<%= c.title %>”</a> by <%= c.creator %>, <a href="<%= c.licenseUrl %>" target="_blank" rel="noopener noreferrer"><%= c.license %></a>, via <%= c.via %><%= i < it.pictureCredits.length - 1 ? '; ' : '.' %><% }); %></p>
+<% } %>
       <p class="footer-legal"><a href="/privacy">Privacy Policy</a></p>
       <p class="footer-dev">Site by <a href="https://darrickdevelops.com" target="_blank" rel="noopener noreferrer">darrickdevelops.com</a></p>
     </div>

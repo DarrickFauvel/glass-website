@@ -17,6 +17,7 @@ import { accountRouter } from './routes/account.js';
 import { rsvpsRouter } from './routes/rsvps.js';
 import { adminRouter } from './routes/admin.js';
 import { blogRouter } from './routes/blog.js';
+import { pictureCredits } from './lib/claimPictures.js';
 
 const DAILY_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
@@ -49,6 +50,8 @@ export function createApp() {
       callback(err);
     }
   });
+  // Footer credit line for the archival pictures; on every page that has a footer.
+  app.locals.pictureCredits = pictureCredits;
   app.set('view engine', 'eta');
   app.set('views', path.join(rootDir, 'views'));
 

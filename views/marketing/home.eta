@@ -4,6 +4,8 @@
 <%~ include("quote-band", it) %>
 
   <main id="main-content">
+<%~ include("under-the-glass", it) %>
+
 <%~ include("about", it) %>
 
 <%~ include("events-preview", it) %>
