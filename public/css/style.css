@@ -1685,6 +1685,43 @@ main {
   }
 }
 
+/* Wide screens: the claims sit side by side as three columns (lens above
+   the claim) instead of three long rows down a narrow column. The meta line
+   is pinned to the bottom so "Read the evidence" lines up across a row. */
+@media (min-width: 1100px) {
+  .claims-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(2rem, 3.5vw, 3.5rem);
+    row-gap: 4.5rem;
+  }
+
+  .claim {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .claim-lens {
+    width: min(100%, 12rem);
+  }
+
+  .claim-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .claim-title {
+    font-size: clamp(2rem, 2.6vw, 2.5rem);
+    text-wrap: balance;
+  }
+
+  .claim-meta {
+    margin-top: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .claim-lens img,
   .claim-cta::after { transition: none; }
