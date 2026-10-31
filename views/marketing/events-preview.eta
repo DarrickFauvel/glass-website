@@ -1,5 +1,6 @@
     <section id="events" class="events" aria-labelledby="events-heading">
       <div class="events-head reveal">
+        <p class="section-title">Events</p>
         <h2 id="events-heading">Second Wednesdays, 7 PM</h2>
         <p class="events-intro">Every month we meet in person in Billerica for an evening of science, skepticism and good
           conversation. Come once, or come every month.</p>

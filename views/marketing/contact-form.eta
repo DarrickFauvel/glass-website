@@ -2,6 +2,7 @@
     <div class="contact-inner">
       <div class="contact-layout">
         <div class="contact-intro reveal">
+          <p class="section-title">Contact</p>
           <h2 id="contact-heading">Come and say hello</h2>
 <% if (it.nextEvent) { %>
           <p class="contact-next">The easiest way to meet us is to turn up: <%= it.formatEventDateLabel(it.nextEvent.starts_at).replace(/, \d{4}$/, '') %>, <%= it.formatEventTimeLabel(it.nextEvent.starts_at) %>, at Panera Bread in Billerica.</p>

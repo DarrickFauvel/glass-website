@@ -1,6 +1,7 @@
 <% if (it.claims && it.claims.length) { %>
     <section id="claims" class="claims" aria-labelledby="claims-heading">
       <div class="claims-intro reveal">
+        <p class="section-title">From the blog</p>
         <h2 id="claims-heading">Under the glass</h2>
         <p>Popular claims, examined: what people believe, why it’s compelling, and what the evidence actually shows.
           Every answer cites its sources.</p>

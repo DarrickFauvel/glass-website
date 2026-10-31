@@ -26,9 +26,17 @@ export const claimPictures = {
   },
 };
 
-// Credit line for the claim pictures above. The About section's place
-// pictures carry their own credits in placePictures.js; app.js joins the two.
+// Credit line for every archival picture on the site (claims above, plus the
+// Greater Lowell map in the About section).
 export const pictureCredits = [
+  {
+    title: 'Middlesex County, Massachusetts',
+    page: 'https://commons.wikimedia.org/wiki/File:Middlesex_County,_Massachusetts_-_Henry_Francis_Walling,_1856_-_Library_of_Congress_master-gmd-gmd376-g3763-g3763m-la000316Z.jpg',
+    creator: 'Henry Francis Walling, 1856 (Library of Congress)',
+    license: 'public domain',
+    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
+    via: 'Wikimedia Commons',
+  },
   {
     title: 'Coulee Corridor Scenic Byway: Sasquatch Welcoming Visitors',
     page: 'https://commons.wikimedia.org/wiki/File:Coulee_Corridor_Scenic_Byway_-_Sasquatch_Welcoming_Visitors_-_NARA_-_7717829.jpg',
