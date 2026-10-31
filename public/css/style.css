@@ -994,6 +994,70 @@ nav a.nav-active::after {
     0 4px 18px rgba(0, 0, 0, 0.18);
 }
 
+/* Glass layers inside the lens (added by main.js). */
+.hero-lens-overlay > span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Thick ground edge: a darker outer lip and a hairline outline. */
+.hero-lens-edge {
+  background: radial-gradient(closest-side,
+    transparent 90%,
+    rgba(60, 40, 28, 0.28) 96%,
+    rgba(30, 20, 14, 0.55) 100%);
+  box-shadow: 0 0 0 1px rgba(30, 20, 14, 0.35);
+}
+
+/* The edge's bright inner rim, brightest at the top left where the light is;
+   it lags a few pixels behind the lens's movement, like a reflection. */
+.hero-lens-rim {
+  background: radial-gradient(closest-side,
+    transparent 83%,
+    rgba(255, 255, 255, 0.6) 87.5%,
+    transparent 92%);
+  -webkit-mask-image: linear-gradient(135deg, #000 15%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.15) 100%);
+  mask-image: linear-gradient(135deg, #000 15%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.15) 100%);
+  transform: translate(var(--lens-lag-x, 0px), var(--lens-lag-y, 0px));
+  transition: transform 0.25s ease-out;
+}
+
+/* Colour fringe: a faint warm and cool edge where the glass splits light. */
+.hero-lens-fringe {
+  background: conic-gradient(from 215deg,
+    rgba(255, 70, 50, 0.55), rgba(255, 70, 50, 0) 22%,
+    rgba(40, 190, 255, 0.5) 50%, rgba(40, 190, 255, 0) 78%,
+    rgba(255, 70, 50, 0.55));
+  -webkit-mask-image: radial-gradient(closest-side, transparent 90%, #000 93%, #000 97%, transparent 100%);
+  mask-image: radial-gradient(closest-side, transparent 90%, #000 93%, #000 97%, transparent 100%);
+  mix-blend-mode: multiply;
+}
+
+/* Shadow cast on the page, with light focused through the glass. Under the
+   magnified layer, so only the part outside the lens shows. */
+.hero-lens-caustic {
+  position: absolute;
+  z-index: 3;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side,
+    rgba(255, 250, 232, 0.75) 0%,
+    rgba(255, 246, 222, 0.35) 22%,
+    rgba(255, 246, 222, 0) 40%,
+    rgba(45, 28, 16, 0.1) 62%,
+    rgba(45, 28, 16, 0.2) 82%,
+    rgba(45, 28, 16, 0) 100%);
+  filter: blur(3px);
+}
+
+/* In dark mode the lens is the light source, so it casts no shadow. */
+[data-theme="dark"] .hero-lens-caustic {
+  display: none;
+}
+
 /* Hidden secret texts — only visible through the lens */
 .hero-secrets {
   position: absolute;
@@ -1129,6 +1193,11 @@ nav a.nav-active::after {
   will-change: clip-path, transform;
   filter: brightness(1.05) contrast(1.08) saturate(1.1);
   background: var(--cream);
+  /* Lay the copied hero content out exactly as .hero does, so the magnified
+     copy stays aligned with the original whatever the hero's size. */
+  display: flex;
+  align-items: center;
+  padding: inherit;
 }
 
 .hero-mag * {

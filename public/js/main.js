@@ -304,7 +304,7 @@ if (prefersReducedMotion) {
   const eyepiece = hero.querySelector('.hero-eyepiece');
 
   const SCALE      = 1.55;
-  const LENS_R     = 45;
+  const LENS_R     = 60;
   const ATTRACT_R  = 200;
   const TOUCH_LIFT = -48; // px upward offset when finger is on lens
 
@@ -543,7 +543,7 @@ if (prefersReducedMotion) {
         lensY = py;
         if (mag.style.opacity !== '1') {
           mag.style.opacity     = '1';
-          overlay.style.opacity = '1';
+          setLensOpacity('1');
         }
         applyLens(px, py);
       });
@@ -563,7 +563,6 @@ if (prefersReducedMotion) {
   const mag = document.createElement('div');
   mag.className = 'hero-mag';
   mag.setAttribute('aria-hidden', 'true');
-  const heroRect = hero.getBoundingClientRect();
   ['hero-bg-grid', 'hero-tagline', 'hero-content', 'hero-secrets'].forEach(cls => {
     const el = hero.querySelector('.' + cls);
     if (!el) return;
@@ -572,11 +571,10 @@ if (prefersReducedMotion) {
       // Remove the mask so the full grid is visible through the lens
       clone.style.maskImage = 'none';
       clone.style.webkitMaskImage = 'none';
-    } else if (cls === 'hero-content') {
-      // flex-positioned — pin to exact pixel location so it aligns with the original
-      const r = el.getBoundingClientRect();
-      clone.style.cssText = `position:absolute;left:${r.left - heroRect.left}px;top:${r.top - heroRect.top}px;width:${r.width}px;margin:0`;
     }
+    // hero-content stays in flow: .hero-mag repeats the hero's own flex
+    // centring and padding, so the copy lines up with the original even after
+    // fonts load or the hero resizes.
     mag.appendChild(clone);
   });
   // Wire clicks on the cloned secrets in the mag layer
@@ -595,7 +593,32 @@ if (prefersReducedMotion) {
   overlay.style.height = LENS_R * 2 + 'px';
   overlay.style.left   = REST.x + 'px';
   overlay.style.top    = REST.y + 'px';
+  // Glass layers inside the lens: a thick ground edge (whose bright inner rim
+  // lags behind movement like a reflection) and a faint colour fringe.
+  ['hero-lens-edge', 'hero-lens-rim', 'hero-lens-fringe'].forEach(cls => {
+    const layer = document.createElement('span');
+    layer.className = cls;
+    overlay.appendChild(layer);
+  });
   hero.insertBefore(overlay, eyepiece);
+
+  // Shadow the lens casts on the page, with a bright spot of focused light.
+  // Sits under the magnified layer, so only the part outside the glass shows.
+  const caustic = document.createElement('div');
+  caustic.className = 'hero-lens-caustic';
+  caustic.setAttribute('aria-hidden', 'true');
+  caustic.style.width  = LENS_R * 2.15 + 'px';
+  caustic.style.height = LENS_R * 2.15 + 'px';
+  hero.insertBefore(caustic, mag);
+
+  // The lens body and its shadow always show and hide together.
+  function setLensOpacity(value) {
+    overlay.style.opacity = value;
+    caustic.style.opacity = value;
+  }
+
+  const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let prevX = null, prevY = null;
 
 
   let targetX = REST.x, targetY = REST.y;
@@ -662,15 +685,16 @@ if (prefersReducedMotion) {
   // Hide lens and overlay until intro sweep fires
   mag.style.opacity        = '0';
   mag.style.transition     = 'opacity 0.6s';
-  overlay.style.opacity    = '0';
+  setLensOpacity('0');
   overlay.style.transition = 'opacity 0.6s';
+  caustic.style.transition = 'opacity 0.6s';
 
   // Intro sweep: appear at lower-left, glide to resting position
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     lensX = REST.x;
     lensY = REST.y;
     mag.style.opacity     = '1';
-    overlay.style.opacity = '1';
+    setLensOpacity('1');
     applyLens(REST.x, REST.y);
     resetIdleTimer();
   } else {
@@ -680,7 +704,7 @@ if (prefersReducedMotion) {
       lensY = hero.offsetHeight * 0.78;
       applyLens(lensX, lensY);
       mag.style.opacity     = '1';
-      overlay.style.opacity = '1';
+      setLensOpacity('1');
 
       function introTick() {
         lensX = lerp(lensX, REST.x, 0.04);
@@ -707,6 +731,17 @@ if (prefersReducedMotion) {
     mag.style.transform       = `scale(${SCALE})`;
     overlay.style.left = x + 'px';
     overlay.style.top  = y + 'px';
+    caustic.style.left = (x + LENS_R * 0.32) + 'px';
+    caustic.style.top  = (y + LENS_R * 0.42) + 'px';
+    // The rim's reflection lags a few pixels behind the lens's movement.
+    if (motionOK && prevX !== null) {
+      const lagX = Math.max(-4, Math.min(4, -(x - prevX) * 0.5));
+      const lagY = Math.max(-4, Math.min(4, -(y - prevY) * 0.5));
+      overlay.style.setProperty('--lens-lag-x', lagX.toFixed(2) + 'px');
+      overlay.style.setProperty('--lens-lag-y', lagY.toFixed(2) + 'px');
+    }
+    prevX = x;
+    prevY = y;
   }
 
   function followTick() {
@@ -860,7 +895,7 @@ if (prefersReducedMotion) {
       cancelAnimationFrame(rafId);
       if (mag.style.opacity !== '1') {
         mag.style.opacity     = '1';
-        overlay.style.opacity = '1';
+        setLensOpacity('1');
         applyLens(lensX, lensY);
       }
       rafId = requestAnimationFrame(attractTick);
@@ -878,7 +913,7 @@ if (prefersReducedMotion) {
       cancelAnimationFrame(rafId);
       if (mag.style.opacity !== '1') {
         mag.style.opacity     = '1';
-        overlay.style.opacity = '1';
+        setLensOpacity('1');
         applyLens(lensX, lensY);
       }
       rafId = requestAnimationFrame(attractTick);
@@ -929,7 +964,7 @@ if (prefersReducedMotion) {
     // Ensure lens is visible if intro hasn't fired yet
     if (mag.style.opacity !== '1') {
       mag.style.opacity     = '1';
-      overlay.style.opacity = '1';
+      setLensOpacity('1');
     }
     // Target is finger position offset upward — lerp smoothly rises to it
     targetX = tx;
