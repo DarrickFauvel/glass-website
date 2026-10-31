@@ -1764,6 +1764,7 @@ if (prefersReducedMotion) {
 
   setButtons.forEach((btn) => btn.addEventListener('click', () => { chooseSet(btn.dataset.set, true); restart(); }));
   figure.querySelectorAll('.places-step').forEach((btn) => {
+    btn.hidden = false;
     btn.addEventListener('click', () => { go(index[set] + Number(btn.dataset.step)); restart(); });
   });
   if (reduceMotion) pauseBtn.hidden = true;
