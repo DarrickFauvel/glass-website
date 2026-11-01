@@ -1,7 +1,13 @@
   <main id="main-content">
     <article class="article-page">
-      <div class="article-header">
+      <div class="article-header<%= it.picture ? ' article-header--picture' : '' %>">
         <a href="/blog" class="article-back">&larr; All posts</a>
+<% if (it.picture) { %>
+        <div class="article-lens">
+          <img src="<%= it.picture.src %>" alt="<%= it.picture.alt %>" decoding="async"
+            width="400" height="400" style="object-position: <%= it.picture.position %>">
+        </div>
+<% } %>
         <p class="blog-meta">
           <time datetime="<%= it.post.date %>"><%= it.formatPostDate(it.post.date) %></time>
 <% if (it.post.topic) { %>
