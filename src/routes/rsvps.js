@@ -50,8 +50,8 @@ rsvpsRouter.post('/rsvps/:eventId/:signalKey', requireAuth, async (req, res) => 
   }
 
   const rsvpsByEvent = await listRsvpsForEvents([eventId]);
-  const { attending, notAttending } = rsvpsByEvent.get(eventId) ?? { attending: [], notAttending: [] };
-  const attendeesHtml = eta.render('marketing/_rsvp-attendees', { event, attending, notAttending });
+  const { attending } = rsvpsByEvent.get(eventId) ?? { attending: [] };
+  const attendeesHtml = eta.render('marketing/_rsvp-attendees', { event, attending });
 
   const savedComment = comment ?? '';
   startSSE(res);

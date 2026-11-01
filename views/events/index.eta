@@ -15,6 +15,7 @@
       rsvpSignalsJson: it.rsvpSignalsJson,
       formatEventDateLabel: it.formatEventDateLabel,
       formatEventDateLabelShort: it.formatEventDateLabelShort,
+      eventDateParts: it.eventDateParts,
       googleCalUrl: it.googleCalUrl,
       icsDataUri: it.icsDataUri,
     }) %>
@@ -39,7 +40,7 @@
 <% if (it.user) { %>
 <%~ include("../marketing/_rsvp-attendees", (function () {
       const rsvps = it.rsvpsByEvent.get(event.id) || {};
-      return { event: event, attending: rsvps.attending || [], notAttending: rsvps.notAttending || [] };
+      return { event: event, attending: rsvps.attending || [] };
     })()) %>
 <% } else { %>
             <p class="rsvp-login-hint"><a href="/login">Log in</a> to see who attended.</p>

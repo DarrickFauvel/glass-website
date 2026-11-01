@@ -21,7 +21,7 @@
         <span class="rsvp-stack-tooltip" popover="manual"></span>
       </span>
 <% } %>
-      <span class="rsvp-summary-text"><%= it.attending.length %> attending<% if (it.notAttending.length) { %> &middot; <%= it.notAttending.length %> not attending<% } %></span>
+      <span class="rsvp-summary-text"><%= it.attending.length %> attending</span>
     </span>
   </summary>
   <div class="rsvp-attendees-body">
@@ -41,21 +41,5 @@
     <li class="rsvp-attendee-empty">No one has RSVP'd yet.</li>
 <% } %>
   </ul>
-<% if (it.notAttending.length) { %>
-  <p class="rsvp-not-attending-label">Not attending</p>
-  <ul class="rsvp-attendee-list rsvp-attendee-list--declined">
-<% it.notAttending.forEach(function (a) { %>
-    <li>
-      <%~ include("../partials/avatar", { displayName: a.displayName, userId: a.userId, avatarColor: a.avatarColor, size: 'rsvp' }) %>
-      <span class="rsvp-attendee-text">
-        <span class="rsvp-attendee-name"><%= a.displayName %><% if (a.isOrganizer) { %> <span class="rsvp-organizer-badge">Organizer</span><% } %></span>
-<% if (a.comment) { %>
-        <span class="rsvp-attendee-comment">&ldquo;<%= a.comment %>&rdquo;</span>
-<% } %>
-      </span>
-    </li>
-<% }); %>
-  </ul>
-<% } %>
   </div>
 </details>

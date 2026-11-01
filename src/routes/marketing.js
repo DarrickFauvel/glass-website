@@ -5,6 +5,7 @@ import {
   formatEventDateLabel,
   formatEventDateLabelShort,
   formatEventTimeLabel,
+  eventDateParts,
   googleCalUrl,
   googleCalRecurUrl,
   icsDataUri,
@@ -16,7 +17,7 @@ import { claimPictures } from '../lib/claimPictures.js';
 export const marketingRouter = Router();
 
 marketingRouter.get('/', async (req, res) => {
-  const events = await listUpcomingEvents(6);
+  const events = await listUpcomingEvents(3);
   const eventIds = events.map((event) => event.id);
 
   // RSVP status/attendees are only fetched for logged-in visitors — most
@@ -54,6 +55,7 @@ marketingRouter.get('/', async (req, res) => {
     rsvpSignalsJson,
     formatEventDateLabel,
     formatEventDateLabelShort,
+    eventDateParts,
     googleCalUrl,
     googleCalRecurUrl,
     icsDataUri,

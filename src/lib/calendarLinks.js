@@ -47,6 +47,19 @@ export function formatEventTimeLabel(startsAt) {
   );
 }
 
+// Pieces for the calendar-leaf date tile on each upcoming date, plus a short
+// venue name ("Panera Bread, 188 Boston Rd, ..." -> "Panera Bread").
+export function eventDateParts(event) {
+  const date = parseLocalDateTime(event.starts_at);
+  const fmt = (options) => new Intl.DateTimeFormat('en-US', options).format(date);
+  return {
+    month: fmt({ month: 'short' }),
+    day: fmt({ day: 'numeric' }),
+    time: formatEventTimeLabel(event.starts_at),
+    venue: String(event.location ?? '').split(',')[0].replace(/\s+—\s+/, ', ').trim(),
+  };
+}
+
 function googleCalendarUrl(event, { recurring }) {
   const start = parseLocalDateTime(event.starts_at);
   const end = new Date(start.getTime() + DURATION_MINUTES * 60000);
