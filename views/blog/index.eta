@@ -1,28 +1,31 @@
   <main id="main-content">
-    <div class="events-page-shell">
-      <div class="events-page-header">
-        <span class="section-label">Blog</span>
-        <h1>Questioning Everything</h1>
-        <p class="auth-subtitle">Evidence-based looks at popular claims: what people believe, why it's compelling, and what the science actually shows.</p>
+    <section class="claims" aria-labelledby="blog-heading">
+      <div class="claims-intro">
+        <p class="section-title">Blog</p>
+        <h1 id="blog-heading">Questioning Everything</h1>
+        <p>Evidence-based looks at popular claims: what people believe, why it's compelling, and what the science actually shows.</p>
       </div>
 
 <% if (it.posts.length) { %>
-      <ul class="blog-list">
+      <ul class="claims-list">
 <% it.posts.forEach(function (post) { %>
-        <li class="blog-card">
-          <p class="blog-meta">
-            <time datetime="<%= post.date %>"><%= it.formatPostDate(post.date) %></time>
-<% if (post.topic) { %>
-            <span class="blog-topic"><%= post.topic %></span>
+        <li class="claim reveal<%= post.picture ? '' : ' claim--no-picture' %>">
+<% if (post.picture) { %>
+          <div class="claim-lens">
+            <img src="<%= post.picture.src %>" alt="<%= post.picture.alt %>" loading="lazy" decoding="async"
+              width="400" height="400" style="object-position: <%= post.picture.position %>">
+          </div>
 <% } %>
-          </p>
-          <h2 class="blog-card-title"><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
-          <p class="blog-card-summary"><%= post.summary %></p>
+          <div class="claim-body">
+            <h2 class="claim-title"><a href="/blog/<%= post.slug %>" class="claim-link"><%= post.title %></a></h2>
+            <p class="claim-summary"><%= post.summary %></p>
+            <p class="claim-meta"><time datetime="<%= post.date %>"><%= it.formatPostDate(post.date) %></time> · <%= post.sourceCount %> cited source<%= post.sourceCount === 1 ? '' : 's' %> · <span class="claim-cta">Read the evidence</span></p>
+          </div>
         </li>
 <% }); %>
       </ul>
 <% } else { %>
       <p class="form-hint">No posts yet. Check back soon.</p>
 <% } %>
-    </div>
+    </section>
   </main>
