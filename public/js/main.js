@@ -443,44 +443,42 @@ if (prefersReducedMotion) {
       shadowLayer.appendChild(q);
     });
 
-    // Build secrets modal
-    const sModal = document.createElement('div');
+    // Build secrets modal: a native <dialog>, so showModal() handles the
+    // focus trap, Escape, and returning focus to whatever opened it.
+    const sModal = document.createElement('dialog');
     sModal.className = 'secrets-modal';
-    sModal.setAttribute('role', 'dialog');
-    sModal.setAttribute('aria-modal', 'true');
     sModal.setAttribute('aria-labelledby', 'secrets-modal-title');
-    sModal.hidden = true;
     sModal.innerHTML = `
-      <div class="secrets-modal-backdrop"></div>
-      <div class="secrets-modal-inner">
-        <div class="secrets-modal-tape" aria-hidden="true"></div>
-        <div class="secrets-modal-body">
-          <button class="secrets-modal-close" aria-label="Close">&times;</button>
-          <p class="secrets-modal-eyebrow">⚠ Case File</p>
-          <h2 class="secrets-modal-title" id="secrets-modal-title"></h2>
-          <div class="secrets-modal-section">
-            <p class="secrets-modal-label">What some people believe</p>
-            <p class="secrets-modal-text" id="secrets-belief"></p>
-          </div>
-          <div class="secrets-modal-section">
-            <p class="secrets-modal-label">Scientific question</p>
-            <p class="secrets-modal-text secrets-modal-text--question" id="secrets-question"></p>
-          </div>
-          <a class="secrets-modal-article" id="secrets-article" hidden></a>
+      <span class="secrets-modal-tape" aria-hidden="true"></span>
+      <div class="secrets-modal-card">
+        <button type="button" class="secrets-modal-close" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <p class="secrets-modal-eyebrow">Found under the glass</p>
+        <h2 class="secrets-modal-title" id="secrets-modal-title"></h2>
+        <div class="secrets-modal-section">
+          <h3 class="secrets-modal-label">The claim</h3>
+          <p class="secrets-modal-text" id="secrets-belief"></p>
         </div>
-        <div class="secrets-modal-tape" aria-hidden="true"></div>
+        <div class="secrets-modal-section secrets-modal-section--question">
+          <h3 class="secrets-modal-label">The question to ask</h3>
+          <p class="secrets-modal-question" id="secrets-question"></p>
+        </div>
+        <p class="secrets-modal-footer">
+          <a class="secrets-modal-cta" id="secrets-article"></a>
+        </p>
       </div>`;
     document.body.appendChild(sModal);
 
     const sClose    = sModal.querySelector('.secrets-modal-close');
-    const sBackdrop = sModal.querySelector('.secrets-modal-backdrop');
     const sTitle    = sModal.querySelector('#secrets-modal-title');
     const sBelief   = sModal.querySelector('#secrets-belief');
     const sQuestion = sModal.querySelector('#secrets-question');
     const sArticle  = sModal.querySelector('#secrets-article');
 
     // Published blog posts by topic, rendered server-side into home.eta (only
-    // posts already live). A clue links to its article once one exists.
+    // posts already live). A clue links to its article once one exists;
+    // until then it points to the next meetup instead.
     let clueArticles = {};
     try {
       const dataEl = document.getElementById('clue-articles');
@@ -492,29 +490,42 @@ if (prefersReducedMotion) {
       sBelief.textContent   = clue.belief;
       sQuestion.textContent = clue.question;
       const article = clueArticles[clue.topic];
-      sArticle.hidden = !article;
       if (article) {
         sArticle.href = `/blog/${article.slug}`;
-        sArticle.textContent = `Read: ${article.title} →`;
+        sArticle.textContent = 'Read the evidence';
+        sArticle.setAttribute('aria-label', `Read the evidence: ${article.title}`);
+      } else {
+        sArticle.href = '/#events';
+        sArticle.textContent = 'Talk it through at a meetup';
+        sArticle.removeAttribute('aria-label');
       }
+      // Taped up by hand: a slightly different lean, and the tape a little
+      // off-centre at its own angle, every time a card comes out.
+      const rand = (min, max) => min + Math.random() * (max - min);
+      const lean = rand(0.8, 2.6) * (Math.random() < 0.5 ? -1 : 1);
+      sModal.style.setProperty('--card-tilt', lean.toFixed(2) + 'deg');
+      sModal.style.setProperty('--tape-tilt', (-lean * 1.4 + rand(-3, 3)).toFixed(2) + 'deg');
+      sModal.style.setProperty('--tape-x', rand(-14, 14).toFixed(1) + '%');
       lensLocked = true;
-      sModal.hidden = false;
+      if (!sModal.open) sModal.showModal();
       sClose.focus();
-    }
-    function closeSecretModal() {
-      sModal.hidden = true;
+    };
+
+    // Runs however the dialog closes: button, Escape, backdrop, or a link.
+    sModal.addEventListener('close', () => {
       lensLocked = false;
       following  = false;
       attracting = false;
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(restoreTick);
-    }
-
-    sClose.addEventListener('click', closeSecretModal);
-    sBackdrop.addEventListener('click', closeSecretModal);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !sModal.hidden) closeSecretModal();
     });
+
+    sClose.addEventListener('click', () => sModal.close());
+    // A click on the dialog element itself (not the card) is the backdrop.
+    sModal.addEventListener('click', (e) => {
+      if (e.target === sModal) sModal.close();
+    });
+    sArticle.addEventListener('click', () => sModal.close());
 
     // Accessible keyboard hotspots — one visually-hidden button per secret.
     // Tab to focus → lens jumps to reveal it; activate → opens the modal.
