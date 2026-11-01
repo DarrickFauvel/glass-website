@@ -1098,10 +1098,14 @@ nav a.nav-active::after {
   position: absolute;
   z-index: 2;
   border-radius: 50%;
+  /* screen only ever lightens, so the halo reads as light on the dark page
+     rather than an orange film over it. */
+  mix-blend-mode: screen;
   background: radial-gradient(closest-side,
-    rgba(255, 196, 120, 0.22),
-    rgba(255, 180, 100, 0.07) 55%,
-    rgba(255, 180, 100, 0) 100%);
+    rgba(255, 200, 125, 0.42),
+    rgba(255, 184, 104, 0.2) 32%,
+    rgba(255, 176, 96, 0.07) 62%,
+    rgba(255, 176, 96, 0) 100%);
 }
 
 /* Switching on: a short stutter, as an old torch's filament catches. */
@@ -2076,47 +2080,125 @@ main {
   background: var(--cream-3);
 }
 
+/* Calendar links set as a plain line of text links: nothing to hover open,
+   and each link is a real tap target on touch screens. */
+.cal-inline {
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+}
+
+.cal-inline a {
+  display: inline-block;
+  padding: 0.35rem 0.1rem;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--crimson);
+  text-underline-offset: 0.25em;
+}
+
+.cal-inline a:hover {
+  color: var(--crimson);
+}
+
+.cal-inline span[aria-hidden] {
+  color: var(--crimson);
+  padding: 0 0.15rem;
+}
+
 .cal-subscribe {
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
 }
 
 .upcoming-dates {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.upcoming-dates li {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--ink);
+/* One leaf per date: a calendar tile, then the details and your RSVP. */
+.upcoming-date {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  align-items: start;
   background: var(--cream);
   border: 1px solid var(--border);
-  padding: 0.6rem 1rem;
-  letter-spacing: 0.03em;
-  transition: border-color 0.2s, background 0.2s;
+  padding: clamp(1rem, 3vw, 1.25rem);
+}
+
+.upcoming-date-tile {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.upcoming-dates li:hover {
-  border-color: var(--crimson);
-  background: var(--crimson-pale);
-}
-
-.upcoming-date-primary {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  border: 1px solid var(--ink);
+  background: var(--surface);
+  line-height: 1;
 }
 
-.upcoming-date-text {
-  flex: 1;
+.upcoming-date-month {
+  align-self: stretch;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  padding: 0.3rem 0;
+}
+
+.upcoming-date-day {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.3rem 0 0.4rem;
+}
+
+.upcoming-date--next {
+  border-color: var(--crimson);
+}
+
+.upcoming-date--next .upcoming-date-tile {
+  border-color: var(--crimson);
+}
+
+.upcoming-date--next .upcoming-date-month {
+  background: var(--crimson);
+}
+
+.upcoming-date-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.upcoming-date-eyebrow {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--crimson);
+}
+
+.upcoming-date-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.upcoming-date-detail {
+  font-size: 0.95rem;
+  color: var(--ink-mid);
 }
 
 .upcoming-date-text-short {
@@ -2124,6 +2206,14 @@ main {
 }
 
 @media (max-width: 540px) {
+  .upcoming-date {
+    grid-template-columns: 3.25rem 1fr;
+  }
+
+  .upcoming-date-day {
+    font-size: 1.6rem;
+  }
+
   .upcoming-date-text-full {
     display: none;
   }
@@ -2133,16 +2223,11 @@ main {
   }
 }
 
-.upcoming-dates li.upcoming-date-cancelled {
+.upcoming-date--cancelled {
   opacity: 0.65;
 }
 
-.upcoming-dates li.upcoming-date-cancelled:hover {
-  border-color: var(--border);
-  background: var(--cream);
-}
-
-.upcoming-date-text--cancelled {
+.upcoming-date--cancelled time {
   text-decoration: line-through;
 }
 
@@ -2158,154 +2243,79 @@ main {
   white-space: nowrap;
 }
 
-.cal-dropdown {
-  position: relative;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.cal-trigger {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--crimson);
-  background: transparent;
-  border: 1px solid var(--crimson);
-  border-radius: 3px;
-  padding: 0.3rem 0.65rem;
-  min-height: 36px;
-  white-space: nowrap;
-  cursor: pointer;
-  position: relative;
-  isolation: isolate;
-}
-
-.cal-trigger::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--crimson-glow);
-  border-radius: 2px;
-  opacity: 0;
-  will-change: opacity;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: -1;
-}
-
-.cal-dropdown.cal-open .cal-trigger::before,
-.cal-dropdown:focus-within .cal-trigger::before {
-  opacity: 1;
-}
-
-
-.cal-trigger:focus-visible {
-  outline: 3px solid var(--crimson);
-  outline-offset: 3px;
-}
-
-.cal-links {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.2rem;
-  background: var(--surface);
-  border: 1px solid var(--border-hi);
-  border-radius: 3px;
-  padding: 0.3rem;
-  box-shadow: 0 4px 16px rgba(28, 20, 16, 0.12);
-  z-index: 20;
-  min-width: max-content;
-  opacity: 0;
-  transform: translateY(-4px);
-  pointer-events: none;
-  will-change: opacity, transform;
-  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.cal-dropdown.cal-open .cal-links,
-.cal-dropdown:focus-within .cal-links {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
-              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-}
-
-
-.cal-link {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--crimson);
-  text-decoration: none;
-  background: transparent;
-  border: 1px solid var(--crimson);
-  border-radius: 3px;
-  padding: 0.28rem 0.6rem;
-  min-height: 36px;
-  white-space: nowrap;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  position: relative;
-  isolation: isolate;
-}
-
-.cal-link::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--crimson-glow);
-  border-radius: 2px;
-  opacity: 0;
-  will-change: opacity;
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: -1;
-}
-
-.cal-link:hover::before {
-  opacity: 1;
-}
-
-.cal-link:focus-visible {
-  outline: 3px solid var(--crimson);
-  outline-offset: 3px;
-}
-
-.cal-or {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink);
-  padding: 0 0.25rem;
-  align-self: center;
-}
-
-@media (max-width: 540px) {
-  .upcoming-date-primary {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-}
-
 .rsvp-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem 1rem;
+  margin-top: 0.4rem;
 }
 
-.rsvp-buttons {
-  display: flex;
-  gap: 0.4rem;
+/* RSVP switch: on = going, off = no RSVP. The whole label is the button. */
+.rsvp-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0 0.25rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.rsvp-switch-track {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 1.5rem;
+  border: 1px solid var(--ink-dim);
+  border-radius: 999px;
+  background: var(--cream-3);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.rsvp-switch-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: var(--ink-mid);
+  transform: translateY(-50%);
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.2s;
+}
+
+.rsvp-switch[aria-checked="true"] .rsvp-switch-track {
+  background: var(--crimson);
+  border-color: var(--crimson);
+}
+
+.rsvp-switch[aria-checked="true"] .rsvp-switch-thumb {
+  background: var(--white);
+  transform: translate(1.2rem, -50%);
+}
+
+.rsvp-switch:hover .rsvp-switch-track {
+  border-color: var(--crimson);
+}
+
+.rsvp-switch:focus-visible {
+  outline: none;
+}
+
+.rsvp-switch:focus-visible .rsvp-switch-track {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsvp-switch-track,
+  .rsvp-switch-thumb { transition: none; }
 }
 
 .rsvp-note-toggle {
@@ -2344,15 +2354,6 @@ main {
 
 .rsvp-btn--active:hover {
   background: var(--crimson-hi);
-}
-
-.rsvp-btn--decline.rsvp-btn--active {
-  background: var(--ink-mid);
-  border-color: var(--ink-mid);
-}
-
-.rsvp-btn--decline.rsvp-btn--active:hover {
-  background: var(--ink-dim);
 }
 
 .rsvp-attendees {
@@ -2547,21 +2548,6 @@ main {
   color: var(--ink-dim);
   font-style: italic;
   font-size: 0.88rem;
-}
-
-.rsvp-not-attending-label {
-  margin: 0.7rem 0 0;
-  color: var(--ink-dim);
-  letter-spacing: 0.03em;
-}
-
-.rsvp-attendee-list--declined {
-  color: var(--ink-dim);
-}
-
-.rsvp-attendee-list--declined .avatar {
-  filter: grayscale(70%);
-  opacity: 0.7;
 }
 
 .rsvp-comment {

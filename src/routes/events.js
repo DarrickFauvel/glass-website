@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import { listAllUpcomingEvents, listPastEvents } from '../db/queries/events.js';
 import { getUserRsvpsForEvents, listRsvpsForEvents } from '../db/queries/eventRsvps.js';
-import { formatEventDateLabel, formatEventDateLabelShort, googleCalUrl, icsDataUri } from '../lib/calendarLinks.js';
+import {
+  formatEventDateLabel,
+  formatEventDateLabelShort,
+  eventDateParts,
+  googleCalUrl,
+  icsDataUri,
+} from '../lib/calendarLinks.js';
 
 export const eventsRouter = Router();
 
@@ -54,6 +60,7 @@ eventsRouter.get('/events', async (req, res) => {
     hasNewer,
     formatEventDateLabel,
     formatEventDateLabelShort,
+    eventDateParts,
     googleCalUrl,
     icsDataUri,
   });

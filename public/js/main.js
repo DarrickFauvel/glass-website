@@ -814,8 +814,11 @@ if (prefersReducedMotion) {
     mag.style.clipPath = 'none';
     mag.style.transformOrigin = at;
     mag.style.transform = `scale(${SCALE})`;
-    beamFalloff.style.background = `radial-gradient(${shape}, rgba(24, 17, 12, 0) 25%, rgba(24, 17, 12, 0.22) 65%, rgba(24, 17, 12, 0.5) 100%)`;
-    const size = LENS_R * 4.6;
+    // A hot core of light, then a gentler dim toward the edge of the beam.
+    beamFalloff.style.background =
+      `radial-gradient(${shape}, rgba(255, 226, 170, 0.16) 0%, rgba(255, 226, 170, 0) 40%), ` +
+      `radial-gradient(${shape}, rgba(24, 17, 12, 0) 30%, rgba(24, 17, 12, 0.16) 68%, rgba(24, 17, 12, 0.36) 100%)`;
+    const size = LENS_R * 6;
     spill.style.width  = size + 'px';
     spill.style.height = size + 'px';
     spill.style.left   = (x - size / 2) + 'px';
@@ -1757,26 +1760,3 @@ if (prefersReducedMotion) {
   render();
 }());
 
-// ===== "Add to calendar" dropdown interactions =====
-// Dates and calendar links (Google Calendar / .ics) are rendered server-side
-// from the events table (see events-preview.eta, src/lib/calendarLinks.js) —
-// this just wires up the hover-to-open behavior for whatever dropdowns exist.
-(function () {
-  document.querySelectorAll('.cal-dropdown').forEach(function (drop) {
-    const links = drop.querySelector('.cal-links');
-    let leaveTimer = null;
-    let openTimer = null;
-
-    drop.addEventListener('mouseenter', () => {
-      clearTimeout(leaveTimer);
-      drop.classList.add('cal-open');
-      links.style.pointerEvents = 'none';
-      clearTimeout(openTimer);
-      openTimer = setTimeout(() => { links.style.pointerEvents = ''; }, 220);
-    });
-    drop.addEventListener('mouseleave', () => {
-      clearTimeout(openTimer);
-      leaveTimer = setTimeout(() => drop.classList.remove('cal-open'), 100);
-    });
-  });
-}());

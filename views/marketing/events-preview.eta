@@ -32,16 +32,11 @@
 <% const recurringAnchor = it.events.find(function (event) { return event.is_recurring && !event.cancelled_at; })
      || it.events.find(function (event) { return !event.cancelled_at; })
      || it.events[0]; %>
-          <div class="cal-subscribe">
-            <span class="cal-dropdown">
-              <button class="cal-trigger" type="button">Subscribe to all meetups</button>
-              <span class="cal-links" role="list">
-                <a href="<%= it.googleCalRecurUrl(recurringAnchor) %>" target="_blank" rel="noopener noreferrer" class="cal-link" role="listitem" aria-label="Subscribe to all GLASS meetups on Google Calendar">Google</a>
-                <span class="cal-or" aria-hidden="true">or</span>
-                <a href="<%= it.icsRecurDataUri(recurringAnchor) %>" download="glass-meetups-recurring.ics" class="cal-link" role="listitem" aria-label="Download recurring .ics for Apple Calendar or Outlook">Apple / Outlook</a>
-              </span>
-            </span>
-          </div>
+          <p class="cal-inline cal-subscribe">Subscribe to every meetup:
+            <a href="<%= it.googleCalRecurUrl(recurringAnchor) %>" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to all GLASS meetups on Google Calendar">Google</a>
+            <span aria-hidden="true">·</span>
+            <a href="<%= it.icsRecurDataUri(recurringAnchor) %>" download="glass-meetups-recurring.ics" aria-label="Download recurring .ics for Apple Calendar or Outlook">Apple / Outlook</a>
+          </p>
 <% } %>
 <%~ include("_upcoming-dates-list", {
       events: it.events,
@@ -50,10 +45,11 @@
       rsvpSignalsJson: it.rsvpSignalsJson,
       formatEventDateLabel: it.formatEventDateLabel,
       formatEventDateLabelShort: it.formatEventDateLabelShort,
+      eventDateParts: it.eventDateParts,
       googleCalUrl: it.googleCalUrl,
       icsDataUri: it.icsDataUri,
     }) %>
-            <a href="/events" class="events-see-all-btn">See all events &rarr;</a>
+          <a href="/events" class="events-see-all-btn">See all events &rarr;</a>
         </div>
       </div>
     </section>
