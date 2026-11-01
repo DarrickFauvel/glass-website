@@ -637,74 +637,79 @@ nav a.nav-active::after {
 }
 
 /* ===== SECRETS MODAL ===== */
+/* An index card taped to the page, with the same yellow tape as the hero's
+   hidden labels. Native <dialog>: the browser supplies the backdrop layer. */
 .secrets-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 3rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  color: var(--ink);
+  transform: rotate(var(--card-tilt, -1.2deg));
 }
 
-.secrets-modal[hidden] { display: none; }
-
-.secrets-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(28, 20, 16, 0.6);
+.secrets-modal::backdrop {
+  background: rgba(28, 20, 16, 0.62);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
-.secrets-modal-inner {
+.secrets-modal[open] {
+  animation: secretCardIn 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes secretCardIn {
+  from { opacity: 0; transform: translateY(14px) rotate(calc(var(--card-tilt, -1.2deg) * 2.5)); }
+  to   { opacity: 1; transform: translateY(0) rotate(var(--card-tilt, -1.2deg)); }
+}
+
+.secrets-modal-card {
   position: relative;
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  max-width: min(480px, 90vw);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(28, 20, 16, 0.22);
-  animation: qrModalIn 0.22s ease both;
+  max-height: calc(100dvh - 3rem);
+  overflow-y: auto;
+  padding: clamp(2rem, 6vw, 2.75rem) clamp(1.5rem, 5vw, 2.5rem) clamp(1.5rem, 5vw, 2.25rem);
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 2px 0 var(--border), 0 28px 60px rgba(28, 20, 16, 0.3);
 }
 
 .secrets-modal-tape {
-  height: 12px;
-  flex-shrink: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    #f5d20a   0px, #f5d20a  6px,
-    #1a1400   6px, #1a1400 12px
-  );
-  opacity: 0.7;
-}
-
-.secrets-modal-body {
-  padding: 1.75rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  position: relative;
+  position: absolute;
+  z-index: 1;
+  top: -0.7rem;
+  left: 50%;
+  width: 7.5rem;
+  height: 1.5rem;
+  background: #f5d20a;
+  opacity: 0.88;
+  transform: translateX(calc(-50% + var(--tape-x, 0%))) rotate(var(--tape-tilt, 3deg));
+  box-shadow: 0 1px 2px rgba(28, 20, 16, 0.2);
 }
 
 .secrets-modal-close {
   position: absolute;
-  top: 0.75rem;
-  right: 0.9rem;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   background: none;
-  border: none;
-  font-size: 1.4rem;
-  line-height: 1;
+  border: 0;
+  border-radius: 50%;
   color: var(--ink-mid);
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s;
 }
 
-.secrets-modal-close:hover { color: var(--crimson); }
+.secrets-modal-close:hover {
+  color: var(--crimson);
+  background: var(--crimson-pale);
+}
 
 .secrets-modal-close:focus-visible {
   outline: 2px solid var(--crimson);
@@ -712,70 +717,96 @@ nav a.nav-active::after {
 }
 
 .secrets-modal-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-mid);
-  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--crimson);
+  margin: 0 0 0.25rem;
 }
 
 .secrets-modal-title {
   font-family: var(--font-display);
-  font-size: 2rem;
-  font-style: italic;
-  font-weight: 300;
-  color: var(--crimson);
-  margin: 0;
-  line-height: 1.1;
+  font-size: clamp(2.5rem, 9vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 1.5rem;
+  padding-right: 2.5rem; /* clear of the close button */
 }
 
-.secrets-modal-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+.secrets-modal-section + .secrets-modal-section {
+  margin-top: 1.5rem;
 }
 
 .secrets-modal-label {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-mid);
+  margin: 0 0 0.4rem;
 }
 
 .secrets-modal-text {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.65;
   color: var(--ink);
-  margin: 0;
 }
 
-.secrets-modal-text--question {
-  color: var(--crimson);
+/* The question is the point of the card, so it's set larger, as a quote. */
+.secrets-modal-question {
+  font-family: var(--font-display);
   font-style: italic;
-}
-
-.secrets-modal-article {
-  display: inline-block;
-  margin-top: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  font-size: clamp(1.25rem, 4vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.35;
   color: var(--crimson);
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
-.secrets-modal-article:hover { color: var(--crimson-hi); }
+.secrets-modal-footer {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-hi);
+}
 
-.secrets-modal-article:focus-visible {
+.secrets-modal-cta {
+  display: inline-block;
+  padding: 0.35rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--crimson);
+  text-underline-offset: 0.25em;
+}
+
+.secrets-modal-cta::after {
+  content: ' →';
+  display: inline-block;
+  color: var(--crimson);
+  transition: transform 0.2s;
+}
+
+.secrets-modal-cta:hover {
+  color: var(--crimson);
+}
+
+.secrets-modal-cta:hover::after {
+  transform: translateX(4px);
+}
+
+.secrets-modal-cta:focus-visible {
   outline: 3px solid var(--crimson);
   outline-offset: 3px;
 }
 
-.secrets-modal-article[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .secrets-modal[open] { animation: none; }
+  .secrets-modal-cta::after { transition: none; }
+}
 
 /* Boost grid visibility inside the lens */
 .hero-mag .hero-bg-grid {
