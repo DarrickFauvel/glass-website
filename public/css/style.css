@@ -3816,8 +3816,10 @@ main {
   color: var(--ink-dim);
 }
 
-/* Muted underline under the word being spoken; positioned per word by
-   main.js. Sits below the sticky listen bar (z-index 50). */
+/* Optional underline under the word being spoken ("Follow words");
+   positioned per word by main.js. Glides along a line; .no-glide makes it
+   jump to a new line instead of sweeping across. Sits below the sticky
+   listen bar (z-index 50). */
 .reading-underline {
   position: absolute;
   height: 2px;
@@ -3827,13 +3829,24 @@ main {
   opacity: 0;
   pointer-events: none;
   z-index: 1;
+  transition: left 0.14s ease-out, width 0.14s ease-out, opacity 0.2s;
+}
+
+.reading-underline.no-glide {
+  transition: opacity 0.2s;
 }
 
 .reading-underline.is-visible {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
-/* While a listening session is active, any paragraph can be clicked to jump there. */
+/* The sentence being read: a soft wash via the CSS Custom Highlight API
+   (main.js registers the range as "listen-sentence"). */
+::highlight(listen-sentence) {
+  background-color: color-mix(in srgb, var(--crimson) 13%, transparent);
+}
+
+/* While a listening session is active, any sentence can be clicked to jump there. */
 .listen-session .listen-chunk {
   cursor: pointer;
   border-radius: 2px;
@@ -3845,11 +3858,35 @@ main {
   box-shadow: 0 0 0 0.4rem var(--cream-2);
 }
 
+/* The paragraph being read: a quiet crimson bar in the margin, like a
+   pencil mark beside the line, rather than shading the whole block. */
 .is-reading {
+  position: relative;
+}
+
+.is-reading::before {
+  content: '';
+  position: absolute;
+  left: -0.8rem;
+  top: 0.3em;
+  bottom: 0.3em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--crimson);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* Browsers without the Highlight API can't mark a sentence, so they shade
+   the paragraph as before. */
+.no-sentence-highlight .is-reading {
   background: var(--crimson-pale);
   box-shadow: 0 0 0 0.4rem var(--crimson-pale);
   border-radius: 2px;
-  transition: background 0.3s, box-shadow 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-underline { transition: none; }
 }
 
 .article-prose h2 {

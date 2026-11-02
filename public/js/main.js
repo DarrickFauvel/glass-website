@@ -1454,10 +1454,10 @@ if (prefersReducedMotion) {
   voiceSelect.addEventListener('change', () => {
     voice = voices.find((v) => v.voiceURI === voiceSelect.value) || voice;
     try { localStorage.setItem(VOICE_KEY, voice.voiceURI); } catch (e) { /* storage unavailable */ }
-    if (playing) speakFrom(index);
+    if (playing) speakFrom(index, sentence);
   });
 
-  // Follow along by scrolling the block being read to mid-screen, but back off
+  // Follow along by keeping the sentence being read on screen, but back off
   // for a few seconds whenever the reader scrolls on their own.
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const USER_SCROLL_GRACE_MS = 4000;
@@ -1495,73 +1495,150 @@ if (prefersReducedMotion) {
     try {
       localStorage.setItem(FOLLOW_KEY, followToggle.checked ? 'on' : 'off');
     } catch (e) { /* storage unavailable — choice lasts for this page only */ }
-    if (followToggle.checked && playing && chunks[index]) {
+    if (followToggle.checked && playing) {
       userScrolledAt = 0;
-      followAlong(chunks[index].el);
+      followAlong(currentSentenceRange);
     }
   });
 
-  function followAlong(el) {
-    if (!followToggle.checked) return;
+  // Keeps the sentence being read comfortably on screen. Once it would sit
+  // under the pinned bar or low in the window, scroll so it starts about a
+  // third of the way down the visible area. Following the sentence, not the
+  // whole paragraph, means a long paragraph scrolls as it's read instead of
+  // running off the bottom until the next paragraph begins.
+  function followAlong(range) {
+    if (!range || !followToggle.checked) return;
     if (Date.now() - userScrolledAt < USER_SCROLL_GRACE_MS) return;
-    const rect = el.getBoundingClientRect();
+    const rect = range.getBoundingClientRect();
+    if (!rect.height) return;
     const viewH = window.innerHeight;
     // The header and pinned bar cover the top of the screen. Measure from where
-    // the bar's bottom edge will be once it's pinned (it may not be yet), so the
-    // block never lands underneath it.
+    // the bar's bottom edge will be once it's pinned (it may not be yet).
     const coveredTop = (parseFloat(bar.style.top) || 0) + bar.offsetHeight;
     const available = viewH - coveredTop;
     const GAP = 16;
-    // Leave it alone while its top is clear of the bar and it's reasonably in view.
-    const topClear = rect.top >= coveredTop + GAP;
-    if (topClear && (rect.bottom <= viewH - GAP || rect.top <= coveredTop + available * 0.35)) return;
-    // Short blocks sit centred in the space below the bar; tall ones align their
-    // top just under it, so the start of the paragraph is always visible.
-    const targetTop = rect.height <= available - GAP * 2
-      ? coveredTop + (available - rect.height) / 2
-      : coveredTop + GAP;
+    const comfortableBottom = viewH - Math.min(available * 0.2, 160);
+    if (rect.top >= coveredTop + GAP && rect.bottom <= comfortableBottom) return;
+    const targetTop = coveredTop + Math.max(GAP, Math.min(available * 0.3, available - rect.height - GAP));
     window.scrollTo({
       top: window.scrollY + rect.top - targetTop,
       behavior: reducedMotion.matches ? 'auto' : 'smooth',
     });
   }
 
-  // A muted underline under the word being spoken. It's a
-  // single absolutely-positioned element placed from the word's Range rects, so
-  // the article's HTML is never touched. Driven by word-boundary events when the
+  // A DOM Range over spoken characters [start, end) of a block.
+  function textRange(chunk, start, end) {
+    const first = chunk.positions[start];
+    const last = chunk.positions[end - 1];
+    if (!first || !last) return null;
+    const range = new Range();
+    range.setStart(first.node, first.offset);
+    range.setEnd(last.node, last.offset + 1);
+    return range;
+  }
+
+  // Each block is spoken one sentence at a time, so the sentence highlight
+  // changes exactly when the voice moves on — in every browser, with no need
+  // for word-boundary events (which Android Chrome never sends). Sentences are
+  // [start, end) offsets into the block's spoken text; initials ("J. B. Rhine")
+  // and common abbreviations don't end one.
+  const wordCount = (text) => text.split(' ').length;
+  const NOT_SENTENCE_END = /(?:^|[\s(“"‘'])(?:[A-Z]|e\.g|i\.e|etc|vs|Dr|Mr|Mrs|Ms|St|Jr|Sr|No|U\.S|U\.K|al|Fig|ca|approx)\.$/;
+
+  function splitSentences(text) {
+    const sentences = [];
+    let start = 0;
+    for (const match of text.matchAll(/[.!?]+["'”’)\]]*\s+(?=["'“‘(\[]?[A-Z0-9])/g)) {
+      if (NOT_SENTENCE_END.test(text.slice(Math.max(start, match.index - 12), match.index + 1))) continue;
+      sentences.push({ start, end: match.index + match[0].trimEnd().length });
+      start = match.index + match[0].length;
+    }
+    if (start < text.length) sentences.push({ start, end: text.length });
+    let before = 0;
+    sentences.forEach((sentence) => {
+      sentence.words = wordCount(text.slice(sentence.start, sentence.end));
+      sentence.before = before; // words in this block before the sentence
+      before += sentence.words;
+    });
+    return sentences;
+  }
+
+  chunks.forEach((chunk) => {
+    chunk.words = wordCount(chunk.text);
+    chunk.sentences = splitSentences(chunk.text);
+  });
+
+  // The sentence being read gets a soft highlight via the CSS Custom Highlight
+  // API, so the article's HTML is never touched. Browsers without it fall back
+  // to shading the whole paragraph (see .no-sentence-highlight in the CSS).
+  const sentenceHighlight = window.CSS && CSS.highlights && typeof Highlight === 'function'
+    ? new Highlight()
+    : null;
+  if (sentenceHighlight) CSS.highlights.set('listen-sentence', sentenceHighlight);
+  else article.classList.add('no-sentence-highlight');
+  let currentSentenceRange = null;
+
+  function showSentence(range) {
+    currentSentenceRange = range;
+    if (!sentenceHighlight) return;
+    sentenceHighlight.clear();
+    if (range) sentenceHighlight.add(range);
+  }
+
+  // The paragraph being read gets a quiet bar in the margin.
+  function setBlock(i) {
+    chunks.forEach((chunk, j) => chunk.el.classList.toggle('is-reading', j === i));
+  }
+
+  // Optional underline under each word as it's spoken ("Follow words", off by
+  // default and remembered per browser). A single absolutely-positioned
+  // element placed from the word's Range rects; it glides along a line and
+  // jumps straight to the next one. Driven by word-boundary events when the
   // voice sends them; otherwise paced by estimate (see startPacer).
+  const wordsToggle = document.getElementById('listen-words');
+  const WORDS_KEY = 'glass-listen-words';
+  try {
+    if (localStorage.getItem(WORDS_KEY) === 'on') wordsToggle.checked = true;
+  } catch (e) { /* storage unavailable — keep the default */ }
+
   const underline = document.createElement('span');
   underline.className = 'reading-underline';
   underline.setAttribute('aria-hidden', 'true');
   article.appendChild(underline);
   let currentWordRange = null;
+  let underlineTop = null;
 
   function wordRange(chunk, charIndex, charLength) {
-    const { text, positions } = chunk;
+    const { text } = chunk;
     let end = charLength ? charIndex + charLength : charIndex;
     if (!charLength) while (end < text.length && !/\s/.test(text[end])) end++;
     // Don't underline trailing punctuation or spaces.
     while (end > charIndex && /[\s.,;:!?"'”’)\]]/.test(text[end - 1])) end--;
-    const start = positions[charIndex];
-    const last = positions[end - 1];
-    if (!start || !last) return null;
-    const range = new Range();
-    range.setStart(start.node, start.offset);
-    range.setEnd(last.node, last.offset + 1);
-    return range;
+    return textRange(chunk, charIndex, end);
   }
 
   function placeUnderline(range) {
     const rect = range.getClientRects()[0];
     if (!rect) return false;
     const base = article.getBoundingClientRect();
+    const top = rect.bottom - base.top;
+    // Glide between words on the same line, but jump to a new line rather
+    // than sweeping diagonally across the paragraph.
+    const newLine = top !== underlineTop;
+    underline.classList.toggle('no-glide', newLine);
     underline.style.left = `${rect.left - base.left}px`;
-    underline.style.top = `${rect.bottom - base.top}px`;
+    underline.style.top = `${top}px`;
     underline.style.width = `${rect.width}px`;
+    underlineTop = top;
+    if (newLine) {
+      void underline.offsetWidth; // apply the jump before re-enabling the glide
+      underline.classList.remove('no-glide');
+    }
     return true;
   }
 
   function underlineWord(chunk, charIndex, charLength) {
+    if (!wordsToggle.checked) return;
     const range = wordRange(chunk, charIndex, charLength);
     if (!range) return;
     currentWordRange = range;
@@ -1571,15 +1648,24 @@ if (prefersReducedMotion) {
   function clearWord() {
     stopPacer();
     currentWordRange = null;
+    underlineTop = null;
     underline.classList.remove('is-visible');
   }
 
+  wordsToggle.addEventListener('change', () => {
+    try {
+      localStorage.setItem(WORDS_KEY, wordsToggle.checked ? 'on' : 'off');
+    } catch (e) { /* storage unavailable — choice lasts for this page only */ }
+    if (!wordsToggle.checked) clearWord();
+    // Turning it on mid-sentence picks up from the next sentence.
+  });
+
   // Many voices never send word-boundary events: every voice in Android
   // Chrome, and network voices such as desktop Chrome's "Google" ones. For
-  // those, step the underline through the block at the estimated speaking
+  // those, step the underline through the sentence at the estimated speaking
   // pace, weighting each word by its length plus a pause after punctuation.
-  // It's approximate, but it restarts with every block so drift stays small,
-  // and a real boundary event takes over the moment one arrives.
+  // It restarts with every sentence so drift stays small, and a real boundary
+  // event takes over the moment one arrives.
   let pacer = null;
 
   function stopPacer() {
@@ -1587,25 +1673,25 @@ if (prefersReducedMotion) {
     pacer = null;
   }
 
-  function startPacer(chunk, myGeneration) {
+  function startPacer(chunk, sentence, myGeneration) {
     stopPacer();
     const words = [];
     let total = 0;
-    for (const match of chunk.text.matchAll(/\S+/g)) {
+    for (const match of chunk.text.slice(sentence.start, sentence.end).matchAll(/\S+/g)) {
       const word = match[0];
-      const pause = /[.!?]["'”’)\]]*$/.test(word) ? 6 : /[,;:—–]["'”’)\]]*$/.test(word) ? 3 : 0;
-      words.push({ at: match.index, from: total });
+      const pause = /[,;:—–]["'”’)\]]*$/.test(word) ? 3 : 0;
+      words.push({ at: sentence.start + match.index, from: total });
       total += word.length + 1 + pause;
     }
     if (!words.length) return;
     const startedAt = performance.now();
     let shown = -1;
     const tick = () => {
-      if (myGeneration !== generation || boundaryWords) {
+      if (myGeneration !== generation || boundaryWords || !wordsToggle.checked) {
         stopPacer();
         return;
       }
-      const duration = chunk.words / wordsPerSecond();
+      const duration = sentence.words / wordsPerSecond();
       const reached = ((performance.now() - startedAt) / 1000 / duration) * total;
       let k = Math.max(shown, 0);
       while (k + 1 < words.length && words[k + 1].from <= reached) k++;
@@ -1623,24 +1709,17 @@ if (prefersReducedMotion) {
     if (currentWordRange) placeUnderline(currentWordRange);
   });
 
-  function setHighlight(i) {
-    clearWord();
-    chunks.forEach((chunk, j) => chunk.el.classList.toggle('is-reading', j === i));
-    if (i >= 0 && playing) followAlong(chunks[i].el);
-  }
-
   // Listening-time estimate: total, and what's left from the current position.
   // Starts from a typical speech-synthesis pace and then calibrates to the
-  // actual voice by timing each block that's read to the end. Progress within
-  // a block comes from word-boundary events when the voice sends them,
-  // otherwise from elapsed time.
+  // actual voice by timing each sentence that's read to the end. Progress
+  // within a sentence comes from word-boundary events when the voice sends
+  // them, otherwise from elapsed time.
   const timeEl = document.getElementById('listen-time');
-  const wordCount = (text) => text.split(' ').length;
-  chunks.forEach((chunk) => { chunk.words = wordCount(chunk.text); });
   const totalWords = chunks.reduce((sum, chunk) => sum + chunk.words, 0);
   let baseWpm = 170; // words per minute at 1×
-  let chunkStartedAt = 0;
-  let spokenInChunk = 0;
+  let sentence = 0; // index of the sentence being read within chunks[index]
+  let sentenceStartedAt = 0;
+  let spokenInSentence = 0;
   let boundaryWords = false;
   let timeTimer = null;
 
@@ -1661,15 +1740,20 @@ if (prefersReducedMotion) {
       timeEl.textContent = `${formatMinutes(totalSeconds)} listen`;
       return;
     }
-    let doneInChunk = 0;
-    if (playing) {
-      doneInChunk = boundaryWords
-        ? spokenInChunk
-        : ((performance.now() - chunkStartedAt) / 1000) * wordsPerSecond();
-    }
     const current = chunks[index];
+    const currentSentence = current && current.sentences[sentence];
+    let doneInChunk = 0;
+    if (currentSentence) {
+      let doneInSentence = 0;
+      if (playing) {
+        doneInSentence = boundaryWords
+          ? spokenInSentence
+          : ((performance.now() - sentenceStartedAt) / 1000) * wordsPerSecond();
+      }
+      doneInChunk = currentSentence.before + Math.min(doneInSentence, currentSentence.words);
+    }
     const wordsBefore = chunks.slice(0, index).reduce((sum, chunk) => sum + chunk.words, 0);
-    const remainingWords = totalWords - wordsBefore - Math.min(doneInChunk, current ? current.words : 0);
+    const remainingWords = totalWords - wordsBefore - doneInChunk;
     timeEl.textContent = `${formatClock(remainingWords / wordsPerSecond())} left of ${formatMinutes(totalSeconds)}`;
   }
 
@@ -1682,12 +1766,12 @@ if (prefersReducedMotion) {
     timeTimer = null;
   }
 
-  // Blend each fully-read block's measured pace into the estimate; tiny blocks
-  // (headings, one-liners) are too noisy to learn from.
-  function calibrate(chunk) {
-    const seconds = (performance.now() - chunkStartedAt) / 1000;
-    if (chunk.words < 8 || seconds < 1) return;
-    const measured = (chunk.words / (seconds / 60)) / Number(rateSelect.value);
+  // Blend each fully-read sentence's measured pace into the estimate; short
+  // ones (headings, fragments) are too noisy to learn from.
+  function calibrate(spoken) {
+    const seconds = (performance.now() - sentenceStartedAt) / 1000;
+    if (spoken.words < 8 || seconds < 1) return;
+    const measured = (spoken.words / (seconds / 60)) / Number(rateSelect.value);
     if (measured > 60 && measured < 400) baseWpm = baseWpm * 0.6 + measured * 0.4;
   }
 
@@ -1703,20 +1787,32 @@ if (prefersReducedMotion) {
     article.classList.toggle('listen-session', sessionActive);
   }
 
-  function speakFrom(i) {
+  function speakFrom(i, s = 0) {
     synth.cancel();
     const myGeneration = ++generation;
     if (i >= chunks.length) {
       finish();
       return;
     }
+    const chunk = chunks[i];
+    if (s >= chunk.sentences.length) {
+      speakFrom(i + 1);
+      return;
+    }
     index = i;
-    setHighlight(i);
-    chunkStartedAt = performance.now();
-    spokenInChunk = 0;
+    sentence = s;
+    setBlock(i);
+    clearWord();
+    const spoken = chunk.sentences[s];
+    const range = textRange(chunk, spoken.start, spoken.end);
+    showSentence(range);
+    if (playing) followAlong(range);
+    sentenceStartedAt = performance.now();
+    spokenInSentence = 0;
     boundaryWords = false;
     updateTime();
-    const utterance = new SpeechSynthesisUtterance(chunks[i].text);
+    const text = chunk.text.slice(spoken.start, spoken.end);
+    const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = Number(rateSelect.value);
     if (voice) {
       utterance.voice = voice;
@@ -1725,20 +1821,21 @@ if (prefersReducedMotion) {
     // Pace from when speech actually starts, not when it was queued (mobile
     // voices can take a moment to begin).
     utterance.onstart = () => {
-      if (myGeneration !== generation || boundaryWords) return;
-      startPacer(chunks[i], myGeneration);
+      if (myGeneration !== generation) return;
+      sentenceStartedAt = performance.now();
+      if (!boundaryWords && wordsToggle.checked) startPacer(chunk, spoken, myGeneration);
     };
     utterance.onboundary = (e) => {
       if (myGeneration !== generation || e.name !== 'word') return;
       stopPacer();
-      underlineWord(chunks[i], e.charIndex, e.charLength);
       boundaryWords = true;
-      spokenInChunk = e.charIndex ? wordCount(chunks[i].text.slice(0, e.charIndex).trim()) : 0;
+      spokenInSentence = e.charIndex ? wordCount(text.slice(0, e.charIndex).trim()) : 0;
+      underlineWord(chunk, spoken.start + e.charIndex, e.charLength);
     };
     utterance.onend = () => {
       if (myGeneration !== generation || !playing) return;
-      calibrate(chunks[i]);
-      speakFrom(i + 1);
+      calibrate(spoken);
+      speakFrom(i, s + 1);
     };
     utterance.onerror = (e) => {
       if (myGeneration !== generation || e.error === 'interrupted' || e.error === 'canceled') return;
@@ -1749,8 +1846,9 @@ if (prefersReducedMotion) {
     synth.speak(utterance);
   }
 
-  // Pausing cancels and later restarts the current block, rather than using
-  // synth.pause(), which is unreliable on mobile browsers.
+  // Pausing cancels and later restarts the current sentence, rather than using
+  // synth.pause(), which is unreliable on mobile browsers. The sentence stays
+  // highlighted to show where Resume will pick up.
   function pause() {
     playing = false;
     generation++;
@@ -1768,24 +1866,27 @@ if (prefersReducedMotion) {
     synth.cancel();
     stopTimeTicker();
     index = 0;
-    setHighlight(-1);
+    sentence = 0;
+    setBlock(-1);
+    showSentence(null);
+    clearWord();
     status.textContent = '';
     render();
   }
 
-  function playFrom(i) {
-    if (!sessionActive) status.textContent = 'Tip: click any paragraph to jump there.';
+  function playFrom(i, s = 0) {
+    if (!sessionActive) status.textContent = 'Tip: click any sentence to jump there.';
     else status.textContent = '';
     playing = true;
     sessionActive = true;
     render();
     startTimeTicker();
-    speakFrom(i);
+    speakFrom(i, s);
   }
 
   toggle.addEventListener('click', () => {
     if (playing) pause();
-    else playFrom(index);
+    else playFrom(index, sentence);
   });
   prevBtn.addEventListener('click', () => playFrom(Math.max(0, index - 1)));
   nextBtn.addEventListener('click', () => playFrom(index + 1));
@@ -1800,8 +1901,27 @@ if (prefersReducedMotion) {
     const el = e.target.closest('.listen-chunk');
     if (!el || !chunkIndex.has(el)) return;
     userScrolledAt = 0;
-    playFrom(chunkIndex.get(el));
+    const i = chunkIndex.get(el);
+    playFrom(i, sentenceAtPoint(chunks[i], e.clientX, e.clientY));
   });
+
+  // Which sentence of a block sits under the pointer (0 if it can't tell).
+  function sentenceAtPoint(chunk, x, y) {
+    let node = null;
+    let offset = 0;
+    if (document.caretPositionFromPoint) {
+      const caret = document.caretPositionFromPoint(x, y);
+      if (caret) ({ offsetNode: node, offset } = caret);
+    } else if (document.caretRangeFromPoint) {
+      const caret = document.caretRangeFromPoint(x, y);
+      if (caret) ({ startContainer: node, startOffset: offset } = caret);
+    }
+    if (!node) return 0;
+    const at = chunk.positions.findIndex((p) => p.node === node && p.offset >= offset);
+    if (at < 0) return 0;
+    const found = chunk.sentences.findIndex((sentence) => at < sentence.end);
+    return Math.max(0, found);
+  }
   stopBtn.addEventListener('click', finish);
   // Reading speed is remembered per browser, like the voice and auto-scroll choices.
   const RATE_KEY = 'glass-listen-rate';
@@ -1811,7 +1931,7 @@ if (prefersReducedMotion) {
   } catch (e) { /* storage unavailable — keep 1× */ }
   rateSelect.addEventListener('change', () => {
     try { localStorage.setItem(RATE_KEY, rateSelect.value); } catch (e) { /* storage unavailable */ }
-    if (playing) speakFrom(index);
+    if (playing) speakFrom(index, sentence);
     else updateTime();
   });
   window.addEventListener('pagehide', () => synth.cancel());
