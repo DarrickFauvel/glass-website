@@ -1528,9 +1528,8 @@ if (prefersReducedMotion) {
 
   // A muted underline under the word being spoken. It's a
   // single absolutely-positioned element placed from the word's Range rects, so
-  // the article's HTML is never touched. Needs a voice that fires word-boundary
-  // events — network voices such as Chrome's "Google" ones don't, in which case
-  // only the paragraph highlight shows.
+  // the article's HTML is never touched. Driven by word-boundary events when the
+  // voice sends them; otherwise paced by estimate (see startPacer).
   const underline = document.createElement('span');
   underline.className = 'reading-underline';
   underline.setAttribute('aria-hidden', 'true');
@@ -1570,8 +1569,53 @@ if (prefersReducedMotion) {
   }
 
   function clearWord() {
+    stopPacer();
     currentWordRange = null;
     underline.classList.remove('is-visible');
+  }
+
+  // Many voices never send word-boundary events: every voice in Android
+  // Chrome, and network voices such as desktop Chrome's "Google" ones. For
+  // those, step the underline through the block at the estimated speaking
+  // pace, weighting each word by its length plus a pause after punctuation.
+  // It's approximate, but it restarts with every block so drift stays small,
+  // and a real boundary event takes over the moment one arrives.
+  let pacer = null;
+
+  function stopPacer() {
+    clearInterval(pacer);
+    pacer = null;
+  }
+
+  function startPacer(chunk, myGeneration) {
+    stopPacer();
+    const words = [];
+    let total = 0;
+    for (const match of chunk.text.matchAll(/\S+/g)) {
+      const word = match[0];
+      const pause = /[.!?]["'”’)\]]*$/.test(word) ? 6 : /[,;:—–]["'”’)\]]*$/.test(word) ? 3 : 0;
+      words.push({ at: match.index, from: total });
+      total += word.length + 1 + pause;
+    }
+    if (!words.length) return;
+    const startedAt = performance.now();
+    let shown = -1;
+    const tick = () => {
+      if (myGeneration !== generation || boundaryWords) {
+        stopPacer();
+        return;
+      }
+      const duration = chunk.words / wordsPerSecond();
+      const reached = ((performance.now() - startedAt) / 1000 / duration) * total;
+      let k = Math.max(shown, 0);
+      while (k + 1 < words.length && words[k + 1].from <= reached) k++;
+      if (k !== shown) {
+        shown = k;
+        underlineWord(chunk, words[k].at, 0);
+      }
+    };
+    tick();
+    pacer = setInterval(tick, 80);
   }
 
   // Text reflows on resize, so move the underline with its word.
@@ -1678,8 +1722,15 @@ if (prefersReducedMotion) {
       utterance.voice = voice;
       utterance.lang = voice.lang;
     }
+    // Pace from when speech actually starts, not when it was queued (mobile
+    // voices can take a moment to begin).
+    utterance.onstart = () => {
+      if (myGeneration !== generation || boundaryWords) return;
+      startPacer(chunks[i], myGeneration);
+    };
     utterance.onboundary = (e) => {
       if (myGeneration !== generation || e.name !== 'word') return;
+      stopPacer();
       underlineWord(chunks[i], e.charIndex, e.charLength);
       boundaryWords = true;
       spokenInChunk = e.charIndex ? wordCount(chunks[i].text.slice(0, e.charIndex).trim()) : 0;

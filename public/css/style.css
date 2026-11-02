@@ -990,11 +990,22 @@ nav a.nav-active::after {
   pointer-events: none;
 }
 
-/* Precision grid */
+/* Precision grid: faint on the page, boosted inside the lens (.hero-mag) */
 .hero-bg-grid {
   position: absolute;
   inset: 0;
   background-size: 64px 64px;
+  background-image:
+    linear-gradient(rgba(28, 20, 16, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 20, 16, 0.05) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(ellipse 80% 90% at 65% 50%, black 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 90% at 65% 50%, black 20%, transparent 75%);
+}
+
+[data-theme="dark"] .hero-bg-grid {
+  background-image:
+    linear-gradient(rgba(237, 228, 216, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 228, 216, 0.06) 1px, transparent 1px);
 }
 
 
@@ -1858,10 +1869,19 @@ main {
   color: var(--crimson);
 }
 
+/* Phones: a side column for the picture leaves a tall empty strip under it,
+   so the picture floats and the text wraps around the circle instead. */
 @media (max-width: 540px) {
   .claim {
-    grid-template-columns: 5.5rem 1fr;
-    align-items: start;
+    display: flow-root;
+  }
+
+  .claim-lens {
+    float: left;
+    width: 6rem;
+    margin: 0.35rem 1.1rem 0.5rem 0.6rem; /* room for the ring's box-shadow */
+    shape-outside: circle(50%);
+    shape-margin: 0.85rem;
   }
 }
 
@@ -3617,6 +3637,27 @@ main {
   grid-column: 2;
   grid-row: 2 / span 3;
   box-shadow: 0 0 0 5px var(--cream-2), 0 0 0 8px var(--ink);
+}
+
+/* Phones: float the post's picture so the meta, title and summary wrap
+   around it rather than squeezing into a narrow column beside it. */
+@media (max-width: 540px) {
+  .article-header--picture {
+    display: flow-root;
+  }
+
+  .article-header--picture > .article-back {
+    display: block;
+    width: max-content;
+  }
+
+  .article-header--picture > .article-lens {
+    float: right;
+    width: 6.5rem;
+    margin: 0.4rem 0.5rem 0.75rem 1.1rem;
+    shape-outside: circle(50%);
+    shape-margin: 0.9rem;
+  }
 }
 
 .article-page {
