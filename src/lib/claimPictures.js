@@ -24,6 +24,16 @@ export const claimPictures = {
     alt: 'Hands pouring golden, genetically engineered rice beside a bowl of ordinary white rice',
     position: '50% 50%',
   },
+  psychics: {
+    src: '/images/claims/psychics.jpg',
+    alt: 'Two men at a table in 1934 during an ESP card test: one turns over cards while the other writes down the results',
+    position: '50% 50%',
+  },
+  ufos: {
+    src: '/images/claims/ufos.jpg',
+    alt: 'A meteorologist holds up a large white weather balloon against a blue sky, about to release it',
+    position: '50% 50%',
+  },
 };
 
 // Credit line for every archival picture on the site (claims above, plus the
@@ -59,6 +69,21 @@ export const pictureCredits = [
     creator: 'International Rice Research Institute (IRRI)',
     license: 'CC BY 2.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/2.0',
+    via: 'Wikimedia Commons',
+  },
+  {
+    title: 'Hubert Pearce with J. B. Rhine',
+    page: 'https://commons.wikimedia.org/wiki/File:Hubert_Pearce_with_J._B._Rhine.png',
+    creator: 'J. B. Rhine, 1934',
+    license: 'public domain',
+    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
+    via: 'Wikimedia Commons',
+  },  {
+    title: 'Launching a weather balloon at Mammoth Hot Springs',
+    page: 'https://commons.wikimedia.org/wiki/File:Launching_a_weather_balloon_at_Mammoth_Hot_Springs_(29433370445).jpg',
+    creator: 'NPS / Neal Herbert (Yellowstone National Park)',
+    license: 'public domain',
+    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
     via: 'Wikimedia Commons',
   },
 ];

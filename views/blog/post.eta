@@ -44,6 +44,10 @@
           <input type="checkbox" id="listen-follow" checked />
           <span>Auto-scroll</span>
         </label>
+        <label class="listen-follow">
+          <input type="checkbox" id="listen-words" />
+          <span>Follow words</span>
+        </label>
         <span class="listen-time" id="listen-time"></span>
         <span class="listen-status" id="listen-status" aria-live="polite"></span>
       </div>
