@@ -49,6 +49,8 @@ Single studies can be wrong, through small samples, poor design, or chance. That
 
 It also helps to unbundle a debate. "Are GM foods safe to eat?", "Is herbicide-resistant weed evolution a problem?", and "Do a few seed companies have too much power?" are three separate questions. The evidence answers them differently: no, yes, and that one's about economics and policy, not biology. A good skeptic keeps them apart.
 
+*This tool has an entry in [The Skeptic's Toolkit](/toolkit#the-body-of-evidence-beats-a-single-study), our guide to reasoning tools, logical fallacies, and cognitive biases.*
+
 [^1]: **Survey.** Pew Research Center. (2015, January 29). "Public and Scientists Express Strikingly Different Views about Science-Related Issues." https://www.pewresearch.org/internet/2015/01/29/public-and-scientists-express-strikingly-different-views-about-science-related-issues/
 
 [^2]: **Peer-reviewed study (retracted).** Séralini, G.-E., et al. (2012). "Long term toxicity of a Roundup herbicide and a Roundup-tolerant genetically modified maize." *Food and Chemical Toxicology*, 50, 4221–4231. Retracted; see retraction notice, *Food and Chemical Toxicology* (2014), https://doi.org/10.1016/j.fct.2013.11.047. Original: https://doi.org/10.1016/j.fct.2012.08.005

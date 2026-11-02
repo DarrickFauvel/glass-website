@@ -1,0 +1,38 @@
+  <main id="main-content">
+    <article class="article-page toolkit-page">
+      <div class="article-header">
+        <p class="blog-meta"><span class="blog-topic">Reference</span></p>
+        <h1><%= it.toolkit.title %></h1>
+        <p class="auth-subtitle"><%= it.toolkit.summary %></p>
+      </div>
+
+      <nav class="toolkit-contents" aria-labelledby="toolkit-contents-title">
+        <h2 class="toolkit-contents-title" id="toolkit-contents-title">In this toolkit</h2>
+        <ol class="toolkit-contents-groups">
+<% it.toolkit.contents.forEach((group) => { %>
+          <li>
+            <a href="#<%= group.id %>" class="toolkit-contents-group"><%~ group.html %></a>
+<% if (group.entries.length) { %>
+            <ul class="toolkit-contents-entries">
+<% group.entries.forEach((entry) => { %>
+              <li><a href="#<%= entry.id %>"><%~ entry.html %></a></li>
+<% }) %>
+            </ul>
+<% } %>
+          </li>
+<% }) %>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+<%~ it.toolkit.html %>
+      </div>
+
+      <div class="article-footer">
+<% if (it.toolkit.aiAssisted) { %>
+        <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
+<% } %>
+        <a href="/blog" class="events-see-all-btn">See these tools in action on the blog &rarr;</a>
+      </div>
+    </article>
+  </main>

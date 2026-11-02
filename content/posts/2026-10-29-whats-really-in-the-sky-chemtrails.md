@@ -51,6 +51,8 @@ Before reaching for a hidden cause, ask whether a known mechanism already predic
 
 That doesn't make every official statement true or every institution trustworthy. Skepticism cuts both ways. But it does mean that when a mundane explanation fully accounts for the observations, a hidden one carries the burden of showing what *extra* it explains. For chemtrails, so far, the answer is nothing.
 
+*This tool has an entry in [The Skeptic's Toolkit](/toolkit#occams-razor), our guide to reasoning tools, logical fallacies, and cognitive biases.*
+
 [^1]: **Peer-reviewed study.** Tingley, D., & Wagner, G. (2017). "Solar geoengineering and the chemtrails conspiracy on social media." *Palgrave Communications*, 3, 12. https://doi.org/10.1057/s41599-017-0014-3
 
 [^2]: **Government agency.** U.S. Environmental Protection Agency. "Information on Contrails from Aircraft." https://www.epa.gov/regulations-emissions-vehicles-and-engines/information-contrails-aircraft

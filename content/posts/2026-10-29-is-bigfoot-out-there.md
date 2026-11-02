@@ -42,6 +42,8 @@ You'll often hear that "absence of evidence is not evidence of absence." Sometim
 
 A large breeding population of primates predicts carcasses, skeletons, roadkill, and DNA in hair snags. Decades of searching, and the best-designed genetic test to date,[^2] have produced none of these. That's not proof of impossibility, and a single specimen would overturn it overnight. That's the beauty of a testable claim. Until then, the reasonable position is to stay curious, keep looking at the evidence, and follow it where it leads. Right now, it leads to bears.
 
+*This tool has an entry in [The Skeptic's Toolkit](/toolkit#absence-of-evidence-when-evidence-is-expected), our guide to reasoning tools, logical fallacies, and cognitive biases.*
+
 [^1]: **Journalism.** Young, B. (2002, December 5). "Lovable trickster created a monster with Bigfoot hoax." *The Seattle Times*. https://archive.seattletimes.com/archive/20021205/raywallaceobit05m/lovable-trickster-created-a-monster-with-bigfoot-hoax
 
 [^2]: **Peer-reviewed study.** Sykes, B. C., Mullis, R. A., Hagenmuller, C., Melton, T. W., & Sartori, M. (2014). "Genetic analysis of hair samples attributed to yeti, bigfoot and other anomalous primates." *Proceedings of the Royal Society B*, 281, 20140161. https://doi.org/10.1098/rspb.2014.0161
