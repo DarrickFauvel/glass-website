@@ -10,7 +10,7 @@ One rule before you start: these tools are for checking *our own* thinking first
 
 ## Carl Sagan's Baloney Detection Kit
 
-In *The Demon-Haunted World* (1995), astronomer Carl Sagan described a "baloney detection kit," a set of tools to use "whenever new ideas are offered for consideration." Here are his nine, lightly paraphrased:[^1] <!-- VERIFY: the list was checked against a verbatim excerpt of the chapter, not a copy of the book itself -->
+In *The Demon-Haunted World* (1995), astronomer Carl Sagan described a "baloney detection kit," a set of tools to use "whenever new ideas are offered for consideration." Here are his nine, lightly paraphrased:[^1]
 
 1. **Get independent confirmation of the "facts."** One source isn't enough.
 2. **Encourage real debate** on the evidence by knowledgeable people from all points of view.
