@@ -122,6 +122,10 @@ That leaves out everything in between, and skips the evidence that settles it.
 
 Arguing that one step will inevitably lead to an extreme outcome, while exaggerating how likely that chain really is.[^4]
 
+> "First they put fluoride in the water. Next it'll be sedatives, and after that, whatever keeps us quiet."
+
+That skips every step in between, and each one would need its own evidence. Some chains of consequences are real, so the useful question is how likely each link actually is.
+
 ### Special pleading
 
 Applying a standard to everyone else but exempting your own case.[^4] A classic example:
