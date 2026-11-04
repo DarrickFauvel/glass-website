@@ -9,8 +9,9 @@
       <div class="header-end">
         <nav id="primary-nav" aria-label="Primary">
           <a href="/#about">About</a>
-          <a href="/#events">Events</a>
-<% const path = it.currentPath || ''; const blogCurrent = path === '/blog' ? 'page' : path.startsWith('/blog/') ? 'true' : ''; %>
+<% const path = it.currentPath || ''; %>
+          <a href="/events"<%~ path === '/events' ? ' class="nav-active" aria-current="page"' : '' %>>Events</a>
+<% const blogCurrent = path === '/blog' ? 'page' : path.startsWith('/blog/') ? 'true' : ''; %>
           <a href="/blog"<%~ blogCurrent ? ' class="nav-active" aria-current="' + blogCurrent + '"' : '' %>>Blog</a>
           <a href="/#contact">Contact</a>
           <div class="nav-tools">
