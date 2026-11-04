@@ -49,9 +49,47 @@ export async function loadToolkit() {
     summary: data.summary,
     aiAssisted: Boolean(data.aiAssisted),
     contents,
-    html,
+    html: structure(html),
   };
   return withPublishedLinks(cached);
+}
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+
+// Turns the flat rendered Markdown into sections so every entry reads the
+// same way: each `##` group becomes a <section class="toolkit-group"> with a
+// "Part" kicker, each `###` entry a <section class="toolkit-entry">. Inside an
+// entry, a blockquote is its "Sounds like" example and a paragraph starting
+// with **In action:** is its link to a post. The References list is left as is.
+function structure(html) {
+  const footnotesAt = html.indexOf('<section class="footnotes"');
+  const body = footnotesAt === -1 ? html : html.slice(0, footnotesAt);
+  const footnotes = footnotesAt === -1 ? '' : html.slice(footnotesAt);
+
+  const [intro, ...groups] = body.split(/(?=<h2 id=")/);
+  const lastIndex = groups.length - 1;
+
+  const sections = groups.map((group, i) => {
+    const [groupHead, ...entries] = group.split(/(?=<h3 id=")/);
+    // A closing group with no entries (the fallacy fallacy) reads as a coda,
+    // not another numbered part.
+    const isCoda = i === lastIndex && i > 0 && entries.length === 0;
+    const kicker = isCoda ? 'Finally' : `Part ${ROMAN[i] ?? i + 1}`;
+    const head = groupHead.replace(/^(<h2 id="[^"]+">)/, `<p class="toolkit-part" aria-hidden="true">${kicker}</p>\n$1`);
+    const entryHtml = entries.map((entry) => `<section class="toolkit-entry">\n${entryParts(entry)}</section>\n`).join('');
+    return `<section class="toolkit-group${isCoda ? ' toolkit-group--coda' : ''}">\n${head}${entryHtml}</section>\n`;
+  });
+
+  return `<div class="toolkit-intro">\n${intro}</div>\n${sections.join('')}${footnotes}`;
+}
+
+function entryParts(entry) {
+  return entry
+    .replace(
+      /<blockquote>\s*([\s\S]*?)\s*<\/blockquote>/g,
+      '<figure class="toolkit-example">\n<figcaption>Sounds like</figcaption>\n<blockquote>\n$1\n</blockquote>\n</figure>'
+    )
+    .replace(/<p><strong>In action:<\/strong>\s*/g, '<p class="toolkit-in-action"><span class="toolkit-in-action-label">In action</span> ');
 }
 
 // Entries link to related posts, and a post can be merged before its

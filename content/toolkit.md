@@ -38,19 +38,31 @@ The more a claim conflicts with everything else we know, the stronger the eviden
 
 ### The burden of proof
 
-Whoever makes a claim has to support it. It's a fallacy to insist that someone else prove you *wrong* when it's your job to show you're right.[^4] "You can't prove psychics aren't real" isn't evidence that they are.
+Whoever makes a claim has to support it. It's a fallacy to insist that someone else prove you *wrong* when it's your job to show you're right.[^4]
+
+> "You can't prove psychics aren't real."
+
+That isn't evidence that they are.
 
 ### Falsifiability
 
-A useful claim says what would count *against* it.[^1] "This medium talks to the dead, but the spirits go quiet whenever a skeptic is in the room" can't fail, because every failure gets explained away. A claim that can't fail can't really be tested, so it can't tell us anything either.
+A useful claim says what would count *against* it.[^1]
+
+> "This medium talks to the dead, but the spirits go quiet whenever a skeptic is in the room."
+
+That claim can't fail, because every failure gets explained away. A claim that can't fail can't really be tested, so it can't tell us anything either.
 
 ### Base rates: "compared to what?"
 
-Before you're impressed by a hit, ask how often you'd get that hit by chance. People tend to ignore these background frequencies, or *base rates*, when a specific story feels convincing.[^5] A reading that mentions "a family member with a heart problem" sounds specific until you ask how many families *don't* have one. We work through this in [Can Psychics Really Read Minds?](/blog/can-psychics-really-read-minds)
+Before you're impressed by a hit, ask how often you'd get that hit by chance. People tend to ignore these background frequencies, or *base rates*, when a specific story feels convincing.[^5] A reading that mentions "a family member with a heart problem" sounds specific until you ask how many families *don't* have one.
+
+**In action:** [Can Psychics Really Read Minds?](/blog/can-psychics-really-read-minds)
 
 ### Absence of evidence, when evidence is expected
 
-"Absence of evidence isn't evidence of absence" is only half right. If nobody has looked, finding nothing means little. But if a claim *predicts* evidence, such as bones, bodies, or DNA, and people have searched hard for decades without finding any, the absence starts to count. See [Is Bigfoot Out There?](/blog/is-bigfoot-out-there)
+"Absence of evidence isn't evidence of absence" is only half right. If nobody has looked, finding nothing means little. But if a claim *predicts* evidence, such as bones, bodies, or DNA, and people have searched hard for decades without finding any, the absence starts to count.
+
+**In action:** [Is Bigfoot Out There?](/blog/is-bigfoot-out-there)
 
 ### The body of evidence beats a single study
 
@@ -62,11 +74,19 @@ A *fallacy* is a flaw in reasoning: an argument whose conclusion doesn't actuall
 
 ### Ad hominem
 
-Attacking the person making an argument instead of the argument itself.[^4] "Of course he says vaccines are safe, he's a doctor" dismisses the speaker without addressing the evidence. The same goes in reverse: calling believers "idiots" refutes nothing.
+Attacking the person making an argument instead of the argument itself.[^4]
+
+> "Of course he says vaccines are safe, he's a doctor."
+
+That dismisses the speaker without addressing the evidence. The same goes in reverse: calling believers "idiots" refutes nothing.
 
 ### Straw man
 
-Attributing an easily refuted position to your opponent instead of the one they actually hold.[^4] "Skeptics think everyone who's seen a UFO is lying" is a straw man. Most skeptics think witnesses saw something real and misidentified it.
+Attributing an easily refuted position to your opponent instead of the one they actually hold.[^4]
+
+> "Skeptics think everyone who's seen a UFO is lying."
+
+Most skeptics think witnesses saw something real and misidentified it.
 
 ### Appeal to authority
 
@@ -74,15 +94,29 @@ Backing up a claim mainly by pointing to someone who supports it.[^4] Expertise 
 
 ### Appeal to ignorance
 
-Treating a lack of proof as proof of the opposite.[^4] "Nobody has explained that video, so it must be an alien craft" fills a gap in knowledge with a conclusion. See [Are UFOs Alien Spacecraft?](/blog/are-ufos-alien-spacecraft)
+Treating a lack of proof as proof of the opposite.[^4]
+
+> "Nobody has explained that video, so it must be an alien craft."
+
+That fills a gap in knowledge with a conclusion.
+
+**In action:** [Are UFOs Alien Spacecraft?](/blog/are-ufos-alien-spacecraft)
 
 ### Post hoc
 
-Short for *post hoc, ergo propter hoc*, Latin for "after this, therefore because of this": jumping to the conclusion that because B came after A, A caused B.[^4] "I wore a copper bracelet and my arthritis got better" ignores that many conditions improve on their own.
+Short for *post hoc, ergo propter hoc*, Latin for "after this, therefore because of this": jumping to the conclusion that because B came after A, A caused B.[^4]
+
+> "I wore a copper bracelet and my arthritis got better."
+
+That ignores that many conditions improve on their own.
 
 ### False dilemma
 
-Presenting too few options and implying you must choose one of them.[^4] "Either contrails are normal condensation or the government is spraying us" leaves out everything in between, and skips the evidence that settles it.
+Presenting too few options and implying you must choose one of them.[^4]
+
+> "Either contrails are normal condensation or the government is spraying us."
+
+That leaves out everything in between, and skips the evidence that settles it.
 
 ### Slippery slope
 
@@ -90,7 +124,9 @@ Arguing that one step will inevitably lead to an extreme outcome, while exaggera
 
 ### Special pleading
 
-Applying a standard to everyone else but exempting your own case.[^4] "Controlled tests don't work on psychic powers because the skeptical atmosphere blocks them" is a classic example.
+Applying a standard to everyone else but exempting your own case.[^4] A classic example:
+
+> "Controlled tests don't work on psychic powers because the skeptical atmosphere blocks them."
 
 ### Cherry-picking
 
@@ -106,7 +142,11 @@ Suggesting a claim is true because most people believe it, or more and more peop
 
 ### Anecdotal evidence
 
-Generalizing from a story that's too small a sample to support the conclusion.[^4] "My cousin's naturopath cured her" is a real experience. It just can't tell you whether the treatment works in general.
+Generalizing from a story that's too small a sample to support the conclusion.[^4]
+
+> "My cousin's naturopath cured her."
+
+That's a real experience. It just can't tell you whether the treatment works in general.
 
 ## Cognitive biases
 

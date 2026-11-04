@@ -9,9 +9,9 @@
       <nav class="toolkit-contents" aria-labelledby="toolkit-contents-title">
         <h2 class="toolkit-contents-title" id="toolkit-contents-title">In this toolkit</h2>
         <ol class="toolkit-contents-groups">
-<% it.toolkit.contents.forEach((group) => { %>
+<% it.toolkit.contents.forEach((group, i) => { %>
           <li>
-            <a href="#<%= group.id %>" class="toolkit-contents-group"><%~ group.html %></a>
+            <a href="#<%= group.id %>" class="toolkit-contents-group"><span class="toolkit-contents-part" aria-hidden="true"><%= group.entries.length || i === 0 ? ['I', 'II', 'III', 'IV', 'V', 'VI'][i] : '' %></span><span><%~ group.html %></span></a>
 <% if (group.entries.length) { %>
             <ul class="toolkit-contents-entries">
 <% group.entries.forEach((entry) => { %>
@@ -24,6 +24,35 @@
         </ol>
       </nav>
 
+      <%/* Phones/tablets only: once the contents card has scrolled away, this
+         bar sticks under the header, names the part you're in, and opens
+         the contents as a dropdown. Hidden on wide screens, where the
+         sticky rail does the same job. */%>
+      <div class="toolkit-jumpbar" id="toolkit-jumpbar" hidden>
+        <button type="button" class="toolkit-jumpbar-toggle" aria-expanded="false" aria-controls="toolkit-jump-panel">
+          <span class="toolkit-jumpbar-label">Contents</span>
+          <span class="toolkit-jumpbar-current" aria-live="polite"></span>
+          <span class="toolkit-jumpbar-chevron" aria-hidden="true">&#9662;</span>
+        </button>
+        <nav class="toolkit-jump-panel" id="toolkit-jump-panel" aria-label="Jump to a section" hidden>
+          <a href="#top" class="toolkit-jump-top" data-back-to-top><span aria-hidden="true">&uarr;</span> Top of page</a>
+          <ol>
+<% it.toolkit.contents.forEach((group) => { %>
+            <li>
+              <a href="#<%= group.id %>" class="toolkit-jump-group"><%~ group.html %></a>
+<% if (group.entries.length) { %>
+              <ul>
+<% group.entries.forEach((entry) => { %>
+                <li><a href="#<%= entry.id %>"><%~ entry.html %></a></li>
+<% }) %>
+              </ul>
+<% } %>
+            </li>
+<% }) %>
+          </ol>
+        </nav>
+      </div>
+
       <div class="article-prose">
 <%~ it.toolkit.html %>
       </div>
@@ -33,6 +62,7 @@
         <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
 <% } %>
         <a href="/blog" class="events-see-all-btn">See these tools in action on the blog &rarr;</a>
+        <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
       </div>
     </article>
   </main>
