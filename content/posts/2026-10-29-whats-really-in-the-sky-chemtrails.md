@@ -22,7 +22,7 @@ Several real things feed the theory.
 
 ## What the evidence shows
 
-**Contrails are mostly water.** Jet engines burn fuel and emit water vapor, carbon dioxide, and smaller amounts of other compounds and particles. At cruising altitude the air is extremely cold. When the humidity there is high enough, the water vapor condenses onto particles in the exhaust and freezes into ice crystals, and that's the white line you see.[^2] The physics of exactly when a contrail will form, based on air temperature, humidity, and engine characteristics, has been worked out in detail in the atmospheric science literature.[^3] <!-- VERIFY: only Crossref metadata for Schumann (1996) was checked; full text not accessed. It is the standard reference on contrail-formation conditions, but confirm before merging -->
+**Contrails are mostly water.** Jet engines burn fuel and emit water vapor, carbon dioxide, and smaller amounts of other compounds and particles. At cruising altitude the air is extremely cold. When the humidity there is high enough, the water vapor condenses onto particles in the exhaust and freezes into ice crystals, and that's the white line you see.[^2] The physics of exactly when a contrail will form, based on air temperature, humidity, and engine characteristics, has been worked out in detail in the atmospheric science literature.[^3]
 
 **Persistence depends on the air, not the cargo.** Whether a contrail vanishes or spreads comes down to the atmosphere it forms in. In dry air the ice crystals quickly turn back to vapor. When a plane flies through a layer of high humidity, the trail persists,[^2] and it can spread into sheets of cirrus-like cloud.[^4] That's why two planes minutes apart can leave very different trails: they may be flying at different altitudes through different air. Atmospheric scientists study these spreading "contrail cirrus" clouds closely because they have a real, measurable effect on climate.[^4]
 
@@ -50,6 +50,8 @@ A secret program would also have to be invisible to the very people best placed 
 Before reaching for a hidden cause, ask whether a known mechanism already predicts what you're seeing. Here it does: humid air means long-lasting trails, dry air means short ones. A good explanation also does work the alternative can't. It tells you *in advance* which days will have persistent trails, based on a weather forecast.
 
 That doesn't make every official statement true or every institution trustworthy. Skepticism cuts both ways. But it does mean that when a mundane explanation fully accounts for the observations, a hidden one carries the burden of showing what *extra* it explains. For chemtrails, so far, the answer is nothing.
+
+*This tool has an entry in [The Skeptic's Toolkit](/toolkit#occams-razor), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
 [^1]: **Peer-reviewed study.** Tingley, D., & Wagner, G. (2017). "Solar geoengineering and the chemtrails conspiracy on social media." *Palgrave Communications*, 3, 12. https://doi.org/10.1057/s41599-017-0014-3
 

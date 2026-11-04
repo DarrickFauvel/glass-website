@@ -1942,3 +1942,124 @@ if (prefersReducedMotion) {
   render();
 }());
 
+
+// ===== Toolkit contents scrollspy + mobile jump bar =====
+// Marks the part and entry currently being read in the toolkit's contents:
+// the sticky rail on wide screens, and on smaller screens a jump bar that
+// sticks under the header once the contents card has scrolled away, names
+// the current part, and opens the contents as a dropdown. The "current"
+// heading is the last one that has scrolled past a line a little below the
+// sticky header.
+(function () {
+  const nav = document.querySelector('.toolkit-contents');
+  if (!nav) return;
+  const bar = document.getElementById('toolkit-jumpbar');
+  const toggle = bar && bar.querySelector('.toolkit-jumpbar-toggle');
+  const panel = bar && document.getElementById('toolkit-jump-panel');
+  const currentLabel = bar && bar.querySelector('.toolkit-jumpbar-current');
+  const siteHeader = document.querySelector('header');
+
+  // Each heading id → its link in the rail, and in the jump panel.
+  const linkSets = [nav, panel].filter(Boolean).map((root) => new Map(
+    [...root.querySelectorAll('a[href^="#"]')].map((a) => [decodeURIComponent(a.hash.slice(1)), a])
+  ));
+  const railLinks = linkSets[0];
+  const headings = [...document.querySelectorAll('.article-prose :is(h2, h3)[id]')].filter((h) => railLinks.has(h.id));
+  if (!headings.length) return;
+
+  if (bar) bar.hidden = false; // shown/hidden from here on by .is-shown
+
+  function headerHeight() {
+    return siteHeader ? siteHeader.getBoundingClientRect().height : 0;
+  }
+
+  let current = [];
+  function update() {
+    const line = headerHeight() + 80;
+    let active = null;
+    for (const h of headings) {
+      if (h.getBoundingClientRect().top - line <= 0) active = h;
+      else break;
+    }
+    const groupHeading = active && (active.tagName === 'H2' ? active : active.closest('.toolkit-group')?.querySelector('h2'));
+    const ids = [groupHeading, active && active.tagName === 'H3' ? active : null].filter(Boolean).map((h) => h.id);
+    const next = linkSets.flatMap((links) => ids.map((id) => links.get(id)).filter(Boolean));
+
+    if (bar) {
+      bar.style.top = headerHeight() + 'px';
+      // Show once the contents card is out of view; hide again near the top.
+      const pastContents = nav.getBoundingClientRect().bottom < headerHeight();
+      bar.classList.toggle('is-shown', pastContents);
+      if (!pastContents) closePanel(false);
+      if (currentLabel) currentLabel.textContent = groupHeading ? groupHeading.textContent : '';
+    }
+
+    if (next.length === current.length && next.every((a, i) => a === current[i])) return;
+    current.forEach((a) => { a.classList.remove('is-current'); a.removeAttribute('aria-current'); });
+    next.forEach((a) => { a.classList.add('is-current'); a.setAttribute('aria-current', 'location'); });
+    current = next;
+    // Keep the highlighted entry visible inside the rail when it scrolls.
+    const entry = ids.length && railLinks.get(ids[ids.length - 1]);
+    if (entry && nav.scrollHeight > nav.clientHeight) {
+      const top = entry.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+      if (top < nav.scrollTop || top > nav.scrollTop + nav.clientHeight - 40) {
+        nav.scrollTop = top - nav.clientHeight / 3;
+      }
+    }
+  }
+
+  function openPanel() {
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    // Open scrolled to where the reader is.
+    const marks = panel.querySelectorAll('a.is-current');
+    const here = marks[marks.length - 1];
+    if (here) {
+      panel.scrollTop += here.getBoundingClientRect().top - panel.getBoundingClientRect().top - panel.clientHeight / 3;
+    }
+  }
+  function closePanel(returnFocus) {
+    if (!panel || panel.hidden) return;
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    if (returnFocus) toggle.focus();
+  }
+
+  if (bar && toggle && panel) {
+    toggle.addEventListener('click', () => (panel.hidden ? openPanel() : closePanel(false)));
+    // Picking a section jumps there and folds the panel away.
+    panel.addEventListener('click', (e) => { if (e.target.closest('a')) closePanel(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(true); });
+    document.addEventListener('click', (e) => { if (!bar.contains(e.target)) closePanel(false); });
+  }
+
+  let queued = false;
+  window.addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; update(); });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}());
+
+// ===== Back to top =====
+// "Back to top" links (end of posts and the toolkit, and the toolkit's
+// mobile jump panel) scroll to the very top, then move keyboard focus to the
+// page's main heading so the next Tab continues from there, not from the
+// link left behind at the bottom.
+(function () {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-back-to-top]');
+    if (!link) return;
+    e.preventDefault();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    const heading = document.querySelector('main h1');
+    if (heading) {
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  });
+}());

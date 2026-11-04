@@ -16,7 +16,7 @@ This is the editorial brief for every post on `/blog`, whether a person or an AI
 2. **Why it's compelling**: the real experiences, evidence, or intuitions behind it.
 3. **What the evidence shows**: the core of the post. Explain mechanisms, not just verdicts.
 4. **The question**: answer the hero clue's `question` (see `content/topics.md`) directly.
-5. **The thinking tool**: one reusable reasoning skill the topic illustrates (burden of proof, base rates, confirmation bias, misidentification, consensus vs. a single study, and so on).
+5. **The thinking tool**: one reusable reasoning skill the topic illustrates (burden of proof, base rates, confirmation bias, misidentification, consensus vs. a single study, and so on). End the section with a line linking the matching entry in `content/toolkit.md` (served at `/toolkit`), for example `*This tool has an entry in [The Skeptic's Toolkit](/toolkit#occams-razor), our guide to reasoning tools, logical fallacies, and cognitive biases.*` Anchors are the entry's heading, slugified. If the toolkit has no matching entry yet, add one in the same PR, sourced to the same standard as a post.
 
 No `#` heading in the body. The page renders the title from frontmatter.
 
@@ -34,7 +34,7 @@ No `#` heading in the body. The page renders the title from frontmatter.
 - **Never invent** quotes, numbers, authors, titles, or studies. If you can't verify a detail, leave it out or flag it (see below).
 - **Footnote format.** Start with the tier label, then a full citation:
   `[^1]: **Peer-reviewed study.** Sykes, B. C., et al. (2014). "Genetic analysis of hair samples…" *Proceedings of the Royal Society B*, 281, 20140161. https://doi.org/10.1098/rspb.2014.0161`
-  Labels: `Consensus report`, `Systematic review`, `Meta-analysis`, `Review article` (a peer-reviewed narrative review, which counts as tier 2), `Peer-reviewed study`, `Government agency`, `Expert commentary`, `Journalism`, `Survey`.
+  Labels: `Consensus report`, `Systematic review`, `Meta-analysis`, `Review article` (a peer-reviewed narrative review, which counts as tier 2), `Peer-reviewed study`, `Government agency`, `Expert commentary`, `Journalism`, `Survey`, `Reference work` (a scholarly reference such as the *Stanford Encyclopedia of Philosophy* or *Internet Encyclopedia of Philosophy*; fine for defining concepts and fallacies, not for empirical claims).
 
 ## Science-based framing
 

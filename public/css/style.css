@@ -3896,6 +3896,553 @@ main {
   margin: 2.5rem 0 0.75rem;
 }
 
+.article-prose h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 1.9rem 0 0.4rem;
+}
+
+.article-prose h2 + h3 {
+  margin-top: 1rem;
+}
+
+/* ===== TOOLKIT ===== */
+/* Phones/tablets: the contents sit above the text as a handwritten index
+   card. Wide screens: the page becomes two columns and the contents move
+   into a sticky rail that tracks your place (see the scrollspy in main.js). */
+.toolkit-contents {
+  margin: 0 0 2.5rem;
+  padding: 1.25rem 1.5rem 1.4rem;
+  background: var(--cream-2);
+  border: 1px solid var(--border-hi);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 var(--border-hi), 0 8px 18px -14px rgba(28, 20, 16, 0.45);
+  transform: rotate(-0.4deg);
+}
+
+/* Both contents navs are plain stacked blocks: opt out of the site-wide
+   `nav { display: flex }` and the header links' sliding underline, which
+   would otherwise put the title beside the list. */
+.toolkit-contents,
+.toolkit-jump-panel {
+  display: block;
+}
+
+.toolkit-jump-panel[hidden] { display: none; }
+
+.toolkit-contents a::after,
+.toolkit-jump-panel a::after {
+  content: none;
+}
+
+/* Same small crimson capitals as the page's other labels ("Part I",
+   "Sounds like", the jump bar's "Contents"), ruled off from the list. */
+.toolkit-contents-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin: 0 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed var(--border-hi);
+}
+
+.toolkit-contents-groups {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+
+@media (min-width: 640px) {
+  .toolkit-contents-groups {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+  }
+}
+
+.toolkit-contents-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.toolkit-contents-part {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  min-width: 1.6rem;
+}
+
+.toolkit-contents-entries {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+}
+
+.toolkit-contents-entries a {
+  font-size: 0.88rem;
+  color: var(--crimson);
+  text-decoration: none;
+  line-height: 1.7;
+}
+
+.toolkit-contents a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.toolkit-contents a:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1100px) {
+  .toolkit-page {
+    max-width: calc(720px + 15rem + 3.5rem + 2 * var(--gutter));
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 720px);
+    column-gap: 3.5rem;
+    align-items: start;
+  }
+
+  .toolkit-page > :not(.toolkit-contents) { grid-column: 2; }
+
+  .toolkit-contents {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    position: sticky;
+    top: 6.5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0.5rem 0 0;
+    padding: 0 0.5rem 1rem 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    transform: none;
+    scrollbar-width: thin;
+  }
+
+  .toolkit-contents-groups {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .toolkit-contents-group { font-size: 1.05rem; }
+
+  .toolkit-contents-title { margin-bottom: 0.9rem; }
+
+  .toolkit-contents-entries {
+    flex-direction: column;
+    gap: 0;
+    margin: 0.3rem 0 0;
+    border-left: 1px solid var(--border-hi);
+  }
+
+  .toolkit-contents-entries a {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    padding: 0.22rem 0 0.22rem 0.85rem;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    color: var(--ink-dim);
+  }
+
+  .toolkit-contents a.is-current {
+    color: var(--crimson);
+    border-left-color: var(--crimson);
+  }
+
+  .toolkit-contents-group.is-current { color: var(--crimson); }
+}
+
+/* --- Phones/tablets: sticky jump bar --- */
+.toolkit-jumpbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 4rem; /* set from the header's measured height in main.js */
+  z-index: 60;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border-hi);
+  box-shadow: 0 8px 16px -14px rgba(28, 20, 16, 0.5);
+  transform: translateY(-110%);
+  visibility: hidden;
+  transition: transform 0.22s ease, visibility 0s linear 0.22s;
+}
+
+.toolkit-jumpbar.is-shown {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.22s ease;
+}
+
+.toolkit-jumpbar-toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0.75rem var(--gutter);
+  min-height: 2.9rem;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.toolkit-jumpbar-toggle:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: -4px;
+}
+
+.toolkit-jumpbar-label {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
+
+.toolkit-jumpbar-current {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.toolkit-jumpbar-chevron {
+  flex: none;
+  color: var(--ink-dim);
+  transition: transform 0.2s ease;
+}
+
+.toolkit-jumpbar-toggle[aria-expanded="true"] .toolkit-jumpbar-chevron { transform: rotate(180deg); }
+
+.toolkit-jump-panel {
+  max-width: 720px;
+  margin: 0 auto;
+  max-height: min(65vh, 32rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--gutter) 1rem;
+  border-top: 1px dashed var(--border-hi);
+}
+
+.toolkit-jump-panel .toolkit-jump-top {
+  margin-top: 0.4rem;
+  padding-left: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  border-bottom: 1px dashed var(--border-hi);
+}
+
+.toolkit-jump-panel ol,
+.toolkit-jump-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toolkit-jump-panel a {
+  display: block;
+  padding: 0.55rem 0 0.55rem 0.9rem;
+  border-left: 2px solid transparent;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--ink-mid);
+  text-decoration: none;
+}
+
+.toolkit-jump-panel .toolkit-jump-group {
+  margin-top: 0.6rem;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.toolkit-jump-panel ul {
+  border-left: 1px solid var(--border-hi);
+}
+
+.toolkit-jump-panel ul a { margin-left: -1px; }
+
+.toolkit-jump-panel a.is-current {
+  color: var(--crimson);
+  border-left-color: var(--crimson);
+}
+
+.toolkit-jump-panel .toolkit-jump-group.is-current { border-left-color: transparent; }
+
+.toolkit-jump-panel a:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: -2px;
+}
+
+@media (min-width: 1100px) {
+  .toolkit-jumpbar { display: none; }
+}
+
+/* Phones/tablets: entries in the top contents card stack one per line
+   (instead of wrapping into a run of links), hung off a rule like the rail,
+   with full-width tap targets. */
+@media (max-width: 1099px) {
+  .toolkit-contents-entries {
+    flex-direction: column;
+    gap: 0;
+    margin: 0.4rem 0 0 0.3rem;
+    border-left: 1px solid var(--border-hi);
+  }
+
+  .toolkit-contents-entries a {
+    display: block;
+    padding: 0.38rem 0 0.38rem 0.85rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 639px) {
+  .toolkit-contents { padding: 1.1rem 1.1rem 1.2rem; }
+
+  .toolkit-group { margin-top: 2.75rem; padding-top: 1.6rem; }
+
+  .article-prose .toolkit-entry h3 { font-size: 1.35rem; }
+
+  .toolkit-example { padding: 0.75rem 1rem 0.8rem; }
+
+  .article-prose .toolkit-example blockquote p { font-size: 1.18rem; }
+
+  .toolkit-group:first-of-type ol > li::before { font-size: 1.65rem; }
+
+  .toolkit-group--coda { padding: 1.3rem 1.1rem 0.4rem; }
+
+  /* Small labels sit on their own line above what they label, so the
+     text they introduce gets the full width. */
+  .toolkit-contents-group {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .toolkit-contents-part:empty { display: none; }
+
+  .toolkit-in-action-label {
+    display: block;
+    margin: 0 0 0.15rem;
+  }
+
+  .toolkit-jumpbar-toggle {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    row-gap: 0.05rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.55rem;
+  }
+
+  .toolkit-jumpbar-label { grid-column: 1; grid-row: 1; }
+  .toolkit-jumpbar-current { grid-column: 1; grid-row: 2; }
+  .toolkit-jumpbar-chevron { grid-column: 2; grid-row: 1 / span 2; }
+
+  /* Sagan's numerals sit above each point rather than in a side gutter. */
+  .toolkit-group:first-of-type ol > li { padding-left: 0; }
+
+  .toolkit-group:first-of-type ol > li::before {
+    position: static;
+    display: block;
+    width: auto;
+    text-align: left;
+    margin-bottom: 0.15rem;
+  }
+}
+
+/* --- Body: intro, parts, entries --- */
+.toolkit-intro > p:first-child {
+  font-size: 1.08rem;
+  color: var(--ink);
+}
+
+.toolkit-group {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-hi);
+}
+
+.article-prose .toolkit-part {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin: 0 0 0.35rem;
+}
+
+.article-prose .toolkit-group > h2 {
+  font-size: clamp(1.8rem, 4vw, 2.3rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+/* The part's own intro reads a touch quieter than the entries. */
+.toolkit-group:has(> .toolkit-entry) > h2 ~ p {
+  font-style: italic;
+}
+
+.toolkit-entry {
+  padding: 1.6rem 0 0.4rem;
+}
+
+.toolkit-entry + .toolkit-entry {
+  border-top: 1px dashed var(--border-hi);
+}
+
+.article-prose .toolkit-entry h3 {
+  font-size: 1.45rem;
+  margin: 0 0 0.5rem;
+}
+
+/* "Sounds like" — the example claim on a slip of paper. */
+.toolkit-example {
+  position: relative;
+  margin: 1.1rem 0 1.25rem;
+  padding: 0.85rem 1.2rem 0.9rem;
+  max-width: 34rem;
+  background: var(--cream-2);
+  border: 1px solid var(--border-hi);
+  border-radius: 2px;
+  box-shadow: 0 6px 14px -12px rgba(28, 20, 16, 0.5);
+  transform: rotate(-0.5deg);
+}
+
+.toolkit-entry:nth-of-type(even) .toolkit-example { transform: rotate(0.45deg); }
+
+.toolkit-example figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 0.25rem;
+}
+
+.article-prose .toolkit-example blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.article-prose .toolkit-example blockquote p {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.article-prose .toolkit-in-action {
+  font-size: 0.92rem;
+  margin-top: -0.2rem;
+}
+
+.toolkit-in-action-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-right: 0.5rem;
+}
+
+.toolkit-in-action-label::after {
+  content: " \2192";
+  letter-spacing: 0;
+}
+
+/* Sagan's kit: big hand-set numerals instead of default list markers. */
+.toolkit-group:first-of-type ol {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: kit;
+  gap: 0.9rem;
+}
+
+.toolkit-group:first-of-type ol > li {
+  counter-increment: kit;
+  position: relative;
+  padding-left: 2.6rem;
+}
+
+.toolkit-group:first-of-type ol > li::before {
+  content: counter(kit);
+  position: absolute;
+  left: 0;
+  top: -0.35rem;
+  width: 1.9rem;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--crimson);
+}
+
+.toolkit-group--coda {
+  margin-top: 3rem;
+  padding: 1.6rem 1.75rem 0.6rem;
+  border: 1px solid var(--border-hi);
+  border-top-width: 3px;
+  border-top-color: var(--crimson);
+  background: var(--cream-2);
+}
+
+.article-prose .toolkit-group--coda > h2 { font-size: 1.6rem; }
+.toolkit-group--coda > h2 ~ p { font-style: normal; }
+
+/* An entry reached from a post's link gets a brief highlight. */
+.toolkit-page .article-prose :is(h2, h3):target {
+  background: var(--crimson-pale);
+  box-shadow: 0 0 0 0.4rem var(--crimson-pale);
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolkit-contents,
+  .toolkit-example,
+  .toolkit-entry:nth-of-type(even) .toolkit-example { transform: none; }
+  .toolkit-jumpbar,
+  .toolkit-jumpbar.is-shown,
+  .toolkit-jumpbar-chevron { transition: none; }
+}
+
 .article-prose p,
 .article-prose li {
   font-size: 1rem;
@@ -4006,6 +4553,31 @@ main {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
+}
+
+/* Quiet "Back to top" link at the end of long pages (posts, toolkit). */
+.back-to-top {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  text-decoration: none;
+}
+
+.article-footer .back-to-top { display: table; }
+
+.back-to-top:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
 }
 
 .article-disclosure {

@@ -46,6 +46,8 @@ When something can't be explained, it's tempting to fill the gap with the most e
 
 The honest move is to let "unknown" stay unknown until the evidence names something specific. A blurry shape is consistent with a balloon, a drone, a bird, a reflection, *or* a spacecraft, so it can't count as evidence for just one of them. Ask what each explanation predicts that the others don't, then go and look for that.
 
+*This tool has an entry in [The Skeptic's Toolkit](/toolkit#appeal-to-ignorance), our guide to reasoning tools, logical fallacies, and cognitive biases.*
+
 [^1]: **Survey.** Brenan, M. (2026, August 26). "Americans Still Skeptical That UFOs Are Aliens." *Gallup*. https://news.gallup.com/poll/713765/americans-skeptical-ufos-aliens.aspx
 
 [^2]: **Government agency.** Office of the Director of National Intelligence. (2021, June 25). *Preliminary Assessment: Unidentified Aerial Phenomena*. https://www.dni.gov/files/ODNI/documents/assessments/Prelimary-Assessment-UAP-20210625.pdf
