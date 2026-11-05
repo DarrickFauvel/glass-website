@@ -8,6 +8,10 @@
 
 <%~ include("../partials/section-rule") %>
 
+<%~ include("quiz-teaser", it) %>
+
+<%~ include("../partials/section-rule") %>
+
 <%~ include("about", it) %>
 
 <%~ include("../partials/section-rule") %>

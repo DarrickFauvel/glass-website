@@ -72,6 +72,8 @@ Any one study can be wrong, through chance, a flaw in its design, or something n
 
 A *fallacy* is a flaw in reasoning: an argument whose conclusion doesn't actually follow from its reasons. The definitions below follow the *Internet Encyclopedia of Philosophy*'s guide to fallacies.[^4]
 
+Think you can spot them? [Test yourself with Spot the Fallacy](/toolkit/quiz), a quick quiz of ten short cases.
+
 ### Ad hominem
 
 Attacking the person making an argument instead of the argument itself.[^4]

@@ -54,6 +54,15 @@ If a claim seems right but you couldn't fully verify it, keep it only with an HT
 
 The reviewer resolves every `VERIFY` before merging. List all of them in the PR body.
 
+## Quiz cases
+
+`content/quiz.md` holds the cases for the Spot the Fallacy quiz at `/toolkit/quiz`, and they go through the same review as a post.
+
+- **Scenarios are fictional,** so they need no citations. Don't attribute invented quotes or results to real people, organizations, or studies.
+- **Explain the reasoning, not the world.** `why` and `notWhy` should say why the argument works or fails, without making empirical claims of their own. If a case needs a fact to make sense, cite it in the toolkit entry instead, or rewrite the case.
+- **Match the toolkit.** The answer must fit that fallacy's definition in `content/toolkit.md`. Only hand-pick a near-miss distractor that's clearly wrong on a close reading, and never one that also fits.
+- **Keep it fair.** Critique the argument, never the believer. Sound cases must be sound, not just harder to fault, because they exist to show that not every argument is a fallacy.
+
 ## Frontmatter
 
 ```yaml

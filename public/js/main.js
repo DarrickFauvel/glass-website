@@ -2063,3 +2063,297 @@ if (prefersReducedMotion) {
     if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   });
 }());
+
+// ===== Spot the Fallacy quiz (/toolkit/quiz) =====
+(function () {
+  const game = document.getElementById('quiz-game');
+  const dataEl = document.getElementById('quiz-data');
+  if (!game || !dataEl) return;
+
+  const { options, cases } = JSON.parse(dataEl.textContent);
+  const fallback = document.getElementById('quiz-fallback');
+  const status = document.getElementById('quiz-status');
+  const optionById = new Map(options.map((option) => [option.id, option]));
+
+  const SOUND = 'sound';
+  // src/lib/quiz.js checks the content can fill a round of this shape.
+  const SOUND_PER_ROUND = 2;
+  const FALLACIES_PER_ROUND = 8;
+  const ROUND_SIZE = SOUND_PER_ROUND + FALLACIES_PER_ROUND;
+  const BEST_KEY = 'glass-quiz-best';
+  const TURN_MS = 170;
+
+  const RANKS = [
+    { min: 10, title: 'Fully calibrated', note: 'A perfect file. Now try catching one in your own thinking.' },
+    { min: 8, title: 'Sharp-eyed skeptic', note: 'Very little got past you.' },
+    { min: 5, title: 'Good instincts', note: 'You can tell when something sounds off. Naming it takes practice.' },
+    { min: 0, title: 'Case still open', note: 'These are hard, and the near-misses are close on purpose. Every skeptic starts here.' },
+  ];
+
+  let round = [];
+  let index = 0;
+  let score = 0;
+  let missed = [];
+
+  function shuffle(list) {
+    const result = [...list];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+
+  // Two sound cases, then one case each from eight different fallacies.
+  function dealRound() {
+    const shuffled = shuffle(cases);
+    const sound = shuffled.filter((c) => c.answer === SOUND).slice(0, SOUND_PER_ROUND);
+    const usedFallacies = new Set();
+    const fallacies = shuffled.filter((c) => {
+      if (c.answer === SOUND || usedFallacies.has(c.answer)) return false;
+      usedFallacies.add(c.answer);
+      return true;
+    }).slice(0, FALLACIES_PER_ROUND);
+    return shuffle([...sound, ...fallacies]);
+  }
+
+  // "Holds up" is always last, so its position gives nothing away.
+  function choicesFor(quizCase) {
+    const fallacies = [...quizCase.distractors];
+    if (quizCase.answer !== SOUND) fallacies.push(quizCase.answer);
+    return [...shuffle(fallacies), SOUND];
+  }
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function readBest() {
+    try {
+      const best = Number(localStorage.getItem(BEST_KEY));
+      return Number.isInteger(best) && best > 0 ? best : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function saveBest(best) {
+    try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) { /* storage unavailable */ }
+  }
+
+  function newCard() {
+    const card = el('section', 'quiz-card');
+    // A slightly different tilt per card, like a stack of real ones.
+    card.style.setProperty('--card-tilt', `${(Math.random() * 1.6 - 0.8).toFixed(2)}deg`);
+    card.style.setProperty('--tape-tilt', `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+    const tape = el('span', 'quiz-tape');
+    tape.setAttribute('aria-hidden', 'true');
+    card.appendChild(tape);
+    return card;
+  }
+
+  function cardHeader(card) {
+    const header = el('div', 'quiz-card-header');
+    header.append(
+      el('p', 'quiz-count', `Case ${index + 1} of ${ROUND_SIZE}`),
+      el('p', 'quiz-tally', `${score} correct`)
+    );
+    card.appendChild(header);
+  }
+
+  function showCard(card, focusTarget) {
+    game.replaceChildren(card);
+    if (focusTarget) {
+      if (!focusTarget.hasAttribute('tabindex')) focusTarget.setAttribute('tabindex', '-1');
+      focusTarget.focus({ preventScroll: true });
+    }
+    card.scrollIntoView({ block: 'nearest' });
+  }
+
+  // Turns the card over, swapping its face at the halfway point. With reduced
+  // motion the swap just happens.
+  function turnTo(card, focusTarget) {
+    const current = game.firstElementChild;
+    if (!current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      showCard(card, focusTarget);
+      return;
+    }
+    current.classList.add('quiz-card--turn-out');
+    window.setTimeout(() => {
+      card.classList.add('quiz-card--turn-in');
+      showCard(card, focusTarget);
+    }, TURN_MS);
+  }
+
+  function renderQuestion(moveFocus) {
+    const quizCase = round[index];
+    const card = newCard();
+    cardHeader(card);
+
+    const scenario = el('p', 'quiz-scenario', quizCase.scenario);
+    card.appendChild(scenario);
+
+    const form = el('form', 'quiz-form');
+    const fieldset = el('fieldset');
+    fieldset.appendChild(el('legend', '', "What's going on here?"));
+    const submit = el('button', 'quiz-btn', 'Check my answer');
+    submit.type = 'submit';
+    submit.disabled = true;
+
+    choicesFor(quizCase).forEach((id) => {
+      const label = el('label', 'quiz-option');
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'quiz-choice';
+      input.value = id;
+      // Labels are escaped HTML from the toolkit's rendered headings.
+      const text = el('span');
+      text.innerHTML = optionById.get(id).label;
+      label.append(input, text);
+      fieldset.appendChild(label);
+    });
+
+    // Submitted by button, not on change: arrow keys change a radio group's
+    // selection, so answering on change would lock in the first keypress.
+    fieldset.addEventListener('change', () => { submit.disabled = false; });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const choice = form.querySelector('input:checked');
+      if (choice) renderAnswer(quizCase, choice.value);
+    });
+    form.append(fieldset, submit);
+    card.appendChild(form);
+
+    if (moveFocus) turnTo(card, scenario);
+    else showCard(card);
+  }
+
+  function renderAnswer(quizCase, choice) {
+    const correct = choice === quizCase.answer;
+    if (correct) score += 1;
+    else missed.push(quizCase.answer);
+
+    const answer = optionById.get(quizCase.answer);
+    const card = newCard();
+    card.classList.add('quiz-card--back');
+    cardHeader(card);
+
+    const verdict = el('h2', `quiz-verdict quiz-verdict--${correct ? 'right' : 'wrong'}`);
+    const mark = el('span', 'quiz-verdict-mark', correct ? '✓' : '✗');
+    mark.setAttribute('aria-hidden', 'true');
+    verdict.append(mark, correct ? ' Correct' : ' Not quite');
+    card.appendChild(verdict);
+
+    const answerLine = el('p', 'quiz-answer');
+    answerLine.innerHTML = answer.label;
+    card.append(answerLine, el('p', 'quiz-why', quizCase.why));
+
+    if (!correct) {
+      const wrong = el('div', 'quiz-not-why');
+      const heading = el('p', 'quiz-not-why-label');
+      heading.innerHTML = `Why not &ldquo;${optionById.get(choice).label}&rdquo;?`;
+      wrong.append(heading, el('p', '', quizCase.notWhy[choice]));
+      card.appendChild(wrong);
+    }
+
+    const actions = el('div', 'quiz-actions');
+    const last = index === round.length - 1;
+    const next = el('button', 'quiz-btn', last ? 'See my score' : 'Next case');
+    next.type = 'button';
+    next.addEventListener('click', () => {
+      if (last) {
+        renderResults();
+      } else {
+        index += 1;
+        renderQuestion(true);
+      }
+    });
+    actions.append(next, toolkitLink(answer, 'Read more in the toolkit'));
+    card.appendChild(actions);
+
+    turnTo(card, verdict);
+  }
+
+  // Opens in a new tab so following the link doesn't lose the round.
+  function toolkitLink(option, text) {
+    const link = el('a', 'quiz-link', text);
+    link.href = option.href;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.appendChild(el('span', 'visually-hidden', ' (opens in a new tab)'));
+    return link;
+  }
+
+  function renderResults() {
+    const rank = RANKS.find((r) => score >= r.min);
+    const previousBest = readBest();
+    const isNewBest = score > previousBest;
+    if (isNewBest) saveBest(score);
+
+    const card = newCard();
+    card.classList.add('quiz-card--results');
+
+    const heading = el('h2', 'quiz-results-title', 'Case closed');
+    const stamp = el('p', 'quiz-stamp');
+    stamp.append(el('span', 'quiz-stamp-score', `${score} / ${ROUND_SIZE}`), el('span', 'quiz-stamp-rank', rank.title));
+    card.append(heading, stamp, el('p', 'quiz-results-note', rank.note));
+
+    if (isNewBest && previousBest > 0) {
+      card.appendChild(el('p', 'quiz-best', `New personal best! Your old best was ${previousBest} / ${ROUND_SIZE}.`));
+    } else if (!isNewBest && previousBest > 0) {
+      card.appendChild(el('p', 'quiz-best', `Your best so far: ${previousBest} / ${ROUND_SIZE}.`));
+    }
+
+    if (missed.length) {
+      card.appendChild(el('h3', 'quiz-brush-up-title', 'Brush up on'));
+      const list = el('ul', 'quiz-brush-up');
+      [...new Set(missed)].forEach((id) => {
+        const option = optionById.get(id);
+        const item = el('li');
+        const link = toolkitLink(option, '');
+        link.insertAdjacentHTML('afterbegin', option.label);
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+      card.appendChild(list);
+    }
+
+    const actions = el('div', 'quiz-actions');
+    const again = el('button', 'quiz-btn', 'Play again');
+    again.type = 'button';
+    again.addEventListener('click', () => {
+      status.textContent = '';
+      startRound(true);
+    });
+    const share = el('button', 'quiz-btn quiz-btn--quiet', 'Copy my score');
+    share.type = 'button';
+    share.addEventListener('click', async () => {
+      const text = `I scored ${score}/${ROUND_SIZE} on the GLASS Spot the Fallacy quiz. ${location.origin}/toolkit/quiz`;
+      try {
+        await navigator.clipboard.writeText(text);
+        status.textContent = 'Score copied.';
+      } catch (e) {
+        status.textContent = text;
+      }
+    });
+    actions.append(again, share);
+    card.appendChild(actions);
+
+    turnTo(card, heading);
+  }
+
+  function startRound(moveFocus) {
+    round = dealRound();
+    index = 0;
+    score = 0;
+    missed = [];
+    renderQuestion(moveFocus);
+  }
+
+  fallback.remove();
+  game.hidden = false;
+  startRound(false);
+}());

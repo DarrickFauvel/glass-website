@@ -1,0 +1,36 @@
+  <main id="main-content">
+    <article class="article-page quiz-page">
+      <div class="article-header">
+        <p class="blog-meta"><span class="blog-topic">Skeptic's Toolkit</span></p>
+        <h1><%= it.quiz.title %></h1>
+        <p class="auth-subtitle"><%= it.quiz.summary %></p>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <%/* Without JavaScript every case stays readable as a list. main.js
+           replaces this with the card game. */%>
+        <ol class="quiz-fallback" id="quiz-fallback">
+<% it.quiz.cases.forEach((quizCase) => { const answer = it.quiz.options.find((option) => option.id === quizCase.answer); %>
+          <li>
+            <p class="quiz-scenario"><%= quizCase.scenario %></p>
+            <details>
+              <summary>Show the answer</summary>
+              <p><strong><%~ answer.label %>.</strong> <%= quizCase.why %></p>
+              <p><a href="<%= answer.href %>">Read more in the toolkit</a></p>
+            </details>
+          </li>
+<% }) %>
+        </ol>
+        <div id="quiz-game" hidden></div>
+        <p class="quiz-status" id="quiz-status" role="status"></p>
+      </div>
+      <script type="application/json" id="quiz-data"><%~ it.quizJson %></script>
+
+      <div class="article-footer">
+<% if (it.quiz.aiAssisted) { %>
+        <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
+<% } %>
+        <a href="/toolkit#logical-fallacies" class="events-see-all-btn">Read the fallacies in the toolkit &rarr;</a>
+      </div>
+    </article>
+  </main>

@@ -1,0 +1,18 @@
+    <section id="spot-the-fallacy" class="quiz-teaser" aria-labelledby="quiz-teaser-heading">
+      <div class="quiz-teaser-intro reveal">
+        <p class="section-title">Test yourself</p>
+        <h2 id="quiz-teaser-heading">Spot the Fallacy</h2>
+        <p>Ten short case files. Some contain a logical fallacy, and some are perfectly good reasoning. Can you tell which is which?</p>
+      </div>
+      <%/* Plain text on purpose, copied from the bandwagon-horoscopes case: the
+         homepage shouldn't depend on content/quiz.md, which throws on bad
+         content. The answer stays on the quiz. */%>
+      <div class="reveal">
+        <div class="quiz-promo quiz-promo--case">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <p class="quiz-count">Sample case</p>
+          <p class="quiz-scenario">&ldquo;Millions of people read their horoscope every single day. They can&rsquo;t all be wrong.&rdquo;</p>
+          <a href="/toolkit/quiz" class="quiz-btn quiz-btn--link">Can you name the flaw? <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
