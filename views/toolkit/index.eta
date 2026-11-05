@@ -4,6 +4,11 @@
         <p class="blog-meta"><span class="blog-topic">Reference</span></p>
         <h1><%= it.toolkit.title %></h1>
         <p class="auth-subtitle"><%= it.toolkit.summary %></p>
+        <div class="quiz-promo quiz-promo--callout">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <p class="quiz-promo-text"><strong>Put these tools to the test.</strong> Ten short cases, some flawed and some sound. Can you tell which is which?</p>
+          <a href="/toolkit/quiz" class="quiz-btn quiz-btn--link">Play Spot the Fallacy <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </div>
 
       <nav class="toolkit-contents" aria-labelledby="toolkit-contents-title">
@@ -61,6 +66,7 @@
 <% if (it.toolkit.aiAssisted) { %>
         <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
 <% } %>
+        <a href="/toolkit/quiz" class="events-see-all-btn">Test yourself with Spot the Fallacy &rarr;</a>
         <a href="/blog" class="events-see-all-btn">See these tools in action on the blog &rarr;</a>
         <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
       </div>

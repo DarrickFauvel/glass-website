@@ -13,7 +13,8 @@
           <a href="/events"<%~ path === '/events' ? ' class="nav-active" aria-current="page"' : '' %>>Events</a>
 <% const blogCurrent = path === '/blog' ? 'page' : path.startsWith('/blog/') ? 'true' : ''; %>
           <a href="/blog"<%~ blogCurrent ? ' class="nav-active" aria-current="' + blogCurrent + '"' : '' %>>Blog</a>
-          <a href="/toolkit"<%~ path === '/toolkit' ? ' class="nav-active" aria-current="page"' : '' %>>Toolkit</a>
+<% const toolkitCurrent = path === '/toolkit' ? 'page' : path.startsWith('/toolkit/') ? 'true' : ''; %>
+          <a href="/toolkit"<%~ toolkitCurrent ? ' class="nav-active" aria-current="' + toolkitCurrent + '"' : '' %>>Toolkit</a>
           <a href="/#contact">Contact</a>
           <div class="nav-tools">
             <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" data-tooltip="Toggle dark mode">

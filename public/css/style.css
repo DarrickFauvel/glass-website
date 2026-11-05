@@ -676,7 +676,8 @@ nav a.nav-active::after {
   box-shadow: 0 2px 0 var(--border), 0 28px 60px rgba(28, 20, 16, 0.3);
 }
 
-.secrets-modal-tape {
+.secrets-modal-tape,
+.quiz-tape {
   position: absolute;
   z-index: 1;
   top: -0.7rem;
@@ -4603,4 +4604,342 @@ main {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ===== SPOT THE FALLACY QUIZ ===== */
+/* Case files: the same taped index card as the secrets modal, one per case. */
+.quiz {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.quiz-card {
+  position: relative;
+  padding: clamp(2rem, 6vw, 2.75rem) clamp(1.25rem, 5vw, 2.5rem) clamp(1.5rem, 5vw, 2.25rem);
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 2px 0 var(--border), 0 16px 36px rgba(28, 20, 16, 0.14);
+  transform: rotate(var(--card-tilt, -0.5deg));
+}
+
+.quiz-card:focus { outline: none; }
+
+/* Turned over: the back of the card is the page's paper color. */
+.quiz-card--back,
+.quiz-card--results { background: var(--white); }
+
+.quiz-card--turn-out { animation: quizTurnOut 0.17s ease-in forwards; }
+.quiz-card--turn-in { animation: quizTurnIn 0.17s ease-out; }
+
+@keyframes quizTurnOut {
+  from { transform: rotate(var(--card-tilt, 0deg)) scaleX(1); }
+  to   { transform: rotate(var(--card-tilt, 0deg)) scaleX(0); }
+}
+
+@keyframes quizTurnIn {
+  from { transform: rotate(var(--card-tilt, 0deg)) scaleX(0); }
+  to   { transform: rotate(var(--card-tilt, 0deg)) scaleX(1); }
+}
+
+.quiz-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed var(--border-hi);
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+.quiz-card-header p { margin: 0; }
+
+.quiz-count {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
+
+.quiz-scenario {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3.6vw, 1.55rem);
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.quiz-scenario:focus { outline: none; }
+
+.quiz-form fieldset {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border: 0;
+}
+
+.quiz-form legend {
+  margin-bottom: 0.6rem;
+  padding: 0;
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 44px;
+  margin-bottom: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--border-hi);
+  font-size: 0.95rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.quiz-option:hover { border-color: var(--crimson); }
+
+.quiz-option:has(input:checked) {
+  border-color: var(--crimson);
+  background: var(--crimson-pale);
+}
+
+.quiz-option:has(input:focus-visible) {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+.quiz-option input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--crimson);
+}
+
+/* The "nothing wrong here" option sits apart from the named fallacies. */
+.quiz-option:last-of-type {
+  margin-top: 0.8rem;
+  border-style: dashed;
+}
+
+.quiz-btn {
+  min-height: 44px;
+  padding: 0.6rem 1.3rem;
+  border: 1px solid var(--crimson);
+  background: var(--crimson);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.quiz-btn:hover:not(:disabled) { background: var(--crimson-hi); }
+.quiz-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.quiz-btn--quiet {
+  background: transparent;
+  color: var(--crimson);
+}
+
+.quiz-btn--quiet:hover:not(:disabled) {
+  background: var(--crimson-pale);
+}
+
+.quiz-verdict {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.quiz-verdict:focus { outline: none; }
+.quiz-verdict-mark { color: var(--crimson); }
+
+.quiz-answer {
+  display: inline-block;
+  margin: 0 0 0.9rem;
+  padding: 0.15rem 0.6rem;
+  background: rgba(245, 210, 10, 0.55);
+  font-weight: 700;
+  color: var(--ink);
+  transform: rotate(-0.6deg);
+}
+
+[data-theme="dark"] .quiz-answer { background: rgba(245, 210, 10, 0.22); }
+
+.quiz-why {
+  margin: 0 0 1.1rem;
+  color: var(--ink);
+}
+
+.quiz-not-why {
+  margin-bottom: 1.1rem;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--crimson);
+  background: var(--crimson-pale);
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.quiz-not-why p { margin: 0; }
+
+.quiz-not-why-label {
+  margin-bottom: 0.25rem !important;
+  font-weight: 700;
+}
+
+.quiz-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.quiz-link {
+  color: var(--crimson);
+  font-size: 0.9rem;
+}
+
+.quiz-results-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  text-align: center;
+  color: var(--ink);
+}
+
+.quiz-results-title:focus { outline: none; }
+
+/* An ink stamp, a little crooked, as if thumped down by hand. */
+.quiz-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.25rem auto;
+  padding: 0.6rem 1.4rem;
+  border: 3px double var(--crimson);
+  color: var(--crimson);
+  transform: rotate(-3deg);
+}
+
+.quiz-stamp-score {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.quiz-stamp-rank {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.quiz-results-note,
+.quiz-best {
+  margin: 0 0 0.75rem;
+  text-align: center;
+  color: var(--ink-mid);
+}
+
+.quiz-brush-up-title {
+  margin: 1.5rem 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.quiz-brush-up {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.quiz-brush-up li { margin-bottom: 0.25rem; }
+
+.quiz-status {
+  min-height: 1.5em;
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--ink-mid);
+  overflow-wrap: anywhere;
+}
+
+/* Without JavaScript. */
+.quiz-fallback {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.quiz-fallback li { margin-bottom: 1.75rem; }
+.quiz-fallback .quiz-scenario { margin-bottom: 0.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-card--turn-out,
+  .quiz-card--turn-in { animation: none; }
+  .quiz-option,
+  .quiz-btn { transition: none; }
+}
+
+/* Ways into the quiz: homepage section, toolkit callout, post footer. */
+.quiz-teaser {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  align-items: center;
+  padding: clamp(5rem, 10vw, 8rem) 0;
+}
+
+@media (min-width: 860px) {
+  .quiz-teaser { grid-template-columns: 1fr 1.15fr; }
+}
+
+.quiz-teaser-intro {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.quiz-promo {
+  position: relative;
+  padding: 2rem clamp(1.25rem, 4vw, 2rem) 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 2px 0 var(--border), 0 16px 36px rgba(28, 20, 16, 0.14);
+}
+
+.quiz-promo--case { transform: rotate(0.7deg); }
+.quiz-promo--case .quiz-count { margin: 0 0 0.75rem; font-size: 0.8rem; }
+
+.quiz-promo--callout {
+  margin-top: 2rem;
+  transform: rotate(-0.4deg);
+}
+
+.quiz-promo-text {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.quiz-btn--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.quiz-btn--link:hover { color: #fff; }
+
+.article-quiz-nudge {
+  margin: 0;
+  color: var(--ink-mid);
+}
+
+/* The longer footer buttons need to wrap on phones, and to sit apart when
+   there are two side by side. */
+.article-footer .events-see-all-btn {
+  margin-right: 0.6rem;
+  white-space: normal;
 }
