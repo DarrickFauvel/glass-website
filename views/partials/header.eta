@@ -8,8 +8,8 @@
       </div>
       <div class="header-end">
         <nav id="primary-nav" aria-label="Primary">
-          <a href="/#about">About</a>
 <% const path = it.currentPath || ''; %>
+          <a href="/about"<%~ path === '/about' ? ' class="nav-active" aria-current="page"' : '' %>>About</a>
           <a href="/events"<%~ path === '/events' ? ' class="nav-active" aria-current="page"' : '' %>>Events</a>
 <% const blogCurrent = path === '/blog' ? 'page' : path.startsWith('/blog/') ? 'true' : ''; %>
           <a href="/blog"<%~ blogCurrent ? ' class="nav-active" aria-current="' + blogCurrent + '"' : '' %>>Blog</a>

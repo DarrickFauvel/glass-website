@@ -12,10 +12,6 @@
 
 <%~ include("../partials/section-rule") %>
 
-<%~ include("about", it) %>
-
-<%~ include("../partials/section-rule") %>
-
 <%~ include("events-preview", it) %>
   </main>
 

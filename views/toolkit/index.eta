@@ -58,6 +58,8 @@
         </nav>
       </div>
 
+<%~ include("../partials/listen-bar") %>
+
       <div class="article-prose">
 <%~ it.toolkit.html %>
       </div>

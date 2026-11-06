@@ -1993,8 +1993,6 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1180 / 600;
-  object-fit: cover;
   background: var(--cream-3);
 }
 
@@ -2008,6 +2006,10 @@ main {
   .about-figure figcaption {
     padding-right: max(var(--gutter), (100vw - var(--max-width)) / 2 + var(--gutter));
   }
+}
+
+.about-page-link {
+  margin-top: 1.5rem;
 }
 
 .about-text p {
@@ -3708,6 +3710,15 @@ main {
 
 .listen-bar[hidden] {
   display: none;
+}
+
+/* The toolkit's jump bar already sticks under the header on smaller screens,
+   so the listen bar scrolls away there instead of stacking on top of it. */
+@media (max-width: 1099px) {
+  .toolkit-page .listen-bar {
+    position: static;
+    box-shadow: none;
+  }
 }
 
 .listen-btn {
