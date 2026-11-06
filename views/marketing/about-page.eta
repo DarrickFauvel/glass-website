@@ -1,0 +1,21 @@
+  <main id="main-content">
+    <section class="about" aria-labelledby="about-heading">
+      <p class="section-title reveal">About</p>
+      <h1 id="about-heading" class="about-heading reveal">Skeptics from around Greater Lowell</h1>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p class="about-statement">GLASS is the Greater Lowell Area Science-based Skeptics: curious people who value evidence,
+            reason and the scientific method.</p>
+          <p>We meet every month to talk through everything from pseudoscience and the paranormal to medical myths and
+            the habits of clear thinking.</p>
+          <p>Lifelong skeptic or just starting to question the world around you, you’re welcome here.</p>
+          <a href="/events" class="events-see-all-btn about-page-link">Come to a meetup &rarr;</a>
+        </div>
+        <figure class="about-figure reveal">
+          <img src="/images/region/lowell-1856.jpg" width="1400" height="1168" decoding="async"
+            alt="Close-up of a hand-coloured 1856 map centred on Lowell, in blue, with the Merrimack River along its northern edge. Dracut lies to the north, Tyngsborough to the northwest, Chelmsford to the southwest, Tewksbury to the east and Billerica to the south">
+          <figcaption>Lowell and its neighbours, Dracut, Tyngsborough, Chelmsford, Tewksbury and Billerica, on Henry F. Walling’s 1856 map of Middlesex County.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>

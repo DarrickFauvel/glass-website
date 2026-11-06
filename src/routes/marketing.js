@@ -16,6 +16,13 @@ import { claimPictures } from '../lib/claimPictures.js';
 
 export const marketingRouter = Router();
 
+marketingRouter.get('/about', (req, res) => {
+  res.render('marketing/about-page', {
+    pageTitle: 'About',
+    pageDescription: 'GLASS is the Greater Lowell Area Science-based Skeptics: curious people around Lowell, Massachusetts, who value evidence, reason and the scientific method.',
+  });
+});
+
 marketingRouter.get('/', async (req, res) => {
   const events = await listUpcomingEvents(3);
   const eventIds = events.map((event) => event.id);

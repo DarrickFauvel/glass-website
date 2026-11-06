@@ -1243,7 +1243,7 @@ if (prefersReducedMotion) {
   });
 })();
 
-// ===== Blog article read-aloud =====
+// ===== Read-aloud for long-form pages =====
 // Uses the browser's built-in speech synthesis, so there are no audio files or
 // API keys — the bar stays hidden where speechSynthesis isn't supported. Text
 // is spoken one block (paragraph/heading/list item) at a time: long single
@@ -1268,7 +1268,7 @@ if (prefersReducedMotion) {
   const header = document.querySelector('.article-header');
   const blocks = [
     ...header.querySelectorAll('h1, .auth-subtitle'),
-    ...Array.from(prose.querySelectorAll('h2, p, li')).filter(
+    ...Array.from(prose.querySelectorAll('h2, h3, p, li')).filter(
       (el) => !el.closest('.footnotes') && !(el.tagName === 'P' && el.closest('li'))
     ),
   ];
