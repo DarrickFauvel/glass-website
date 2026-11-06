@@ -70,6 +70,7 @@
 <% } %>
         <a href="/toolkit/quiz" class="events-see-all-btn">Test yourself with Spot the Fallacy &rarr;</a>
         <a href="/blog" class="events-see-all-btn">See these tools in action on the blog &rarr;</a>
+        <a href="/skeptics" class="events-see-all-btn">Meet the skeptics behind them &rarr;</a>
         <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
       </div>
     </article>

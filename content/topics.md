@@ -9,6 +9,8 @@ The first ten come from the hero-section "clues" in `public/js/main.js`. Each on
 - [x] **gmos** — *Belief:* Genetically modified organisms pose unique dangers to health and ecosystems, and safety data is suppressed. *Question:* What specific biological mechanism would make a genetically engineered crop inherently harmful?
 - [x] **psychics** — *Belief:* Some people can read minds, predict the future, or talk with the dead. *Question:* Why do psychic powers vanish when double-blind testing rules out cold reading and confirmation bias?
 - [x] **ufos** — *Belief:* Unidentified aerial phenomena are extraterrestrial spacecraft, with recovered craft covered up. *Question:* What evidence distinguishes an unexplained phenomenon from an alien spacecraft?
+- [x] **magicians** — *Belief:* A trained scientist is the best judge of a paranormal claim. *Question:* Why do skeptics keep turning to magicians to test paranormal claims?
+- [x] **prayer** — *Belief:* Praying for a sick person improves their health. *Question:* What happens to patients when prayer is tested in controlled trials?
 - [ ] **astrology** — *Belief:* The positions of celestial bodies at birth shape personality and destiny. *Question:* Why do controlled studies find no correlation between birth date and personality?
 - [ ] **spirits** — *Belief:* Spirits of the dead can interact with the living or speak through mediums. *Question:* Why do mediums perform at chance when verifiable specifics are required?
 - [ ] **aliens** — *Belief:* Extraterrestrials have visited Earth and governments suppress the evidence. *Question:* What testable evidence supports a visit to Earth specifically?

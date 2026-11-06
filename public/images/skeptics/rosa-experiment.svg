@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 720 470" role="img" aria-labelledby="t d">
+  <title id="t">Emily Rosa's therapeutic touch test</title>
+  <desc id="d">A practitioner's two hands rest palms up through cutouts in a tall screen, with a towel over the arms. The tester holds one hand above one of them, chosen by a coin flip.</desc>
+  <defs>
+    <filter id="rough" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <g id="hand" fill="#f3dfc7" stroke="#1c1410" stroke-width="2.4" stroke-linejoin="round">
+      <rect x="-37" y="44" width="15" height="52" rx="7.5"/>
+      <rect x="-19" y="50" width="15" height="62" rx="7.5"/>
+      <rect x="-1" y="50" width="15" height="58" rx="7.5"/>
+      <rect x="17" y="46" width="14" height="46" rx="7"/>
+      <path d="M-38 -14 C-40 16 -42 38 -36 54 L30 54 C37 40 38 22 36 -14 Z"/>
+      <path d="M-36 8 C-58 16 -66 32 -68 46 C-69 55 -57 57 -53 49 C-49 40 -44 34 -34 30" />
+    </g>
+  </defs>
+  <rect width="720" height="470" fill="#f7f2ea"/>
+  <g filter="url(#rough)">
+    <!-- table -->
+    <path d="M26 268 L694 268 L716 446 L4 446 Z" fill="#ead9bd" stroke="#1c1410" stroke-width="2.4"/>
+    <!-- screen -->
+    <path d="M78 32 L642 32 L642 268 L78 268 Z" fill="#e4dcd0" stroke="#1c1410" stroke-width="2.6"/>
+    <path d="M118 268 C118 214 268 214 268 268 Z" fill="#1c1410"/>
+    <path d="M452 268 C452 214 602 214 602 268 Z" fill="#1c1410"/>
+    <!-- hands -->
+    <use xlink:href="#hand" href="#hand" transform="translate(194 280)"/>
+    <use xlink:href="#hand" href="#hand" transform="translate(526 280) scale(-1 1)"/>
+    <!-- towel -->
+    <path d="M108 268 C110 228 276 226 280 268 L286 300 C248 288 148 288 102 300 Z" fill="#f7f2ea" stroke="#1c1410" stroke-width="2.2"/>
+    <path d="M440 268 C442 228 608 226 612 268 L618 300 C580 288 480 288 434 300 Z" fill="#f7f2ea" stroke="#1c1410" stroke-width="2.2"/>
+    <path d="M128 236 C170 222 216 222 260 236 M116 262 C168 248 220 248 272 262 M112 286 C168 274 222 274 278 286" fill="none" stroke="#9b2020" stroke-width="2.2"/>
+    <path d="M460 236 C502 222 548 222 592 236 M448 262 C500 248 552 248 604 262 M444 286 C500 274 554 274 610 286" fill="none" stroke="#9b2020" stroke-width="2.2"/>
+    <!-- tester's hand, hovering -->
+    <use xlink:href="#hand" href="#hand" transform="translate(526 86) scale(.72 .72)"/>
+    <path d="M526 74 L526 34" stroke="#1c1410" stroke-width="30" stroke-linecap="butt"/>
+    <path d="M526 74 L526 36" stroke="#f3dfc7" stroke-width="25"/>
+    <!-- gap -->
+    <path d="M592 172 L592 306" stroke="#9b2020" stroke-width="2.4" stroke-dasharray="7 6"/>
+    <path d="M584 182 L592 170 L600 182 M584 296 L592 308 L600 296" fill="none" stroke="#9b2020" stroke-width="2.4"/>
+    <!-- coin -->
+    <circle cx="360" cy="370" r="30" fill="#f5d20a" stroke="#1c1410" stroke-width="2.4"/>
+    <circle cx="360" cy="370" r="21" fill="none" stroke="#1c1410" stroke-width="1.5" stroke-dasharray="3 4"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#1c1410" font-size="19">
+    <text x="300" y="104" text-anchor="middle">Tall screen: the practitioner</text>
+    <text x="300" y="128" text-anchor="middle">sits behind it and can't see</text>
+    <text x="194" y="210" text-anchor="middle">Towel over each arm</text>
+    <text x="360" y="424" text-anchor="middle">A coin flip picks the hand</text>
+    <text x="582" y="206" text-anchor="end" fill="#9b2020">8–10 cm</text>
+    <text x="476" y="62" text-anchor="end">Tester's hand</text>
+  </g>
+</svg>

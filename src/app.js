@@ -18,6 +18,7 @@ import { rsvpsRouter } from './routes/rsvps.js';
 import { adminRouter } from './routes/admin.js';
 import { blogRouter } from './routes/blog.js';
 import { toolkitRouter } from './routes/toolkit.js';
+import { skepticsRouter } from './routes/skeptics.js';
 import { pictureCredits } from './lib/claimPictures.js';
 
 const DAILY_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -76,6 +77,7 @@ export function createApp() {
   app.use(eventsRouter);
   app.use(blogRouter);
   app.use(toolkitRouter);
+  app.use(skepticsRouter);
   app.use(authRouter);
   app.use(accountRouter);
   app.use(rsvpsRouter);

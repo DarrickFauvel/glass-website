@@ -34,7 +34,7 @@ No `#` heading in the body. The page renders the title from frontmatter.
 - **Never invent** quotes, numbers, authors, titles, or studies. If you can't verify a detail, leave it out or flag it (see below).
 - **Footnote format.** Start with the tier label, then a full citation:
   `[^1]: **Peer-reviewed study.** Sykes, B. C., et al. (2014). "Genetic analysis of hair samples…" *Proceedings of the Royal Society B*, 281, 20140161. https://doi.org/10.1098/rspb.2014.0161`
-  Labels: `Consensus report`, `Systematic review`, `Meta-analysis`, `Review article` (a peer-reviewed narrative review, which counts as tier 2), `Peer-reviewed study`, `Government agency`, `Expert commentary`, `Journalism`, `Survey`, `Reference work` (a scholarly reference such as the *Stanford Encyclopedia of Philosophy* or *Internet Encyclopedia of Philosophy*; fine for defining concepts and fallacies, not for empirical claims).
+  Labels: `Consensus report`, `Systematic review`, `Meta-analysis`, `Review article` (a peer-reviewed narrative review, which counts as tier 2), `Peer-reviewed study`, `Government agency`, `Expert commentary`, `Journalism`, `Survey`, `Reference work` (a scholarly reference such as the *Stanford Encyclopedia of Philosophy* or *Internet Encyclopedia of Philosophy*; fine for defining concepts and fallacies, not for empirical claims), `Primary source` (a person's own letter, paper or book, or their institution's records; fine for what they said and did, not for whether they were right).
 
 ## Science-based framing
 
@@ -62,6 +62,29 @@ The reviewer resolves every `VERIFY` before merging. List all of them in the PR 
 - **Explain the reasoning, not the world.** `why` and `notWhy` should say why the argument works or fails, without making empirical claims of their own. If a case needs a fact to make sense, cite it in the toolkit entry instead, or rewrite the case.
 - **Match the toolkit.** The answer must fit that fallacy's definition in `content/toolkit.md`. Only hand-pick a near-miss distractor that's clearly wrong on a close reading, and never one that also fits.
 - **Keep it fair.** Critique the argument, never the believer. Sound cases must be sound, not just harder to fault, because they exist to show that not every argument is a fallacy.
+
+## Skeptic profiles
+
+`content/skeptics/<slug>.md` holds one profile per person, served at `/skeptics/<slug>`. Profiles go through the same review as a post, and the sourcing rules above apply, with these differences:
+
+- **Minimum per profile:** 3 distinct sources, at least one of them a primary or scholarly source. The 5-source post minimum doesn't apply.
+- **Include the failures.** Every profile needs a `## Mistakes and criticism` section. The page won't load without it, or with fewer than 3 sources. Report a person's real mistakes and the fairest version of the criticism, and say when a critic has a stake in the dispute.
+- **Be careful with living people.** Stick to their public work. Attribute criticism to the person making it, and keep personal details to what they've said publicly and what bears on that work. Before publishing or editing, check that a living subject's page is still accurate.
+- **Don't write a hagiography or a takedown.** The point is to show how good reasoning works in practice, including when it fails.
+
+Add `tools` to the frontmatter with toolkit heading slugs, and the page links them. A bad slug throws an error.
+
+```yaml
+---
+name: "Carl Sagan"
+born: 1934
+died: 1996              # leave out for living people
+role: "Astronomer and science communicator"
+summary: "One or two sentences for the index and the meta description."
+tools: [carl-sagans-baloney-detection-kit]
+aiAssisted: true
+---
+```
 
 ## Frontmatter
 
