@@ -4464,7 +4464,16 @@ main {
 .fallacy-lab-plank { stroke: #6f231c; stroke-width: 2; }
 .fallacy-lab-ring { fill: #f7f2ea; stroke: #1c1410; stroke-width: 1.5; }
 .fallacy-lab-ring-light { fill: #9b2020; stroke: #1c1410; stroke-width: 1.5; }
-.fallacy-lab-target.is-movable { cursor: grab; touch-action: none; }
+
+/* While the target is being placed, a touch on the barn drags it instead of
+   scrolling the page. */
+.fallacy-lab svg.is-painting {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .fallacy-lab-target:focus-visible { outline: 3px solid #f5d20a; outline-offset: 3px; }
 
 .fallacy-lab-hole {
