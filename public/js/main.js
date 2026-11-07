@@ -1950,6 +1950,23 @@ const svgEl = (name, attrs = {}) => {
   return el;
 };
 
+// A patient's face for the exercises: flushed and frowning while unwell,
+// plain and smiling once better.
+function labFace(x, y, index, better) {
+  const tilt = ((index * 7) % 11) - 5; // a fixed, hand-drawn wobble
+  const placed = svgEl('g', { transform: `translate(${x} ${y}) rotate(${tilt})` });
+  const patient = svgEl('g', { class: `fallacy-lab-patient${better ? ' is-better' : ''}` });
+  if (better) patient.style.animationDelay = `${index * 25}ms`;
+  patient.append(
+    svgEl('circle', { class: 'fallacy-lab-face', r: 15 }),
+    svgEl('circle', { class: 'fallacy-lab-eye', cx: -5, cy: -3, r: 1.8 }),
+    svgEl('circle', { class: 'fallacy-lab-eye', cx: 5, cy: -3, r: 1.8 }),
+    svgEl('path', { class: 'fallacy-lab-mouth', d: better ? 'M-7 4 Q0 12 7 4' : 'M-6 9 Q0 3 6 9' }),
+  );
+  placed.append(patient);
+  return placed;
+}
+
 // Texas sharpshooter exercise.
 // The visitor fires random shots, paints a target around the best cluster, then
 // fires again at the same target. The copy lives in content/toolkit.md. Its
@@ -2121,18 +2138,7 @@ document.querySelectorAll('[data-fallacy-lab="post-hoc"]').forEach((lab) => {
   function face(index, better) {
     const x = (index % COLUMNS) * CELL + CELL / 2;
     const y = 24 + Math.floor(index / COLUMNS) * CELL + CELL / 2;
-    const tilt = ((index * 7) % 11) - 5; // a fixed, hand-drawn wobble
-    const placed = svgEl('g', { transform: `translate(${x} ${y}) rotate(${tilt})` });
-    const patient = svgEl('g', { class: `fallacy-lab-patient${better ? ' is-better' : ''}` });
-    if (better) patient.style.animationDelay = `${index * 25}ms`;
-    patient.append(
-      svgEl('circle', { class: 'fallacy-lab-face', r: 15 }),
-      svgEl('circle', { class: 'fallacy-lab-eye', cx: -5, cy: -3, r: 1.8 }),
-      svgEl('circle', { class: 'fallacy-lab-eye', cx: 5, cy: -3, r: 1.8 }),
-      svgEl('path', { class: 'fallacy-lab-mouth', d: better ? 'M-7 4 Q0 12 7 4' : 'M-6 9 Q0 3 6 9' }),
-    );
-    placed.append(patient);
-    return placed;
+    return labFace(x, y, index, better);
   }
 
   function drawGroup(group, label, patients) {
@@ -2194,6 +2200,499 @@ document.querySelectorAll('[data-fallacy-lab="post-hoc"]').forEach((lab) => {
   lab.addEventListener('click', (e) => {
     const action = e.target.closest('[data-lab-action]');
     if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+});
+
+// Cherry-picking exercise.
+// Forty years of made-up temperatures warm overall but swing from year to year.
+// The visitor slides a 10-year window to find a stretch that seems to cool, then
+// sees the trend across every year. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="cherry-picking"]').forEach((lab) => {
+  const YEARS = 40;
+  const SPAN = 10;
+  const WARMING = 0.05; // °F a year, so about half a degree a decade
+  const NOISE = 0.6; // °F standard deviation from year to year
+  const WIDTH = 400;
+  const HEIGHT = 220;
+  const PAD = { left: 34, right: 10, top: 12, bottom: 26 };
+  const plotW = WIDTH - PAD.left - PAD.right;
+  const plotH = HEIGHT - PAD.top - PAD.bottom;
+  const step = plotW / (YEARS - 1);
+
+  const gaussian = () => Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(2 * Math.PI * Math.random());
+  // Least-squares slope in °F a year over temps[from, to).
+  function slope(temps, from, to) {
+    const n = to - from;
+    const meanX = (from + to - 1) / 2;
+    const meanY = temps.slice(from, to).reduce((a, b) => a + b, 0) / n;
+    let num = 0;
+    let den = 0;
+    for (let i = from; i < to; i += 1) {
+      num += (i - meanX) * (temps[i] - meanY);
+      den += (i - meanX) ** 2;
+    }
+    return { slope: num / den, meanX, meanY };
+  }
+  const windows = (temps) => Array.from({ length: YEARS - SPAN + 1 }, (_, i) => slope(temps, i, i + SPAN).slope);
+  // Redraw until the record looks like the copy says: about half a degree a
+  // decade overall, with at least one 10-year stretch that clearly cools.
+  function record() {
+    for (let tries = 0; tries < 500; tries += 1) {
+      const temps = Array.from({ length: YEARS }, (_, i) => 72 + WARMING * i + NOISE * gaussian());
+      const overall = slope(temps, 0, YEARS).slope * 10;
+      if (overall > 0.4 && overall < 0.6 && Math.min(...windows(temps)) * 10 < -0.3) return temps;
+    }
+    return Array.from({ length: YEARS }, (_, i) => 72 + WARMING * i + NOISE * gaussian());
+  }
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${WIDTH} ${HEIGHT}`, role: 'group', 'aria-label': 'A chart of 40 years of made-up temperatures, with a 10-year window you can move' });
+  const axes = svgEl('g');
+  const band = svgEl('rect', { class: 'fallacy-lab-window', y: PAD.top, height: plotH, tabindex: '0', role: 'slider', 'aria-label': 'The 10-year window. Use the arrow keys to move it.', 'aria-valuemin': 1, 'aria-valuemax': YEARS - SPAN + 1 });
+  const line = svgEl('polyline', { class: 'fallacy-lab-series' });
+  const dots = svgEl('g');
+  const windowTrend = svgEl('line', { class: 'fallacy-lab-trend' });
+  const allTrend = svgEl('line', { class: 'fallacy-lab-trend fallacy-lab-trend--all' });
+  svg.append(axes, band, line, dots, allTrend, windowTrend);
+  lab.querySelector('[data-lab-chart]').append(svg);
+
+  const score = lab.querySelector('[data-lab-score]');
+  let temps = [];
+  let start = 0;
+  let movable = false;
+  let low = 0;
+  let high = 1;
+  const x = (i) => PAD.left + i * step;
+  const y = (t) => PAD.top + (1 - (t - low) / (high - low)) * plotH;
+  const perDecade = (s) => `${s >= 0 ? '+' : '−'}${Math.abs(s * 10).toFixed(1)}°F a decade`;
+
+  function trendLine(el, from, to) {
+    const fit = slope(temps, from, to);
+    const at = (i) => fit.meanY + fit.slope * (i - fit.meanX);
+    Object.entries({ x1: x(from), y1: y(at(from)), x2: x(to - 1), y2: y(at(to - 1)) })
+      .forEach(([key, value]) => el.setAttribute(key, value));
+    el.classList.toggle('is-cooling', fit.slope < 0);
+    return fit.slope;
+  }
+
+  function draw() {
+    low = Math.floor(Math.min(...temps)) - 0.5;
+    high = Math.ceil(Math.max(...temps)) + 0.5;
+    const ticks = [];
+    for (let t = Math.ceil(low); t <= high; t += 1) {
+      const label = svgEl('text', { class: 'fallacy-lab-axis', x: PAD.left - 6, y: y(t) + 4, 'text-anchor': 'end' });
+      label.textContent = `${t}°`;
+      ticks.push(svgEl('line', { class: 'fallacy-lab-grid', x1: PAD.left, x2: WIDTH - PAD.right, y1: y(t), y2: y(t) }), label);
+    }
+    [1, 10, 20, 30, 40].forEach((year) => {
+      const label = svgEl('text', { class: 'fallacy-lab-axis', x: x(year - 1), y: HEIGHT - 8, 'text-anchor': 'middle' });
+      label.textContent = `Year ${year}`;
+      ticks.push(label);
+    });
+    axes.replaceChildren(...ticks);
+    line.setAttribute('points', temps.map((t, i) => `${x(i)},${y(t)}`).join(' '));
+    dots.replaceChildren(...temps.map((t, i) => svgEl('circle', { class: 'fallacy-lab-point', cx: x(i), cy: y(t), r: 2.6 })));
+    band.setAttribute('width', (SPAN - 1) * step + 12);
+  }
+
+  function placeWindow(first) {
+    start = Math.min(YEARS - SPAN, Math.max(0, Math.round(first)));
+    band.setAttribute('x', x(start) - 6);
+    band.setAttribute('aria-valuenow', start + 1);
+    band.setAttribute('aria-valuetext', `Years ${start + 1} to ${start + SPAN}`);
+    const s = trendLine(windowTrend, start, start + SPAN);
+    score.textContent = `Years ${start + 1}–${start + SPAN}: ${perDecade(s)}`;
+  }
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    movable = name === 'pick';
+    svg.classList.toggle('is-painting', movable);
+    allTrend.style.display = movable ? 'none' : '';
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    temps = record();
+    draw();
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    placeWindow(0);
+  }
+
+  const actions = {
+    find() {
+      const all = windows(temps);
+      placeWindow(all.indexOf(Math.min(...all)));
+    },
+    quote() {
+      const mine = slope(temps, start, start + SPAN).slope;
+      const overall = trendLine(allTrend, 0, YEARS);
+      lab.querySelector('[data-lab-window]').textContent = perDecade(mine);
+      lab.querySelector('[data-lab-all]').textContent = perDecade(overall);
+      lab.querySelector(`[data-lab-reply="${mine < 0 ? 'down' : 'up'}"]`).hidden = false;
+      score.textContent = `All 40 years: ${perDecade(overall)}`;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('pick');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
+  });
+
+  // As on the barn, the whole chart takes the drag. Pressing inside the window
+  // keeps it under the same spot of the finger; pressing elsewhere centres it there.
+  const yearAt = (e) => {
+    const box = svg.getBoundingClientRect();
+    return (((e.clientX - box.left) / box.width) * WIDTH - PAD.left) / step;
+  };
+  let grab = 0;
+  svg.addEventListener('pointerdown', (e) => {
+    if (!movable) return;
+    const year = yearAt(e);
+    grab = year >= start - 0.5 && year <= start + SPAN - 0.5 ? start - year : -(SPAN - 1) / 2;
+    svg.setPointerCapture(e.pointerId);
+    placeWindow(year + grab);
+  });
+  svg.addEventListener('pointermove', (e) => {
+    if (!movable || !svg.hasPointerCapture(e.pointerId)) return;
+    placeWindow(yearAt(e) + grab);
+  });
+  band.addEventListener('keydown', (e) => {
+    const move = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, Home: -YEARS, End: YEARS }[e.key];
+    if (!movable || move === undefined) return;
+    e.preventDefault();
+    placeWindow(start + move);
+  });
+
+  reset();
+  showStep('pick', false);
+});
+
+// Slippery slope exercise.
+// The visitor rates each link of a made-up chain of consequences, then sees the
+// odds of the whole chain: the product of the links, shrinking at every step.
+// No link can be rated certain, so the chain always ends up less likely than
+// its weakest link. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="slippery-slope"]').forEach((lab) => {
+  const START = 70;
+  const links = [...lab.querySelectorAll('[data-lab-links] li')];
+  const score = lab.querySelector('[data-lab-score]');
+  const percent = (p) => `${Math.round(p * 100)}%`;
+
+  const sliders = links.map((link, i) => {
+    const id = `slippery-slope-link-${i + 1}`;
+    const text = link.querySelector('[data-lab-link-text]');
+    text.id = `${id}-text`;
+    const row = document.createElement('span');
+    row.className = 'fallacy-lab-rating';
+    const input = Object.assign(document.createElement('input'), { type: 'range', id, min: 5, max: 95, step: 5, value: START });
+    input.setAttribute('aria-labelledby', text.id);
+    const output = document.createElement('output');
+    output.htmlFor = id;
+    const show = () => {
+      output.textContent = `${input.value}%`;
+      input.setAttribute('aria-valuetext', `${input.value}% likely`);
+    };
+    input.addEventListener('input', show);
+    show();
+    row.append(input, output);
+    link.append(row);
+    return input;
+  });
+
+  // A staircase of the chain's odds after each link, from 100% down.
+  const WIDTH = 400;
+  const HEIGHT = 170;
+  const BASE = HEIGHT - 22;
+  const TOP = 20;
+  const svg = svgEl('svg', { viewBox: `0 0 ${WIDTH} ${HEIGHT}`, role: 'img' });
+  const slope = lab.querySelector('[data-lab-slope]');
+  slope.append(svg);
+
+  function drawStairs(odds) {
+    const bar = WIDTH / odds.length;
+    svg.replaceChildren(...odds.flatMap((p, i) => {
+      const top = BASE - p * (BASE - TOP);
+      const rect = svgEl('rect', { class: `fallacy-lab-stair${i === odds.length - 1 ? ' is-last' : ''}`, x: i * bar + 4, y: top, width: bar - 8, height: BASE - top });
+      rect.style.animationDelay = `${i * 120}ms`;
+      const value = svgEl('text', { class: 'fallacy-lab-label', x: i * bar + bar / 2, y: top - 6, 'text-anchor': 'middle' });
+      value.textContent = percent(p);
+      const name = svgEl('text', { class: 'fallacy-lab-axis', x: i * bar + bar / 2, y: HEIGHT - 6, 'text-anchor': 'middle' });
+      name.textContent = i === 0 ? 'Trucks' : `Step ${i}`;
+      return [rect, value, name];
+    }));
+    svg.setAttribute('aria-label', `Chance the chain has got this far: ${odds.map((p, i) => `${i === 0 ? 'food trucks arrive' : `step ${i}`} ${percent(p)}`).join(', ')}`);
+  }
+
+  function showStep(name) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    sliders.forEach((input) => { input.disabled = name !== 'rate'; });
+    lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  const actions = {
+    multiply() {
+      const odds = [1];
+      sliders.forEach((input) => odds.push(odds[odds.length - 1] * (input.value / 100)));
+      const total = odds[odds.length - 1];
+      drawStairs(odds);
+      slope.hidden = false;
+      lab.querySelector('[data-lab-total]').textContent = percent(total) === '0%' ? 'under 1%' : percent(total);
+      score.textContent = `The whole chain: ${percent(total) === '0%' ? 'under 1%' : percent(total)}`;
+      showStep('result');
+    },
+    restart() {
+      slope.hidden = true;
+      score.textContent = '';
+      showStep('rate');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
+  });
+
+  slope.hidden = true;
+});
+
+// Appeal to ignorance exercise.
+// A hundred made-up sighting reports start out unexplained. Three rounds of
+// investigation identify most of them; the few left had too little to go on.
+// The visitor then decides what the leftovers show. The copy lives in
+// content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="appeal-to-ignorance"]').forEach((lab) => {
+  const REPORTS = 100;
+  const ROUNDS = 3;
+  const COLUMNS = 10;
+  const CELL = 40;
+  const CAUSES = [
+    ['aircraft', 30], ['satellites', 15], ['balloons', 12], ['planets and stars', 12],
+    ['drones', 10], ['birds', 8], ['camera glitches', 6],
+  ];
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${COLUMNS * CELL} ${(REPORTS / COLUMNS) * CELL}`, role: 'img' });
+  lab.querySelector('[data-lab-reports]').append(svg);
+  const score = lab.querySelector('[data-lab-score]');
+  let reports = [];
+  let round = 0;
+
+  // Each report gets a cause, or none, and the round in which it's identified.
+  // Between 4 and 9 stay unexplained, and aircraft make up the difference.
+  function pile() {
+    const unknown = 4 + Math.floor(Math.random() * 6);
+    const causes = CAUSES.flatMap(([cause, count]) => Array(count).fill(cause)).slice(0, REPORTS - unknown);
+    while (causes.length < REPORTS - unknown) causes.push('aircraft');
+    const all = [...causes, ...Array(unknown).fill(null)].map((cause) => ({ cause, round: 1 + Math.floor(Math.random() * ROUNDS) }));
+    for (let i = all.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+    return all;
+  }
+  const solved = (report) => report.cause && report.round <= round;
+
+  function draw() {
+    svg.replaceChildren(...reports.map((report, i) => {
+      const x = (i % COLUMNS) * CELL + CELL / 2;
+      const y = Math.floor(i / COLUMNS) * CELL + CELL / 2;
+      const tilt = ((i * 7) % 9) - 4;
+      const card = svgEl('g', { transform: `translate(${x} ${y}) rotate(${tilt})`, class: `fallacy-lab-report${solved(report) ? ' is-solved' : ''}${solved(report) && report.round === round ? ' is-new' : ''}` });
+      if (solved(report) && report.round === round) card.style.animationDelay = `${(i % 25) * 20}ms`;
+      card.append(svgEl('rect', { x: -14, y: -14, width: 28, height: 28, rx: 3 }));
+      const mark = svgEl('text', { y: 6, 'text-anchor': 'middle' });
+      mark.textContent = solved(report) ? '✓' : '?';
+      card.append(mark);
+      return card;
+    }));
+    const open = reports.filter((report) => !solved(report)).length;
+    svg.setAttribute('aria-label', `${REPORTS} sighting reports: ${REPORTS - open} explained, ${open} unexplained`);
+    if (!round) {
+      score.textContent = `Unexplained: ${open} of ${REPORTS}`;
+      return;
+    }
+    const tally = CAUSES.map(([cause]) => [cause, reports.filter((report) => report.cause === cause && solved(report)).length])
+      .filter(([, count]) => count)
+      .map(([cause, count]) => `${cause} ${count}`)
+      .join(', ');
+    score.textContent = `Unexplained: ${open} of ${REPORTS}. Identified so far: ${tally}.`;
+  }
+
+  function showStep(name) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    reports = pile();
+    round = 0;
+    lab.querySelector('[data-lab-action="investigate"]').textContent = 'Investigate';
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    draw();
+  }
+
+  const actions = {
+    investigate(button) {
+      round += 1;
+      draw();
+      if (round < ROUNDS) {
+        button.textContent = 'Keep investigating';
+        return;
+      }
+      lab.querySelector('[data-lab-left]').textContent = reports.filter((report) => !report.cause).length;
+      showStep('verdict');
+    },
+    verdict(button) {
+      lab.querySelector(`[data-lab-reply="${button.dataset.labVerdict}"]`).hidden = false;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('investigate');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+});
+
+// Anecdotal evidence exercise.
+// A bracelet that does nothing gets glowing reviews, because buyers whose back
+// pain eased by itself are far likelier to write in. The visitor guesses how
+// many buyers felt better, then sees all 100 and who wrote. The copy lives in
+// content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="anecdotal-evidence"]').forEach((lab) => {
+  const BUYERS = 100;
+  const COLUMNS = 10;
+  const CELL = 40;
+  const BETTER_ODDS = 1 / 3;
+  const WRITES_IF_BETTER = 0.3;
+  const WRITES_IF_NOT = 0.02;
+  const SHOWN = 6;
+  const NAMES = ['Maria', 'Dev', 'Linda', 'Tom', 'Aisha', 'Greg', 'Rosa', 'Sam', 'Paul', 'Mei', 'Joan', 'Luis', 'Pat', 'Nadia'];
+  const PRAISE = [
+    'Two weeks in and my back feels like new. Wish I’d found this years ago!',
+    'I was skeptical, but it really works. I can garden again.',
+    'Finally slept through the night without back pain.',
+    'Bought one for my husband too. Life-changing.',
+    'My chiropractor asked what I’d changed!',
+    'Pain gone within a month. Five stars.',
+    'Best purchase I’ve made all year.',
+    'I can pick up my grandkids again. Thank you!',
+  ];
+  const GRUMBLE = ['Didn’t notice any difference.', 'Nice looking, but my back still hurts.'];
+
+  const reviews = lab.querySelector('[data-lab-reviews]');
+  const people = lab.querySelector('[data-lab-people]');
+  const guess = lab.querySelector('#anecdote-guess');
+  const guessOut = lab.querySelector('[data-lab-guess]');
+  const score = lab.querySelector('[data-lab-score]');
+  const svg = svgEl('svg', { viewBox: `0 0 ${COLUMNS * CELL} ${(BUYERS / COLUMNS) * CELL}`, role: 'img' });
+  people.append(svg);
+  let buyers = [];
+
+  const shuffle = (list) => {
+    const copy = [...list];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  // Redraw until there are enough glowing reviews to fill the wall.
+  function sell() {
+    let all;
+    do {
+      all = Array.from({ length: BUYERS }, () => {
+        const better = Math.random() < BETTER_ODDS;
+        return { better, wrote: Math.random() < (better ? WRITES_IF_BETTER : WRITES_IF_NOT) };
+      });
+    } while (all.filter((b) => b.better && b.wrote).length < 4);
+    return all;
+  }
+
+  function wall() {
+    const names = shuffle(NAMES);
+    const praise = shuffle(PRAISE);
+    const grumble = shuffle(GRUMBLE);
+    const happy = buyers.filter((b) => b.wrote && b.better).length;
+    const unhappy = buyers.filter((b) => b.wrote && !b.better).length;
+    const cards = [
+      ...Array.from({ length: Math.min(happy, SHOWN) }, (_, i) => ({ stars: 5, text: praise[i % praise.length] })),
+      ...Array.from({ length: Math.min(unhappy, GRUMBLE.length) }, (_, i) => ({ stars: 2, text: grumble[i] })),
+    ];
+    reviews.replaceChildren(...shuffle(cards).map((card, i) => {
+      const item = document.createElement('li');
+      const stars = document.createElement('span');
+      stars.className = 'fallacy-lab-stars';
+      stars.textContent = '★'.repeat(card.stars) + '☆'.repeat(5 - card.stars);
+      stars.setAttribute('aria-label', `${card.stars} of 5 stars`);
+      const text = document.createElement('span');
+      text.textContent = `“${card.text}”`;
+      const who = document.createElement('span');
+      who.className = 'fallacy-lab-reviewer';
+      who.textContent = `— ${names[i % names.length]}`;
+      item.append(stars, text, who);
+      return item;
+    }));
+  }
+
+  function crowd() {
+    svg.replaceChildren(...buyers.flatMap((buyer, i) => {
+      const x = (i % COLUMNS) * CELL + CELL / 2;
+      const y = Math.floor(i / COLUMNS) * CELL + CELL / 2 + 2;
+      const parts = [labFace(x, y, i, buyer.better)];
+      if (buyer.wrote) {
+        parts.push(svgEl('path', { class: 'fallacy-lab-bubble', d: `M${x + 7} ${y - 19} h13 a3 3 0 0 1 3 3 v6 a3 3 0 0 1 -3 3 h-7 l-4 4 v-4 h-2 a3 3 0 0 1 -3 -3 v-6 a3 3 0 0 1 3 -3 z` }));
+      }
+      return parts;
+    }));
+  }
+
+  function showStep(name) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    buyers = sell();
+    wall();
+    people.hidden = true;
+    score.textContent = '';
+  }
+
+  guess.addEventListener('input', () => { guessOut.textContent = guess.value; });
+
+  const actions = {
+    reveal() {
+      const better = buyers.filter((b) => b.better).length;
+      const wrote = buyers.filter((b) => b.wrote).length;
+      const happyWrote = buyers.filter((b) => b.wrote && b.better).length;
+      crowd();
+      svg.setAttribute('aria-label', `100 buyers: ${better} felt better and ${BUYERS - better} didn't. ${wrote} wrote a review, ${happyWrote} of them from people who felt better.`);
+      people.hidden = false;
+      lab.querySelector('[data-lab-guessed]').textContent = guess.value;
+      lab.querySelector('[data-lab-better]').textContent = better;
+      lab.querySelector('[data-lab-wrote]').textContent = wrote;
+      score.textContent = `${happyWrote} of ${wrote} reviews came from people who felt better`;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('guess');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
   });
 
   reset();
