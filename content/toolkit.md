@@ -110,7 +110,49 @@ Short for *post hoc, ergo propter hoc*, Latin for "after this, therefore because
 
 > "I wore a copper bracelet and my arthritis got better."
 
-That ignores that many conditions improve on their own.
+That ignores that many conditions improve on their own. Most people with a cold, for example, feel better after a week or two, and there's no cure.[^13]
+
+<div class="fallacy-lab" data-fallacy-lab="post-hoc" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p class="fallacy-lab-title">Try it: sell a miracle cure</p>
+  <div data-lab-patients></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="pick">
+    <p>Twenty made-up patients have just caught a cold, and you've invented a cure. Which one are you selling?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="pick" data-lab-remedy="the magnetic socks">Magnetic socks</button> <button type="button" class="quiz-btn" data-lab-action="pick" data-lab-remedy="the moon-charged water">Moon-charged water</button> <button type="button" class="quiz-btn" data-lab-action="pick" data-lab-remedy="the lucky spoon">Lucky spoon</button></div>
+  </div>
+  <div data-lab-step="wait" hidden>
+    <p>All 20 patients are trying <span data-lab-remedy-name></span>. Now give it time.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="wait">Wait two weeks</button></div>
+  </div>
+  <div data-lab-step="verdict" hidden>
+    <p class="fallacy-lab-quote">"I tried <span data-lab-remedy-name></span> and my cold went away!"</p>
+    <p>The happy patients are telling their friends. Does your cure work?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="works">It works</button> <button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="unsure">Can't tell yet</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p data-lab-reply="works" hidden>Not so fast. Those patients really did get better, but that alone can't show the cure did it.</p>
+    <p data-lab-reply="unsure" hidden>Good call. Those patients really did get better, but that alone can't show the cure did it.</p>
+    <p>Here are 20 more patients who caught a cold the same week and took nothing.</p>
+    <p>With <span data-lab-remedy-name></span>: <strong data-lab-treated></strong> of 20 better. With nothing: <strong data-lab-control></strong> of 20 better.</p>
+    <p>Every patient here had the same made-up 4-in-5 chance of recovering, whatever they took, so your cure did nothing. Any gap between the groups is luck: try again and it will shift, sometimes in the cure's favor. Without a comparison group, the cure gets credit for what would have happened anyway.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+</div>
+
+<details class="toolkit-explainer">
+  <summary>
+    <svg class="toolkit-explainer-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+    <span class="toolkit-explainer-open">Watch the explainer</span>
+    <span class="toolkit-explainer-close">Hide the explainer</span>
+  </summary>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0jl5an4s1" title="The post hoc fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0jl5an4s1">Open it on Scrimba</a>.</figcaption>
+  </figure>
+</details>
 
 ### False dilemma
 
@@ -141,6 +183,44 @@ Leaving out evidence you suspect is relevant because it doesn't fit; the *Intern
 ### Texas sharpshooter
 
 Overemphasizing random results or making selective use of coincidence, like firing at a barn and then painting the target around the bullet holes.[^4] Noticing that a psychic "predicted" an event after the fact, among thousands of predictions that missed, is the sharpshooter at work.
+
+<div class="fallacy-lab" data-fallacy-lab="sharpshooter" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p class="fallacy-lab-title">Try it: be the sharpshooter</p>
+  <div class="fallacy-lab-barn" data-lab-barn></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="fire">
+    <p>Close your eyes and fire 30 shots at the barn. You aren't aiming at anything.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="fire">Fire 30 shots</button></div>
+  </div>
+  <div data-lab-step="paint" hidden>
+    <p>Now paint the target. Drag it, or select it and use the arrow keys, until it circles the tightest group of holes.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="lock">Paint it here</button> <button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="find">Find the tightest group for me</button></div>
+  </div>
+  <div data-lab-step="fair" hidden>
+    <p>That looks like skilled shooting, but you drew the target after the shots landed. Now try a fair test: the target stays where it is, and you fire 30 new shots.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="retest">Fire 30 new shots</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p>Target painted afterward: <strong data-lab-after></strong> of 30. Target set first: <strong data-lab-before></strong> of 30.</p>
+    <p>Every shot was random. By chance alone, about 2 or 3 shots land inside a target this size. Painting it afterward almost always scores higher, because you chose the spot after seeing where the holes were.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+</div>
+
+<details class="toolkit-explainer">
+  <summary>
+    <svg class="toolkit-explainer-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+    <span class="toolkit-explainer-open">Watch the explainer</span>
+    <span class="toolkit-explainer-close">Hide the explainer</span>
+  </summary>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide05k2q6u89" title="The Texas Sharpshooter Fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide05k2q6u89">Open it on Scrimba</a>.</figcaption>
+  </figure>
+</details>
 
 ### Bandwagon
 
@@ -211,3 +291,5 @@ A bad argument doesn't make its conclusion false. Someone can defend a true clai
 [^11]: **Peer-reviewed study.** Dutton, D. L. (1988). "The cold reading technique." *Experientia*, 44(4), 326–332. https://doi.org/10.1007/BF01961271
 
 [^12]: **Peer-reviewed study.** Liu, J., Li, J., Feng, L., Li, L., Tian, J., & Lee, K. (2014). "Seeing Jesus in toast: Neural and behavioral correlates of face pareidolia." *Cortex*, 53, 60–77. https://doi.org/10.1016/j.cortex.2014.01.013
+
+[^13]: **Government agency.** MedlinePlus. "Common Cold." National Library of Medicine, National Institutes of Health. Last updated November 16, 2022. https://medlineplus.gov/commoncold.html
