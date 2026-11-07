@@ -1269,7 +1269,7 @@ if (prefersReducedMotion) {
   const blocks = [
     ...header.querySelectorAll('h1, .auth-subtitle'),
     ...Array.from(prose.querySelectorAll('h2, h3, p, li')).filter(
-      (el) => !el.closest('.footnotes') && !(el.tagName === 'P' && el.closest('li'))
+      (el) => !el.closest('.footnotes, .fallacy-lab, .toolkit-explainer') && !(el.tagName === 'P' && el.closest('li'))
     ),
   ];
   // Builds the spoken text for a block (footnote <sup>s and link hints dropped, whitespace
@@ -1942,6 +1942,262 @@ if (prefersReducedMotion) {
   render();
 }());
 
+
+// ===== Toolkit exercises =====
+const svgEl = (name, attrs = {}) => {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+  Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+  return el;
+};
+
+// Texas sharpshooter exercise.
+// The visitor fires random shots, paints a target around the best cluster, then
+// fires again at the same target. The copy lives in content/toolkit.md. Its
+// odds were simulated: a painted target averages about 7 hits, a fixed one 2.6.
+document.querySelectorAll('[data-fallacy-lab="sharpshooter"]').forEach((lab) => {
+  const WIDTH = 400;
+  const HEIGHT = 260;
+  const RADIUS = 52;
+  const SHOTS = 30;
+  const MARGIN = 4;
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${WIDTH} ${HEIGHT}`, role: 'group', 'aria-label': 'The side of a barn, with bullet holes and a painted target' });
+  svg.append(svgEl('rect', { class: 'fallacy-lab-wall', width: WIDTH, height: HEIGHT }));
+  for (let x = 50; x < WIDTH; x += 50) {
+    svg.append(svgEl('line', { class: 'fallacy-lab-plank', x1: x, y1: 0, x2: x, y2: HEIGHT }));
+  }
+  const holes = svgEl('g');
+  const target = svgEl('g', { class: 'fallacy-lab-target', tabindex: '0', role: 'button', 'aria-label': 'Target. Use the arrow keys to move it.' });
+  [RADIUS, RADIUS * 0.66, RADIUS * 0.33].forEach((r, i) => {
+    target.append(svgEl('circle', { r, class: i % 2 ? 'fallacy-lab-ring-light' : 'fallacy-lab-ring' }));
+  });
+  svg.append(target, holes);
+  lab.querySelector('[data-lab-barn]').append(svg);
+
+  const score = lab.querySelector('[data-lab-score]');
+  let shots = [];
+  let centre = { x: WIDTH / 2, y: HEIGHT / 2 };
+  let painted = 0;
+  let movable = false;
+
+  const fire = () => Array.from({ length: SHOTS }, () => ({
+    x: MARGIN + Math.random() * (WIDTH - 2 * MARGIN),
+    y: MARGIN + Math.random() * (HEIGHT - 2 * MARGIN),
+  }));
+  const hits = (at) => shots.filter((s) => (s.x - at.x) ** 2 + (s.y - at.y) ** 2 <= RADIUS ** 2).length;
+
+  function drawShots() {
+    holes.replaceChildren(...shots.map((s, i) => {
+      const hole = svgEl('circle', { class: 'fallacy-lab-hole', cx: s.x, cy: s.y, r: 3.5 });
+      hole.style.animationDelay = `${i * 25}ms`;
+      return hole;
+    }));
+  }
+
+  function placeTarget(x, y) {
+    centre = {
+      x: Math.min(WIDTH - RADIUS, Math.max(RADIUS, x)),
+      y: Math.min(HEIGHT - RADIUS, Math.max(RADIUS, y)),
+    };
+    target.setAttribute('transform', `translate(${centre.x} ${centre.y})`);
+    if (movable) score.textContent = `${hits(centre)} of ${SHOTS} shots inside the target`;
+  }
+
+  function showStep(name) {
+    lab.querySelectorAll('[data-lab-step]').forEach((step) => {
+      step.hidden = step.dataset.labStep !== name;
+    });
+    movable = name === 'paint';
+    target.style.display = name === 'fire' ? 'none' : '';
+    target.classList.toggle('is-movable', movable);
+    lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  const actions = {
+    fire() {
+      shots = fire();
+      drawShots();
+      showStep('paint');
+      placeTarget(WIDTH / 2, HEIGHT / 2);
+    },
+    find() {
+      let best = centre;
+      let most = -1;
+      for (let x = RADIUS; x <= WIDTH - RADIUS; x += 6) {
+        for (let y = RADIUS; y <= HEIGHT - RADIUS; y += 6) {
+          const count = hits({ x, y });
+          if (count > most) { most = count; best = { x, y }; }
+        }
+      }
+      placeTarget(best.x, best.y);
+    },
+    lock() {
+      painted = hits(centre);
+      showStep('fair');
+      score.textContent = `${painted} of ${SHOTS} shots inside the target`;
+    },
+    retest() {
+      shots = fire();
+      drawShots();
+      const fair = hits(centre);
+      lab.querySelector('[data-lab-after]').textContent = painted;
+      lab.querySelector('[data-lab-before]').textContent = fair;
+      showStep('result');
+      score.textContent = `${fair} of ${SHOTS} new shots inside the target`;
+    },
+    restart() {
+      shots = [];
+      holes.replaceChildren();
+      score.textContent = '';
+      showStep('fire');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
+  });
+
+  function pointerPosition(e) {
+    const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
+    placeTarget(point.x, point.y);
+  }
+  target.addEventListener('pointerdown', (e) => {
+    if (!movable) return;
+    target.setPointerCapture(e.pointerId);
+    pointerPosition(e);
+  });
+  target.addEventListener('pointermove', (e) => {
+    if (movable && target.hasPointerCapture(e.pointerId)) pointerPosition(e);
+  });
+  target.addEventListener('keydown', (e) => {
+    const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[e.key];
+    if (!movable || !step) return;
+    e.preventDefault();
+    placeTarget(centre.x + step[0], centre.y + step[1]);
+  });
+
+  placeTarget(centre.x, centre.y);
+  target.style.display = 'none';
+  lab.hidden = false;
+});
+
+// Post hoc exercise.
+// The visitor gives a made-up cure to patients who mostly recover anyway, judges
+// it, then sees a comparison group that took nothing. Both groups use the same
+// odds, so the cure never does anything. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="post-hoc"]').forEach((lab) => {
+  const PATIENTS = 20;
+  const COLUMNS = 10;
+  const CELL = 40;
+  const RECOVERY_ODDS = 0.8;
+  const GROUP_HEIGHT = 104; // a label plus two rows of faces
+  const GROUP_GAP = 14;
+
+  const svg = svgEl('svg', { viewBox: `0 0 400 ${GROUP_HEIGHT}`, role: 'img' });
+  const treatedGroup = svgEl('g');
+  const controlGroup = svgEl('g', { transform: `translate(0 ${GROUP_HEIGHT + GROUP_GAP})` });
+  svg.append(treatedGroup, controlGroup);
+  lab.querySelector('[data-lab-patients]').append(svg);
+
+  const score = lab.querySelector('[data-lab-score]');
+  const allSick = () => Array(PATIENTS).fill(false);
+  const catchCold = () => Array.from({ length: PATIENTS }, () => Math.random() < RECOVERY_ODDS);
+  const countBetter = (group) => group.filter(Boolean).length;
+  let remedy = '';
+  let treated = allSick();
+
+  function face(index, better) {
+    const x = (index % COLUMNS) * CELL + CELL / 2;
+    const y = 24 + Math.floor(index / COLUMNS) * CELL + CELL / 2;
+    const tilt = ((index * 7) % 11) - 5; // a fixed, hand-drawn wobble
+    const placed = svgEl('g', { transform: `translate(${x} ${y}) rotate(${tilt})` });
+    const patient = svgEl('g', { class: `fallacy-lab-patient${better ? ' is-better' : ''}` });
+    if (better) patient.style.animationDelay = `${index * 25}ms`;
+    patient.append(
+      svgEl('circle', { class: 'fallacy-lab-face', r: 15 }),
+      svgEl('circle', { class: 'fallacy-lab-eye', cx: -5, cy: -3, r: 1.8 }),
+      svgEl('circle', { class: 'fallacy-lab-eye', cx: 5, cy: -3, r: 1.8 }),
+      svgEl('path', { class: 'fallacy-lab-mouth', d: better ? 'M-7 4 Q0 12 7 4' : 'M-6 9 Q0 3 6 9' }),
+    );
+    placed.append(patient);
+    return placed;
+  }
+
+  function drawGroup(group, label, patients) {
+    const title = svgEl('text', { class: 'fallacy-lab-label', x: 4, y: 15 });
+    title.textContent = `${label}: ${countBetter(patients)} of ${PATIENTS} better`;
+    group.replaceChildren(title, ...patients.map((better, i) => face(i, better)));
+  }
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((step) => {
+      step.hidden = step.dataset.labStep !== name;
+    });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    treated = allSick();
+    drawGroup(treatedGroup, 'Your patients', treated);
+    controlGroup.replaceChildren();
+    svg.setAttribute('viewBox', `0 0 400 ${GROUP_HEIGHT}`);
+    svg.setAttribute('aria-label', `${PATIENTS} patients with colds, all still sick`);
+    score.textContent = '';
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+  }
+
+  const actions = {
+    pick(button) {
+      remedy = button.dataset.labRemedy;
+      lab.querySelectorAll('[data-lab-remedy-name]').forEach((name) => { name.textContent = remedy; });
+      showStep('wait');
+    },
+    wait() {
+      treated = catchCold();
+      const better = countBetter(treated);
+      drawGroup(treatedGroup, 'Your patients', treated);
+      svg.setAttribute('aria-label', `${better} of ${PATIENTS} patients feel better`);
+      score.textContent = `${better} of ${PATIENTS} patients feel better`;
+      showStep('verdict');
+    },
+    verdict(button) {
+      const control = catchCold();
+      const treatedBetter = countBetter(treated);
+      const controlBetter = countBetter(control);
+      drawGroup(treatedGroup, 'Took your cure', treated);
+      drawGroup(controlGroup, 'Took nothing', control);
+      svg.setAttribute('viewBox', `0 0 400 ${2 * GROUP_HEIGHT + GROUP_GAP}`);
+      svg.setAttribute('aria-label', `Took your cure: ${treatedBetter} of ${PATIENTS} better. Took nothing: ${controlBetter} of ${PATIENTS} better.`);
+      score.textContent = '';
+      lab.querySelector('[data-lab-treated]').textContent = treatedBetter;
+      lab.querySelector('[data-lab-control]').textContent = controlBetter;
+      lab.querySelector(`[data-lab-reply="${button.dataset.labVerdict}"]`).hidden = false;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('pick');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+  lab.hidden = false;
+});
+
+// ===== Toolkit explainers =====
+// Hiding a <details> leaves its iframe running, so narration would carry on
+// out of sight. Reloading the frame on close stops it.
+document.querySelectorAll('.toolkit-explainer').forEach((explainer) => {
+  explainer.addEventListener('toggle', () => {
+    if (explainer.open) return;
+    const frame = explainer.querySelector('iframe');
+    if (frame) frame.src = frame.src;
+  });
+});
 
 // ===== Toolkit contents scrollspy + mobile jump bar =====
 // Marks the part and entry currently being read in the toolkit's contents:
