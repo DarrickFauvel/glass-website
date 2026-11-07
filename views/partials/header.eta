@@ -15,6 +15,8 @@
           <a href="/blog"<%~ blogCurrent ? ' class="nav-active" aria-current="' + blogCurrent + '"' : '' %>>Blog</a>
 <% const toolkitCurrent = path === '/toolkit' ? 'page' : path.startsWith('/toolkit/') ? 'true' : ''; %>
           <a href="/toolkit"<%~ toolkitCurrent ? ' class="nav-active" aria-current="' + toolkitCurrent + '"' : '' %>>Toolkit</a>
+<% const skepticsCurrent = path === '/skeptics' ? 'page' : path.startsWith('/skeptics/') ? 'true' : ''; %>
+          <a href="/skeptics"<%~ skepticsCurrent ? ' class="nav-active" aria-current="' + skepticsCurrent + '"' : '' %>>Skeptics</a>
           <a href="/#contact">Contact</a>
           <div class="nav-tools">
             <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" data-tooltip="Toggle dark mode">

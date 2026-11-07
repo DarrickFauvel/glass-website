@@ -1,0 +1,21 @@
+  <main id="main-content">
+    <section class="claims" aria-labelledby="skeptics-heading">
+      <div class="claims-intro">
+        <p class="section-title">Profiles</p>
+        <h1 id="skeptics-heading">Skeptics, Past and Present</h1>
+        <p>Skepticism isn't a club of people who are always right. These are people who changed how we test claims, along with where they got it wrong or drew fair criticism.</p>
+      </div>
+
+      <ul class="claims-list">
+<% it.skeptics.forEach(function (skeptic) { %>
+        <li class="claim claim--no-picture reveal">
+          <div class="claim-body">
+            <h2 class="claim-title"><a href="/skeptics/<%= skeptic.slug %>" class="claim-link"><%= skeptic.name %></a></h2>
+            <p class="claim-summary"><%= skeptic.summary %></p>
+            <p class="claim-meta"><%= skeptic.role %> · <%= skeptic.lifespan %> · <%= skeptic.sourceCount %> cited sources · <span class="claim-cta">Read the profile</span></p>
+          </div>
+        </li>
+<% }); %>
+      </ul>
+    </section>
+  </main>

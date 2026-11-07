@@ -1,0 +1,49 @@
+  <main id="main-content">
+    <article class="article-page">
+      <div class="article-header">
+        <a href="/skeptics" class="article-back">&larr; All profiles</a>
+        <p class="blog-meta">
+          <span><%= it.skeptic.lifespan %></span>
+          <span class="blog-topic"><%= it.skeptic.role %></span>
+        </p>
+        <h1><%= it.skeptic.name %></h1>
+        <p class="auth-subtitle"><%= it.skeptic.summary %></p>
+      </div>
+
+<% if (it.skeptic.picture) { %>
+      <figure class="profile-picture<%= it.skeptic.picture.wide ? ' profile-picture--wide' : '' %>">
+        <span class="quiz-tape" aria-hidden="true"></span>
+        <img src="<%= it.skeptic.picture.src %>" alt="<%= it.skeptic.picture.alt %>" decoding="async">
+<% if (it.skeptic.picture.caption) { %>
+        <figcaption><%= it.skeptic.picture.caption %></figcaption>
+<% } %>
+      </figure>
+<% } %>
+
+<%~ include("../partials/listen-bar") %>
+
+      <div class="article-prose">
+<%~ it.skeptic.html %>
+      </div>
+
+<% if (it.skeptic.tools.length) { %>
+      <aside class="profile-tools" aria-labelledby="profile-tools-title">
+        <span class="quiz-tape" aria-hidden="true"></span>
+        <h2 class="profile-tools-title" id="profile-tools-title">From the Toolkit</h2>
+        <ul>
+<% it.skeptic.tools.forEach(function (tool) { %>
+          <li><a href="/toolkit#<%= tool.id %>"><%~ tool.html %></a></li>
+<% }); %>
+        </ul>
+      </aside>
+<% } %>
+
+      <div class="article-footer">
+<% if (it.skeptic.aiAssisted) { %>
+        <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
+<% } %>
+        <a href="/skeptics" class="events-see-all-btn">Meet more skeptics &rarr;</a>
+        <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
+      </div>
+    </article>
+  </main>
