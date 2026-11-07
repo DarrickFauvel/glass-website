@@ -2009,7 +2009,7 @@ document.querySelectorAll('[data-fallacy-lab="sharpshooter"]').forEach((lab) => 
     });
     movable = name === 'paint';
     target.style.display = name === 'fire' ? 'none' : '';
-    target.classList.toggle('is-movable', movable);
+    svg.classList.toggle('is-painting', movable);
     lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
   }
 
@@ -2057,17 +2057,30 @@ document.querySelectorAll('[data-fallacy-lab="sharpshooter"]').forEach((lab) => 
     if (action) actions[action.dataset.labAction]();
   });
 
+  // The whole barn takes the drag, not just the target: the bullet holes sit on
+  // top of it and would swallow a press, and touch-action only works reliably
+  // on the <svg> itself. Pressing the target keeps it under the same spot of
+  // the finger; pressing elsewhere moves it there.
   function pointerPosition(e) {
-    const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
-    placeTarget(point.x, point.y);
+    const box = svg.getBoundingClientRect();
+    return {
+      x: ((e.clientX - box.left) / box.width) * WIDTH,
+      y: ((e.clientY - box.top) / box.height) * HEIGHT,
+    };
   }
-  target.addEventListener('pointerdown', (e) => {
+  let grab = { x: 0, y: 0 };
+  svg.addEventListener('pointerdown', (e) => {
     if (!movable) return;
-    target.setPointerCapture(e.pointerId);
-    pointerPosition(e);
+    const point = pointerPosition(e);
+    const onTarget = (point.x - centre.x) ** 2 + (point.y - centre.y) ** 2 <= RADIUS ** 2;
+    grab = onTarget ? { x: centre.x - point.x, y: centre.y - point.y } : { x: 0, y: 0 };
+    svg.setPointerCapture(e.pointerId);
+    placeTarget(point.x + grab.x, point.y + grab.y);
   });
-  target.addEventListener('pointermove', (e) => {
-    if (movable && target.hasPointerCapture(e.pointerId)) pointerPosition(e);
+  svg.addEventListener('pointermove', (e) => {
+    if (!movable || !svg.hasPointerCapture(e.pointerId)) return;
+    const point = pointerPosition(e);
+    placeTarget(point.x + grab.x, point.y + grab.y);
   });
   target.addEventListener('keydown', (e) => {
     const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[e.key];
