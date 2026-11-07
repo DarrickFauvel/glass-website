@@ -1269,7 +1269,7 @@ if (prefersReducedMotion) {
   const blocks = [
     ...header.querySelectorAll('h1, .auth-subtitle'),
     ...Array.from(prose.querySelectorAll('h2, h3, p, li')).filter(
-      (el) => !el.closest('.footnotes, .fallacy-lab, .toolkit-explainer') && !(el.tagName === 'P' && el.closest('li'))
+      (el) => !el.closest('.footnotes, .toolkit-activities') && !(el.tagName === 'P' && el.closest('li'))
     ),
   ];
   // Builds the spoken text for a block (footnote <sup>s and link hints dropped, whitespace
@@ -2091,7 +2091,6 @@ document.querySelectorAll('[data-fallacy-lab="sharpshooter"]').forEach((lab) => 
 
   placeTarget(centre.x, centre.y);
   target.style.display = 'none';
-  lab.hidden = false;
 });
 
 // Post hoc exercise.
@@ -2198,18 +2197,34 @@ document.querySelectorAll('[data-fallacy-lab="post-hoc"]').forEach((lab) => {
   });
 
   reset();
-  lab.hidden = false;
 });
 
-// ===== Toolkit explainers =====
-// Hiding a <details> leaves its iframe running, so narration would carry on
-// out of sight. Reloading the frame on close stops it.
-document.querySelectorAll('.toolkit-explainer').forEach((explainer) => {
-  explainer.addEventListener('toggle', () => {
-    if (explainer.open) return;
-    const frame = explainer.querySelector('iframe');
-    if (frame) frame.src = frame.src;
+// ===== Toolkit activities =====
+// Each entry's Try it and Watch buttons open one panel at a time. The buttons
+// stay hidden without JavaScript, where a <noscript> link replaces them.
+document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
+  const row = activities.querySelector('.toolkit-activity-buttons');
+  const buttons = [...row.querySelectorAll('button')];
+
+  function setOpen(button, open) {
+    const panel = document.getElementById(button.getAttribute('aria-controls'));
+    const closing = !open && !panel.hidden;
+    button.setAttribute('aria-expanded', String(open));
+    panel.hidden = !open;
+    // A hidden iframe keeps running, so narration would carry on out of sight.
+    // Reloading the frame stops it.
+    const frame = panel.querySelector('iframe');
+    if (closing && frame) frame.src = frame.src;
+  }
+
+  row.addEventListener('click', (e) => {
+    const clicked = e.target.closest('button');
+    if (!clicked) return;
+    const opening = clicked.getAttribute('aria-expanded') !== 'true';
+    buttons.forEach((button) => setOpen(button, button === clicked && opening));
   });
+
+  row.hidden = false;
 });
 
 // ===== Toolkit contents scrollspy + mobile jump bar =====

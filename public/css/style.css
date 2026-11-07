@@ -4519,56 +4519,80 @@ main {
   .fallacy-lab-patient.is-better { animation: none; }
 }
 
-/* An embedded explainer. The frame matches the slides' 16:9 shape on wide
-   screens. On phones it runs edge to edge, with a minimum height so the quiz
-   at the end isn't cropped. */
-.toolkit-explainer {
+/* Each entry's exercise and explainer: two buttons, one open panel. */
+.toolkit-activities {
   margin: 1.75rem 0;
 }
 
-.toolkit-explainer summary {
+.toolkit-activity-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.toolkit-activity-buttons[hidden] {
+  display: none;
+}
+
+.toolkit-activity-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  min-height: 44px;
   padding: 0.55rem 0.95rem;
   color: var(--crimson);
+  font: inherit;
+  font-size: 1rem;
   font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
   background: var(--cream-dark);
   border: 1px solid var(--border-hi);
   transform: rotate(-0.5deg);
   cursor: pointer;
-  list-style: none;
 }
 
-.toolkit-explainer summary::-webkit-details-marker {
-  display: none;
+.toolkit-activity-btn:nth-child(even) {
+  transform: rotate(0.4deg);
 }
 
-.toolkit-explainer summary:hover {
+.toolkit-activity-btn:hover {
   background: var(--cream-3);
 }
 
-.toolkit-explainer summary:focus-visible {
+.toolkit-activity-btn:focus-visible {
   outline: 2px solid var(--crimson);
   outline-offset: 2px;
 }
 
-.toolkit-explainer-close,
-.toolkit-explainer[open] .toolkit-explainer-open,
-.toolkit-explainer[open] .toolkit-explainer-play {
+.toolkit-activity-close,
+.toolkit-activity-btn[aria-expanded="true"] .toolkit-activity-open,
+.toolkit-activity-btn[aria-expanded="true"] .toolkit-activity-play {
   display: none;
 }
 
-.toolkit-explainer[open] .toolkit-explainer-close {
+.toolkit-activity-btn[aria-expanded="true"] .toolkit-activity-close {
   display: inline;
 }
 
-.toolkit-explainer figure {
-  margin: 0.9rem 0 0;
+.toolkit-activities .fallacy-lab {
+  margin: 1.25rem 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .toolkit-explainer summary { transform: none; }
+  .toolkit-activity-btn,
+  .toolkit-activity-btn:nth-child(even) { transform: none; }
+}
+
+/* An embedded explainer. The frame matches the slides' 16:9 shape on wide
+   screens. On phones it runs edge to edge, with a minimum height so the quiz
+   at the end isn't cropped. */
+.toolkit-explainer {
+  margin: 0.9rem 0 0;
+}
+
+.toolkit-explainer figure {
+  margin: 0;
 }
 
 .toolkit-explainer-frame {
