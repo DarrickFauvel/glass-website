@@ -11,11 +11,11 @@
         </div>
       </div>
 
-<% const activityMark = '<span class="toolkit-activity-mark" aria-hidden="true">&#9656;</span><span class="visually-hidden">, includes something to try or watch</span>'; %>
+<% const activityMark = '<span class="toolkit-activity-mark" aria-hidden="true"></span><span class="visually-hidden">, includes something to try or watch</span>'; %>
       <nav class="toolkit-contents" aria-labelledby="toolkit-contents-title">
         <h2 class="toolkit-contents-title" id="toolkit-contents-title">In this toolkit</h2>
 <% if (it.toolkit.contents.some((group) => group.entries.some((entry) => entry.hasActivities))) { %>
-        <p class="toolkit-contents-key"><span class="toolkit-activity-mark" aria-hidden="true">&#9656;</span> Includes something to try or watch</p>
+        <p class="toolkit-contents-key"><span class="toolkit-activity-mark" aria-hidden="true"></span> Includes something to try or watch</p>
 <% } %>
         <ol class="toolkit-contents-groups">
 <% it.toolkit.contents.forEach((group, i) => { %>
