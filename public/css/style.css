@@ -4021,6 +4021,22 @@ main {
   border-bottom: 1px dashed var(--border-hi);
 }
 
+.toolkit-contents-key {
+  margin: -0.4rem 0 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-mid);
+}
+
+.toolkit-activity-mark {
+  margin-left: 0.25em;
+  color: var(--crimson);
+}
+
+.toolkit-contents-key .toolkit-activity-mark {
+  margin-left: 0;
+}
+
 .toolkit-contents-groups {
   list-style: none;
   margin: 0;
