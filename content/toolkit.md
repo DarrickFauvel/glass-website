@@ -102,6 +102,41 @@ Treating a lack of proof as proof of the opposite.[^4]
 
 That fills a gap in knowledge with a conclusion.
 
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="appeal-to-ignorance-try"><span class="toolkit-activity-open">Try it: investigate the sightings</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="appeal-to-ignorance-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0neglpuv7">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="appeal-to-ignorance-try" data-fallacy-lab="appeal-to-ignorance" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <div data-lab-reports></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="investigate">
+    <p>Here are 100 made-up sighting reports, and none of them is explained yet. Each round of investigation checks flight records, weather balloon launches, satellite passes and star charts.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="investigate">Investigate</button></div>
+  </div>
+  <div data-lab-step="verdict" hidden>
+    <p>The investigators have run out of leads. <span data-lab-left></span> reports are still unexplained: blurry photos, short clips, one witness and nothing to check them against. What do they show?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="aliens">They're alien craft</button> <button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="unknown">We don't know what they were</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p data-lab-reply="aliens" hidden>That's the appeal to ignorance. Nobody knowing what something was doesn't tell you what it was.</p>
+    <p data-lab-reply="unknown" hidden>Right. Nobody knowing what something was doesn't tell you what it was.</p>
+    <p>Every report in this made-up pile started out unexplained, and most turned out to be something ordinary once someone could check. The leftovers aren't the strangest reports, just the ones with too little to go on. "Unexplained" means "we don't know yet", and that's evidence for nothing in particular, aliens included.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="appeal-to-ignorance-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0neglpuv7" title="The appeal to ignorance: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0neglpuv7">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
+
 **In action:** [Are UFOs Alien Spacecraft?](/blog/are-ufos-alien-spacecraft)
 
 ### Post hoc
@@ -170,6 +205,43 @@ Arguing that one step will inevitably lead to an extreme outcome, while exaggera
 
 That skips every step in between, and each one would need its own evidence. Some chains of consequences are real, so the useful question is how likely each link actually is.
 
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="slippery-slope-try"><span class="toolkit-activity-open">Try it: test the chain</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="slippery-slope-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0s0p7tqll">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="slippery-slope-try" data-fallacy-lab="slippery-slope" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>At a town meeting, someone warns: "Let food trucks park downtown and the town will go bankrupt." Each step on the way sounds possible. For each one, ask: if the step before it happens, how likely is this one to follow?</p>
+  <ol class="fallacy-lab-chain" data-lab-links>
+    <li><span data-lab-link-text>Some lunch customers switch to the food trucks.</span></li>
+    <li><span data-lab-link-text>Downtown restaurants lose so much business that they close.</span></li>
+    <li><span data-lab-link-text>Empty storefronts drive shoppers away from downtown.</span></li>
+    <li><span data-lab-link-text>The town loses so much tax money it can't pay its bills.</span></li>
+    <li><span data-lab-link-text>The town goes bankrupt.</span></li>
+  </ol>
+  <div data-lab-slope></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="rate">
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="multiply">Work out the whole chain</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p>For the town to go bankrupt, every link has to happen. Multiplying your odds for each link gives <strong data-lab-total></strong> for the whole chain, lower than any single link.</p>
+    <p>Each added step makes the story longer and more vivid, but less likely. Five links at a generous 70% each come to about 17%. The fallacy is treating the end as inevitable without evidence for each link.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="slippery-slope-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0s0p7tqll" title="The slippery slope fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0s0p7tqll">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
+
 ### Special pleading
 
 Applying a standard to everyone else but exempting your own case.[^4] A classic example:
@@ -179,6 +251,38 @@ Applying a standard to everyone else but exempting your own case.[^4] A classic 
 ### Cherry-picking
 
 Leaving out evidence you suspect is relevant because it doesn't fit; the *Internet Encyclopedia of Philosophy* calls this the fallacy of suppressed evidence.[^4] Quoting the one study that found harm while ignoring the hundreds that didn't is cherry-picking.
+
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="cherry-picking-try"><span class="toolkit-activity-open">Try it: write a cooling story</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="cherry-picking-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide01vvs80od">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="cherry-picking-try" data-fallacy-lab="cherry-picking" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <div data-lab-chart></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="pick">
+    <p>Here are 40 years of made-up summer temperatures for a made-up town. You're writing an article claiming the town is getting cooler. Drag the 10-year window, or select it and use the arrow keys, until its trend line slopes down.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="quote">Quote this stretch</button> <button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="find">Find the coolest stretch for me</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p>Your 10 years: <strong data-lab-window></strong>. All 40 years: <strong data-lab-all></strong>.</p>
+    <p data-lab-reply="down" hidden>Your stretch is real data, and it really does cool. But you chose it after seeing the whole record, and left out the 30 years that didn't fit.</p>
+    <p data-lab-reply="up" hidden>Your stretch doesn't show cooling, which is just what you'd expect: most of the record warms. Try again and look for a dip.</p>
+    <p>These made-up numbers rise by about half a degree a decade, plus random year-to-year swings. Short stretches of noisy data point every which way, so if you choose the stretch after looking, you can find one that says almost anything.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="cherry-picking-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide01vvs80od" title="The cherry-picking fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide01vvs80od">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
 
 ### Texas sharpshooter
 
@@ -233,6 +337,39 @@ Generalizing from a story that's too small a sample to support the conclusion.[^
 > "My cousin's naturopath cured her."
 
 That's a real experience. It just can't tell you whether the treatment works in general.
+
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="anecdotal-evidence-try"><span class="toolkit-activity-open">Try it: read the reviews</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="anecdotal-evidence-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide033e85gsh">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="anecdotal-evidence-try" data-fallacy-lab="anecdotal-evidence" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p class="fallacy-lab-title">The Calmback bracelet</p>
+  <ul class="fallacy-lab-reviews" data-lab-reviews></ul>
+  <div data-lab-people hidden></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="guess">
+    <p>A made-up bracelet for back pain, and the reviews are glowing. 100 people bought it. How many do you think felt better?</p>
+    <p class="fallacy-lab-rating"><input type="range" id="anecdote-guess" min="0" max="100" step="5" value="50" aria-label="Your guess: how many of the 100 felt better"> <output for="anecdote-guess" data-lab-guess>50</output></p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="reveal">Show all 100 buyers</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p>You guessed <strong data-lab-guessed></strong>. In fact <strong data-lab-better></strong> of 100 felt better, and <strong data-lab-wrote></strong> wrote a review. The speech bubbles mark who wrote one.</p>
+    <p>The bracelet does nothing here: every buyer had the same made-up 1-in-3 chance of their back easing with time. People who felt better were far more likely to write in, and most of the rest stayed quiet. Each review is honest, but together they're a sample of the lucky ones.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="anecdotal-evidence-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide033e85gsh" title="The fallacy of anecdotal evidence: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide033e85gsh">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
 
 ## Cognitive biases
 
