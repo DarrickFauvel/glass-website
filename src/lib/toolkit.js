@@ -36,10 +36,14 @@ export async function loadToolkit() {
   const html = marked.parse(content);
 
   // Jump list from the rendered headings. `html` is the heading's inner HTML,
-  // already escaped by marked.
+  // already escaped by marked. `hasActivities` marks entries with a Try it or
+  // Watch block, so the list never needs updating by hand.
   const contents = [];
-  for (const [, depth, id, inner] of html.matchAll(/<h([23]) id="([^"]+)">(.*?)<\/h\1>/g)) {
-    const entry = { id, html: inner };
+  for (const section of html.split(/(?=<h[23] id=")/)) {
+    const heading = section.match(/^<h([23]) id="([^"]+)">(.*?)<\/h\1>/);
+    if (!heading) continue;
+    const [, depth, id, inner] = heading;
+    const entry = { id, html: inner, hasActivities: section.includes('data-toolkit-activities') };
     if (depth === '2') contents.push({ ...entry, entries: [] });
     else if (contents.length) contents.at(-1).entries.push(entry);
   }
