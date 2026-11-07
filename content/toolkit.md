@@ -112,9 +112,14 @@ Short for *post hoc, ergo propter hoc*, Latin for "after this, therefore because
 
 That ignores that many conditions improve on their own. Most people with a cold, for example, feel better after a week or two, and there's no cure.[^13]
 
-<div class="fallacy-lab" data-fallacy-lab="post-hoc" hidden>
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="post-hoc-try"><span class="toolkit-activity-open">Try it: sell a miracle cure</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="post-hoc-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0jl5an4s1">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="post-hoc-try" data-fallacy-lab="post-hoc" hidden>
   <span class="quiz-tape" aria-hidden="true"></span>
-  <p class="fallacy-lab-title">Try it: sell a miracle cure</p>
   <div data-lab-patients></div>
   <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
   <div data-lab-step="pick">
@@ -138,21 +143,16 @@ That ignores that many conditions improve on their own. Most people with a cold,
     <p>Every patient here had the same made-up 4-in-5 chance of recovering, whatever they took, so your cure did nothing. Any gap between the groups is luck: try again and it will shift, sometimes in the cure's favor. Without a comparison group, the cure gets credit for what would have happened anyway.</p>
     <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
   </div>
-</div>
-
-<details class="toolkit-explainer">
-  <summary>
-    <svg class="toolkit-explainer-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
-    <span class="toolkit-explainer-open">Watch the explainer</span>
-    <span class="toolkit-explainer-close">Hide the explainer</span>
-  </summary>
+  </div>
+  <div class="toolkit-explainer" id="post-hoc-watch" hidden>
   <figure>
     <div class="toolkit-explainer-frame">
       <iframe src="https://scrimba.com/explain/guide0jl5an4s1" title="The post hoc fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0jl5an4s1">Open it on Scrimba</a>.</figcaption>
   </figure>
-</details>
+  </div>
+</div>
 
 ### False dilemma
 
@@ -184,9 +184,14 @@ Leaving out evidence you suspect is relevant because it doesn't fit; the *Intern
 
 Overemphasizing random results or making selective use of coincidence, like firing at a barn and then painting the target around the bullet holes.[^4] Noticing that a psychic "predicted" an event after the fact, among thousands of predictions that missed, is the sharpshooter at work.
 
-<div class="fallacy-lab" data-fallacy-lab="sharpshooter" hidden>
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="sharpshooter-try"><span class="toolkit-activity-open">Try it: be the sharpshooter</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="sharpshooter-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide05k2q6u89">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="sharpshooter-try" data-fallacy-lab="sharpshooter" hidden>
   <span class="quiz-tape" aria-hidden="true"></span>
-  <p class="fallacy-lab-title">Try it: be the sharpshooter</p>
   <div class="fallacy-lab-barn" data-lab-barn></div>
   <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
   <div data-lab-step="fire">
@@ -206,21 +211,16 @@ Overemphasizing random results or making selective use of coincidence, like firi
     <p>Every shot was random. By chance alone, about 2 or 3 shots land inside a target this size. Painting it afterward almost always scores higher, because you chose the spot after seeing where the holes were.</p>
     <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
   </div>
-</div>
-
-<details class="toolkit-explainer">
-  <summary>
-    <svg class="toolkit-explainer-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
-    <span class="toolkit-explainer-open">Watch the explainer</span>
-    <span class="toolkit-explainer-close">Hide the explainer</span>
-  </summary>
+  </div>
+  <div class="toolkit-explainer" id="sharpshooter-watch" hidden>
   <figure>
     <div class="toolkit-explainer-frame">
       <iframe src="https://scrimba.com/explain/guide05k2q6u89" title="The Texas Sharpshooter Fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
     <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide05k2q6u89">Open it on Scrimba</a>.</figcaption>
   </figure>
-</details>
+  </div>
+</div>
 
 ### Bandwagon
 
