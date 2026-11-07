@@ -68,12 +68,14 @@ async function loadSkeptic(filename, toolLabels) {
     return { id, html: toolLabels.get(id) };
   });
 
+  const born = data.bornApproximate ? `c. ${data.born}` : data.born;
+
   return {
     slug,
     name: data.name,
     born: data.born,
     died: data.died ?? null,
-    lifespan: data.died ? `${data.born}–${data.died}` : `Born ${data.born}`,
+    lifespan: data.died ? `${born}–${data.died}` : `Born ${born}`,
     role: data.role,
     summary: data.summary,
     aiAssisted: Boolean(data.aiAssisted),

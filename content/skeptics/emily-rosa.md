@@ -1,6 +1,7 @@
 ---
 name: "Emily Rosa"
-born: 1987 # VERIFY: inferred from her age in 1996 and 1998; no cited source states the year
+born: 1987 # estimated from her age in 1996 and 1998, so shown as c. 1987
+bornApproximate: true
 role: "Student researcher"
 summary: "At nine, she designed a science fair test of whether therapeutic touch practitioners could feel a human energy field. The results ran in JAMA, and critics still dispute what they show."
 tools: [falsifiability, the-burden-of-proof, the-body-of-evidence-beats-a-single-study]

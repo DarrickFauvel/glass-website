@@ -60,7 +60,7 @@ So when you hear "a scientist saw it" or "I saw it with my own eyes," ask what w
 
 [^4]: **Expert commentary.** Jarrett, C. (2006, December 4). "Magic trick fools us but not our eyes." *BPS Research Digest*, British Psychological Society. https://www.bps.org.uk/research-digest/magic-trick-fools-us-not-our-eyes
 
-[^5]: **Peer-reviewed study.** Kuhn, G., & Land, M. F. (2006). "There's more to magic than meets the eye." *Current Biology*, 16(22), R950–R951. https://doi.org/10.1016/j.cub.2006.10.012 <!-- VERIFY: only citation metadata was checked; the figures come from footnote 4, which summarizes this paper -->
+[^5]: **Peer-reviewed study.** Kuhn, G., & Land, M. F. (2006). "There's more to magic than meets the eye." *Current Biology*, 16(22), R950–R951. https://doi.org/10.1016/j.cub.2006.10.012
 
 [^6]: **Peer-reviewed study.** Thomas, C., & Didierjean, A. (2016). "No need for a social cue! A masked magician can also trick the audience in the vanishing ball illusion." *Attention, Perception, & Psychophysics*, 78(1), 21–29. https://doi.org/10.3758/s13414-015-1036-9
 
