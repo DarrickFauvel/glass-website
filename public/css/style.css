@@ -4391,6 +4391,179 @@ main {
 
 .toolkit-entry:nth-of-type(even) .toolkit-example { transform: rotate(0.45deg); }
 
+/* A hands-on exercise inside a toolkit entry, on a taped-down card. */
+.fallacy-lab {
+  position: relative;
+  margin: 2rem 0;
+  padding: 1.5rem 1.25rem 1.25rem;
+  background: var(--cream-dark);
+  border: 1px solid var(--border-hi);
+  transform: rotate(-0.25deg);
+}
+
+.fallacy-lab[hidden],
+.fallacy-lab [hidden] {
+  display: none;
+}
+
+.fallacy-lab p {
+  margin: 0 0 0.75rem;
+}
+
+.fallacy-lab .fallacy-lab-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.fallacy-lab svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fallacy-lab .fallacy-lab-score {
+  min-height: 1.6em;
+  margin: 0.6rem 0;
+  font-weight: 700;
+}
+
+.fallacy-lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.fallacy-lab-wall { fill: #8f3128; }
+.fallacy-lab-plank { stroke: #6f231c; stroke-width: 2; }
+.fallacy-lab-ring { fill: #f7f2ea; stroke: #1c1410; stroke-width: 1.5; }
+.fallacy-lab-ring-light { fill: #9b2020; stroke: #1c1410; stroke-width: 1.5; }
+.fallacy-lab-target.is-movable { cursor: grab; touch-action: none; }
+.fallacy-lab-target:focus-visible { outline: 3px solid #f5d20a; outline-offset: 3px; }
+
+.fallacy-lab-hole {
+  fill: #1c1410;
+  stroke: #f5d20a;
+  stroke-width: 1.5;
+  animation: fallacy-lab-shot 0.2s ease-out both;
+}
+
+.fallacy-lab .fallacy-lab-quote {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+/* A sick patient is flushed and frowning; a recovered one is plain and smiling. */
+.fallacy-lab-label {
+  fill: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.fallacy-lab-face { fill: var(--crimson-pale); stroke: var(--crimson); stroke-width: 1.5; }
+.fallacy-lab-eye { fill: var(--ink); }
+.fallacy-lab-mouth { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; }
+.fallacy-lab-patient.is-better { animation: fallacy-lab-recover 0.25s ease-out both; }
+.is-better .fallacy-lab-face { fill: var(--surface); stroke: var(--ink); }
+
+@keyframes fallacy-lab-recover {
+  from { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(0.7); }
+  to { opacity: 1; transform-box: fill-box; transform-origin: center; transform: scale(1); }
+}
+
+@keyframes fallacy-lab-shot {
+  from { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(2.5); }
+  to { opacity: 1; transform-box: fill-box; transform-origin: center; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallacy-lab { transform: none; }
+  .fallacy-lab-hole,
+  .fallacy-lab-patient.is-better { animation: none; }
+}
+
+/* An embedded explainer. The frame matches the slides' 16:9 shape on wide
+   screens. On phones it runs edge to edge, with a minimum height so the quiz
+   at the end isn't cropped. */
+.toolkit-explainer {
+  margin: 1.75rem 0;
+}
+
+.toolkit-explainer summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.95rem;
+  color: var(--crimson);
+  font-weight: 700;
+  background: var(--cream-dark);
+  border: 1px solid var(--border-hi);
+  transform: rotate(-0.5deg);
+  cursor: pointer;
+  list-style: none;
+}
+
+.toolkit-explainer summary::-webkit-details-marker {
+  display: none;
+}
+
+.toolkit-explainer summary:hover {
+  background: var(--cream-3);
+}
+
+.toolkit-explainer summary:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}
+
+.toolkit-explainer-close,
+.toolkit-explainer[open] .toolkit-explainer-open,
+.toolkit-explainer[open] .toolkit-explainer-play {
+  display: none;
+}
+
+.toolkit-explainer[open] .toolkit-explainer-close {
+  display: inline;
+}
+
+.toolkit-explainer figure {
+  margin: 0.9rem 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolkit-explainer summary { transform: none; }
+}
+
+.toolkit-explainer-frame {
+  aspect-ratio: 16 / 9;
+  background: var(--cream-3);
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 700px) {
+  .toolkit-explainer-frame {
+    width: 100vw;
+    min-height: 19rem;
+    margin-left: calc(50% - 50vw);
+    border-width: 1px 0;
+  }
+}
+
+.toolkit-explainer-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.toolkit-explainer figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+}
+
 .toolkit-example figcaption {
   font-family: var(--font-mono);
   font-size: 0.68rem;
