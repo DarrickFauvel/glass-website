@@ -896,7 +896,10 @@ nav a.nav-active::after {
     top: 100%;
     left: 0;
     right: 0;
-    flex-direction: column;
+    /* Two columns of links keep the open menu to about a third of a phone
+       screen, however many pages the site gains. */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0;
     background: var(--cream-2);
     padding: 0.5rem 0 1rem;
@@ -917,8 +920,9 @@ nav a.nav-active::after {
 
   #primary-nav a {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 600;
+    line-height: 1.2;
     letter-spacing: -0.01em;
     text-transform: none;
     color: var(--ink);
@@ -933,6 +937,7 @@ nav a.nav-active::after {
   }
 
   #primary-nav .nav-tools {
+    grid-column: 1 / -1;
     display: flex;
     flex-wrap: wrap;
     row-gap: 0.6rem;
@@ -982,6 +987,27 @@ nav a.nav-active::after {
   .nav-open #primary-nav a:nth-child(2) { transition: opacity 0.3s 0.14s ease, transform 0.3s 0.14s ease, color 0.18s, padding-left 0.22s; }
   .nav-open #primary-nav a:nth-child(3) { transition: opacity 0.3s 0.20s ease, transform 0.3s 0.20s ease, color 0.18s, padding-left 0.22s; }
   .nav-open #primary-nav a:nth-child(4) { transition: opacity 0.3s 0.26s ease, transform 0.3s 0.26s ease, color 0.18s, padding-left 0.22s; }
+  .nav-open #primary-nav a:nth-child(5) { transition: opacity 0.3s 0.32s ease, transform 0.3s 0.32s ease, color 0.18s, padding-left 0.22s; }
+  .nav-open #primary-nav a:nth-child(6) { transition: opacity 0.3s 0.38s ease, transform 0.3s 0.38s ease, color 0.18s, padding-left 0.22s; }
+
+  /* Log In, Sign Up and the account links stay small beside the theme toggle. */
+  #primary-nav .nav-tools a {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    padding: 0.35rem 0.5rem;
+  }
+
+  #primary-nav .nav-tools a:hover,
+  #primary-nav .nav-tools a.nav-active {
+    padding-left: 0.5rem;
+  }
+
+  #primary-nav .nav-tools .nav-auth-link--primary {
+    color: var(--crimson);
+    font-weight: 700;
+  }
 }
 
 /* The smallest phones need a smaller logo and button as well. */
