@@ -4623,6 +4623,45 @@ main {
 .fallacy-lab-report.is-solved rect { fill: var(--surface); stroke: var(--border-hi); }
 .fallacy-lab-report.is-solved text { fill: var(--ink-dim); font-size: 14px; font-weight: 400; }
 
+/* Bandwagon: a line of cards saying yes or no aloud, then the private tests
+   underneath. Special pleading: slips of possible tests, crossed off in turn. */
+.fallacy-lab-vote rect { fill: var(--surface); stroke: var(--border-hi); stroke-width: 1.5; }
+.fallacy-lab-vote text { fill: var(--ink-mid); font-family: var(--font-body); font-size: 12px; font-weight: 700; }
+.fallacy-lab-vote.is-yes rect { fill: var(--crimson-pale); stroke: var(--crimson); }
+.fallacy-lab-vote.is-yes text { fill: var(--crimson); }
+.fallacy-lab-vote.is-you rect { stroke: var(--ink); stroke-width: 3; }
+
+.fallacy-lab-slips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.fallacy-lab-slips li {
+  padding: 0.3rem 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  font-size: 0.9rem;
+  transform: rotate(-0.7deg);
+}
+
+.fallacy-lab-slips li:nth-child(even) { transform: rotate(0.6deg); }
+
+.fallacy-lab-slips li.is-ruled-out {
+  background: transparent;
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  text-decoration-color: var(--crimson);
+  text-decoration-thickness: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallacy-lab-slips li { transform: none; }
+}
+
 /* Anecdotal evidence: a wall of review slips, then the whole crowd of buyers
    with a speech bubble over each one who wrote in. */
 .fallacy-lab-reviews {

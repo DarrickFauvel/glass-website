@@ -248,6 +248,64 @@ Applying a standard to everyone else but exempting your own case.[^4] A classic 
 
 > "Controlled tests don't work on psychic powers because the skeptical atmosphere blocks them."
 
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="special-pleading-try"><span class="toolkit-activity-open">Try it: rescue the psychic</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="special-pleading-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide04m8obiq4">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="special-pleading-try" data-fallacy-lab="special-pleading" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Vera, a made-up psychic, says she can sense hidden cards. You're her biggest fan, and your job is to keep her claim alive. Here's everything that could prove her wrong:</p>
+  <ul class="fallacy-lab-slips">
+    <li data-lab-slip="sealed">Sealed cards</li>
+    <li data-lab-slip="stranger">A stranger deals</li>
+    <li data-lab-slip="skeptic">A skeptic watches</li>
+    <li data-lab-slip="camera">A camera records</li>
+    <li data-lab-slip="computer">A computer keeps score</li>
+    <li data-lab-slip="counting">Hits get counted</li>
+    <li data-lab-slip="appointment">A set time and place</li>
+    <li data-lab-slip="agreed">Rules agreed in advance</li>
+  </ul>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="round-1" data-lab-rules-out="sealed stranger">
+    <p>She guesses 25 sealed cards from a deck of five symbols, and gets 5 right. That's exactly what guessing would get. What's your excuse?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="excuse">"Sealing the cards blocks the impressions."</button> <button type="button" class="quiz-btn" data-lab-action="excuse">"A stranger's hands scrambled the energy."</button></div>
+  </div>
+  <div data-lab-step="round-2" data-lab-rules-out="skeptic camera" hidden>
+    <p>Next try: unsealed cards behind a screen, dealt by her friend. Guessing again. What's your excuse?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="excuse">"A skeptic in the room drains her gift."</button> <button type="button" class="quiz-btn" data-lab-action="excuse">"The camera made her self-conscious."</button></div>
+  </div>
+  <div data-lab-step="round-3" data-lab-rules-out="computer counting" hidden>
+    <p>Now she's alone with her friend, nobody filming, and a program records her answers. Guessing again. What's your excuse?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="excuse">"Computers can't register a spiritual hit."</button> <button type="button" class="quiz-btn" data-lab-action="excuse">"Counting hits misses what the gift is about."</button></div>
+  </div>
+  <div data-lab-step="round-4" data-lab-rules-out="appointment agreed" hidden>
+    <p>One last try, in her own living room, at a time she picked, under rules she helped write. Guessing again. What's your excuse?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="excuse">"The gift can't be summoned on a schedule."</button> <button type="button" class="quiz-btn" data-lab-action="excuse">"It only works when nobody's testing it."</button></div>
+  </div>
+  <div data-lab-step="verdict" hidden>
+    <p>Across town, a made-up drug company offers the same excuses for a pill that keeps failing: the trials were too controlled, the doctors were skeptical, and counting recoveries misses the point. Do you accept that from the company?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="reject">No, that's not good enough</button> <button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="accept">Yes, fair enough</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p data-lab-reply="reject" hidden>Most of us would say the same. But those are Vera's excuses too. Holding the company to a standard you waived for her is special pleading.</p>
+    <p data-lab-reply="accept" hidden>At least that's consistent. But if those excuses are fine for everyone, no treatment and no psychic could ever fail a test, and passing one wouldn't mean anything either.</p>
+    <p>Each excuse sounded small, but together they left nothing that could count against her. A claim that can't lose can't really win either.</p>
+    <p>Not every exception is special pleading. An exception is fair when there's an independent reason for it, stated before the result is in, like a medicine that was only ever expected to work at a certain dose.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="special-pleading-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide04m8obiq4" title="Special pleading: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide04m8obiq4">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
+
 ### Cherry-picking
 
 Leaving out evidence you suspect is relevant because it doesn't fit; the *Internet Encyclopedia of Philosophy* calls this the fallacy of suppressed evidence.[^4] Quoting the one study that found harm while ignoring the hundreds that didn't is cherry-picking.
@@ -329,6 +387,43 @@ Overemphasizing random results or making selective use of coincidence, like firi
 ### Bandwagon
 
 Suggesting a claim is true because most people believe it, or more and more people are coming to.[^4] Popularity tells you what people think, not what's true.
+
+A crowd can even grow with no new evidence at all. In an *informational cascade*, each person does best, from where they stand, by following the people ahead of them and setting aside what they know themselves.[^14]
+
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="bandwagon-try"><span class="toolkit-activity-open">Try it: join the line</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="bandwagon-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide01tv6tahe">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="bandwagon-try" data-fallacy-lab="bandwagon" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Twenty people line up to say whether a made-up remedy works. Each ran one small test at home that points the right way 7 times out of 10 (these numbers are invented). Nobody sees anyone else's test. They only hear what the people ahead of them said out loud.</p>
+  <div data-lab-line></div>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="say">
+    <p>You're fifth. Everyone ahead of you said it works. <strong>Your own test says it doesn't.</strong> What do you say out loud?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="say" data-lab-say="yes">It works</button> <button type="button" class="quiz-btn" data-lab-action="say" data-lab-say="no">It doesn't work</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p data-lab-reply="yes" hidden>You went with the crowd. That wasn't silly: four people against one small test looks like good evidence. But your test never reached anyone behind you.</p>
+    <p data-lab-reply="no" hidden>You reported your own test. Everyone behind you still heard four against one, so they followed the crowd anyway. One voice rarely turns a line that already leans.</p>
+    <p><strong data-lab-said></strong> of 20 said out loud that it works, but only <strong data-lab-tests></strong> of the 20 private tests did. The remedy does nothing.</p>
+    <p>The first two people were the only ones adding anything, and both drew misleading tests. From the third person on, the crowd was copying itself, so its size kept counting those same two tests.</p>
+    <p>We dealt those first two tests on purpose. Left to chance, in 1,000 fresh lines, the copying crowd ended up wrong <strong data-lab-copying></strong> times. If everyone had reported their own test instead, the majority would have been wrong <strong data-lab-reporting></strong> times.</p>
+    <p>Agreement means more when people checked for themselves. Ask how many of them looked, not just how many agree.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Join a new line</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="bandwagon-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide01tv6tahe" title="The bandwagon fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide01tv6tahe">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
 
 ### Anecdotal evidence
 
@@ -430,3 +525,5 @@ A bad argument doesn't make its conclusion false. Someone can defend a true clai
 [^12]: **Peer-reviewed study.** Liu, J., Li, J., Feng, L., Li, L., Tian, J., & Lee, K. (2014). "Seeing Jesus in toast: Neural and behavioral correlates of face pareidolia." *Cortex*, 53, 60–77. https://doi.org/10.1016/j.cortex.2014.01.013
 
 [^13]: **Government agency.** MedlinePlus. "Common Cold." National Library of Medicine, National Institutes of Health. Last updated November 16, 2022. https://medlineplus.gov/commoncold.html
+
+[^14]: **Peer-reviewed study.** Bikhchandani, S., Hirshleifer, D., & Welch, I. (1992). "A theory of fads, fashion, custom, and cultural change as informational cascades." *Journal of Political Economy*, 100(5), 992–1026. https://doi.org/10.1086/261849
