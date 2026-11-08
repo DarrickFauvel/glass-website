@@ -2460,6 +2460,129 @@ document.querySelectorAll('[data-fallacy-lab="slippery-slope"]').forEach((lab) =
   slope.hidden = true;
 });
 
+// Straw man exercise.
+// A slider rewords a neighbor's position, step by step, into something easier
+// to attack and less like what they said. The visitor then knocks down
+// whichever version they chose. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="straw-man"]').forEach((lab) => {
+  const twist = lab.querySelector('[data-lab-twist]');
+  const versions = [...lab.querySelectorAll('[data-lab-version]')];
+  const easy = lab.querySelector('[data-lab-easy]');
+  const faithful = lab.querySelector('[data-lab-faithful]');
+
+  function setMeter(meter, value, label) {
+    meter.style.width = `${value}%`;
+    meter.parentElement.setAttribute('aria-label', `${label}: ${value} out of 100`);
+  }
+
+  function update() {
+    versions.forEach((version, i) => { version.hidden = i !== Number(twist.value); });
+    const current = versions[Number(twist.value)].dataset;
+    setMeter(easy, Number(current.labEasyValue), 'Easy to knock down');
+    setMeter(faithful, Number(current.labFaithfulValue), 'Still what they said');
+  }
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    twist.value = '0';
+    twist.disabled = false;
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    update();
+  }
+
+  twist.addEventListener('input', update);
+
+  const actions = {
+    attack() {
+      twist.disabled = true;
+      lab.querySelector(`[data-lab-reply="${twist.value}"]`).hidden = false;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('twist');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
+  });
+
+  reset();
+});
+
+// False dilemma exercise.
+// Someone offers two boxes for a strange light in the sky. The visitor sorts
+// each possibility into a box or the space between them, which keeps filling
+// up. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="false-dilemma"]').forEach((lab) => {
+  const slips = [...lab.querySelectorAll('[data-lab-possibility]')];
+  const trays = Object.fromEntries([...lab.querySelectorAll('[data-lab-tray]')].map((tray) => [tray.dataset.labTray, tray]));
+  const current = lab.querySelector('[data-lab-current]');
+  const hint = lab.querySelector('[data-lab-hint]');
+  const score = lab.querySelector('[data-lab-score]');
+  let index = 0;
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function tally() {
+    score.textContent = `Found outside the two boxes: ${trays.neither.children.length}`;
+  }
+
+  function present() {
+    current.textContent = slips[index].textContent;
+    hint.textContent = '';
+  }
+
+  function reset() {
+    index = 0;
+    Object.values(trays).forEach((tray) => tray.replaceChildren());
+    tally();
+    present();
+  }
+
+  const actions = {
+    sort(button) {
+      const fits = slips[index].dataset.labPossibility;
+      if (button.dataset.labTo !== fits) {
+        hint.textContent = fits === 'neither'
+          ? "Look again: that wouldn't make it an alien craft, and it wouldn't make the witness a liar."
+          : 'Look again: this one really does belong in one of the two boxes.';
+        return;
+      }
+      const placed = document.createElement('li');
+      placed.textContent = slips[index].textContent;
+      trays[fits].append(placed);
+      tally();
+      index += 1;
+      if (index < slips.length) {
+        present();
+        return;
+      }
+      lab.querySelector('[data-lab-outside]').textContent = trays.neither.children.length;
+      lab.querySelector('[data-lab-total]').textContent = slips.length;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('sort');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+});
+
 // Appeal to ignorance exercise.
 // A hundred made-up sighting reports start out unexplained. Three rounds of
 // investigation identify most of them; the few left had too little to go on.
