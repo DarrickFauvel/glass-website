@@ -2373,6 +2373,173 @@ document.querySelectorAll('[data-fallacy-lab="cherry-picking"]').forEach((lab) =
   showStep('pick', false);
 });
 
+// Ad hominem exercise.
+// The visitor rates one unchanging argument as the name tag beside it changes,
+// then sees how far their rating moved. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="ad-hominem"]').forEach((lab) => {
+  const speakers = [...lab.querySelectorAll('[data-lab-speaker]')];
+  const rating = lab.querySelector('[data-lab-strength]');
+  const output = lab.querySelector('[data-lab-strength-value]');
+  const next = lab.querySelector('[data-lab-action="next"]');
+  const chart = lab.querySelector('[data-lab-ratings]');
+  let turn = 0;
+  let ratings = [];
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function showSpeaker() {
+    speakers.forEach((speaker, i) => { speaker.hidden = i !== turn; });
+    next.textContent = turn < speakers.length - 1 ? 'Next name tag' : 'See my ratings';
+  }
+
+  function reset() {
+    turn = 0;
+    ratings = [];
+    rating.value = '5';
+    output.textContent = '5';
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    showSpeaker();
+  }
+
+  function results() {
+    chart.replaceChildren(...speakers.map((speaker, i) => {
+      const row = document.createElement('div');
+      row.className = 'fallacy-lab-track-row';
+      const name = document.createElement('span');
+      name.textContent = speaker.dataset.labSpeaker;
+      const track = document.createElement('span');
+      track.className = 'fallacy-lab-track-bar';
+      track.setAttribute('role', 'img');
+      track.setAttribute('aria-label', `Rated ${ratings[i]} out of 10`);
+      const fill = document.createElement('span');
+      fill.className = 'fallacy-lab-track-fill';
+      fill.style.width = `${ratings[i] * 10}%`;
+      track.append(fill);
+      row.append(name, track);
+      return row;
+    }));
+    const moved = Math.max(...ratings) - Math.min(...ratings);
+    lab.querySelector('[data-lab-moved]').textContent = moved === 1 ? '1 point' : `${moved} points`;
+    lab.querySelector(`[data-lab-reply="${moved ? 'moved' : 'steady'}"]`).hidden = false;
+  }
+
+  rating.addEventListener('input', () => { output.textContent = rating.value; });
+
+  const actions = {
+    next() {
+      ratings.push(Number(rating.value));
+      turn += 1;
+      if (turn < speakers.length) {
+        showSpeaker();
+        return;
+      }
+      results();
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('rate');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction]();
+  });
+
+  reset();
+});
+
+// Appeal to authority exercise.
+// Two made-up experts vouch for a made-up supplement. Each failed check takes
+// a block off that expert's stack. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="appeal-to-authority"]').forEach((lab) => {
+  const FULL = 4;
+  const WIDTH = 400;
+  const HEIGHT = 170;
+  const BLOCK = 24;
+  const STACKS = [{ key: 'first', x: 100, label: 'Famous physicist' }, { key: 'second', x: 300, label: 'Joint specialist' }];
+
+  const svg = svgEl('svg', { viewBox: `0 0 ${WIDTH} ${HEIGHT}`, role: 'img' });
+  lab.querySelector('[data-lab-stacks]').append(svg);
+  let blocks = {};
+
+  function draw() {
+    svg.replaceChildren(
+      svgEl('line', { class: 'fallacy-lab-grid', x1: 10, x2: WIDTH - 10, y1: HEIGHT - 26, y2: HEIGHT - 26 }),
+      ...STACKS.flatMap(({ key, x, label }) => {
+        const name = svgEl('text', { class: 'fallacy-lab-axis', x, y: HEIGHT - 7, 'text-anchor': 'middle' });
+        name.textContent = label;
+        const stack = Array.from({ length: blocks[key] }, (unused, i) => svgEl('rect', {
+          class: 'fallacy-lab-block',
+          x: x - 45 + (i % 2 ? 3 : -2),
+          y: HEIGHT - 26 - (i + 1) * (BLOCK + 2),
+          width: 90,
+          height: BLOCK,
+          rx: 2,
+        }));
+        return [...stack, name];
+      }),
+    );
+    svg.setAttribute('aria-label', STACKS.map(({ key, label }) => `${label}: ${blocks[key]} of ${FULL} blocks of weight`).join('. '));
+  }
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button:not(:disabled)`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    blocks = { first: FULL, second: FULL };
+    lab.querySelectorAll('[data-lab-check]').forEach((button) => {
+      button.disabled = false;
+      button.nextElementSibling.hidden = true;
+    });
+    lab.querySelectorAll('[data-lab-action="next"]').forEach((button) => { button.hidden = true; });
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    draw();
+  }
+
+  const actions = {
+    check(button) {
+      const step = button.closest('[data-lab-step]');
+      const finding = button.nextElementSibling;
+      button.disabled = true;
+      finding.hidden = false;
+      if (button.dataset.labCheck === 'fails') {
+        blocks[step.dataset.labExpert] -= 1;
+        draw();
+      }
+      const moveOn = step.querySelector('[data-lab-action="next"]');
+      if (step.querySelector('[data-lab-check]:not(:disabled)')) {
+        step.querySelector('[data-lab-check]:not(:disabled)').focus({ preventScroll: true });
+      } else {
+        moveOn.hidden = false;
+        moveOn.focus({ preventScroll: true });
+      }
+    },
+    next(button) {
+      showStep(button.dataset.labNext);
+    },
+    verdict(button) {
+      lab.querySelector(`[data-lab-reply="${button.dataset.labVerdict}"]`).hidden = false;
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('first');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+});
+
 // Slippery slope exercise.
 // The visitor rates each link of a made-up chain of consequences, then sees the
 // odds of the whole chain: the product of the links, shrinking at every step.
