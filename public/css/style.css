@@ -4545,21 +4545,113 @@ main {
   to { opacity: 1; transform-box: fill-box; transform-origin: center; transform: scale(1); }
 }
 
+/* Cherry-picking: a hand-plotted chart with a sliding 10-year window. Cooling
+   trends are crimson; the whole record's trend is a dashed ink line. */
+.fallacy-lab-axis { fill: var(--ink-mid); font-family: var(--font-body); font-size: 10px; }
+.fallacy-lab-grid { stroke: var(--border-hi); stroke-width: 1; }
+.fallacy-lab-series { fill: none; stroke: var(--ink-mid); stroke-width: 1.2; stroke-linejoin: round; }
+.fallacy-lab-point { fill: var(--ink); }
+.fallacy-lab-window { fill: var(--crimson-glow); stroke: var(--crimson); stroke-width: 1; stroke-dasharray: 4 3; rx: 3; }
+.fallacy-lab-window:focus-visible { outline: none; stroke-width: 3; stroke-dasharray: none; }
+.fallacy-lab-trend { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.fallacy-lab-trend.is-cooling { stroke: var(--crimson); }
+.fallacy-lab-trend--all,
+.fallacy-lab-trend--all.is-cooling { stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 7 5; }
+
+/* Slippery slope: each link with its own slider, then a staircase of the
+   whole chain's odds. */
+.fallacy-lab-chain {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.fallacy-lab-chain li { margin-bottom: 0.8rem; }
+
+.fallacy-lab-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.3rem;
+}
+
+.fallacy-lab-rating input {
+  flex: 1;
+  max-width: 18rem;
+  accent-color: var(--crimson);
+}
+
+.fallacy-lab-rating output {
+  min-width: 3ch;
+  font-weight: 700;
+}
+
+.fallacy-lab-stair {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  animation: fallacy-lab-recover 0.3s ease-out both;
+}
+
+.fallacy-lab-stair.is-last { fill: var(--crimson-glow); stroke: var(--crimson); }
+
+/* Appeal to ignorance: a pile of report cards, crimson question marks until
+   each one is identified. */
+.fallacy-lab-report rect { fill: var(--crimson-pale); stroke: var(--crimson); stroke-width: 1.5; }
+.fallacy-lab-report text { fill: var(--crimson); font-family: var(--font-body); font-size: 17px; font-weight: 700; }
+.fallacy-lab-report.is-new { animation: fallacy-lab-recover 0.25s ease-out both; }
+.fallacy-lab-report.is-solved rect { fill: var(--surface); stroke: var(--border-hi); }
+.fallacy-lab-report.is-solved text { fill: var(--ink-dim); font-size: 14px; font-weight: 400; }
+
+/* Anecdotal evidence: a wall of review slips, then the whole crowd of buyers
+   with a speech bubble over each one who wrote in. */
+.fallacy-lab-reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.fallacy-lab-reviews li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.7rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 4px 10px -8px rgba(28, 20, 16, 0.5);
+  font-size: 0.92rem;
+  transform: rotate(-0.6deg);
+}
+
+.fallacy-lab-reviews li:nth-child(even) { transform: rotate(0.5deg); }
+.fallacy-lab-stars { color: var(--crimson); letter-spacing: 0.1em; }
+.fallacy-lab-reviewer { color: var(--ink-mid); font-style: italic; }
+.fallacy-lab-bubble { fill: var(--surface); stroke: var(--crimson); stroke-width: 1.5; stroke-linejoin: round; }
+
 @media (prefers-reduced-motion: reduce) {
   .fallacy-lab { transform: none; }
+  .fallacy-lab-reviews li { transform: none; }
   .fallacy-lab-hole,
+  .fallacy-lab-report.is-new,
+  .fallacy-lab-stair,
   .fallacy-lab-patient.is-better { animation: none; }
 }
 
-/* Each entry's exercise and explainer: two buttons, one open panel. */
+/* Each entry's exercise and explainer: two paper tabs, one open panel. The
+   open tab drops its tilt and joins the card below it, like a folder tab; the
+   card's taped corner stays. */
 .toolkit-activities {
   margin: 1.75rem 0;
 }
 
 .toolkit-activity-buttons {
+  position: relative;
+  z-index: 2; /* the open tab covers the card's top border */
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  align-items: flex-end;
+  gap: 0.4rem;
 }
 
 .toolkit-activity-buttons[hidden] {
@@ -4578,8 +4670,9 @@ main {
   font-weight: 700;
   line-height: 1.3;
   text-align: left;
-  background: var(--cream-dark);
+  background: var(--cream-2);
   border: 1px solid var(--border-hi);
+  border-radius: 4px 4px 0 0;
   transform: rotate(-0.5deg);
   cursor: pointer;
 }
@@ -4590,6 +4683,17 @@ main {
 
 .toolkit-activity-btn:hover {
   background: var(--cream-3);
+}
+
+.toolkit-activity-btn[aria-expanded="true"] {
+  margin-bottom: -1px;
+  padding-bottom: calc(0.55rem + 1px);
+  border-bottom-color: var(--cream-2);
+  transform: none;
+}
+
+.toolkit-activity-btn[aria-expanded="true"]:hover {
+  background: var(--cream-2);
 }
 
 .toolkit-activity-btn:focus-visible {
@@ -4607,8 +4711,38 @@ main {
   display: inline;
 }
 
-.toolkit-activities .fallacy-lab {
-  margin: 1.25rem 0 0;
+/* The open card, flush under its tab. */
+.toolkit-activities .fallacy-lab,
+.toolkit-activities .toolkit-explainer {
+  margin: 0;
+  background: var(--cream-2);
+  border: 1px solid var(--border-hi);
+  transform: none;
+}
+
+.toolkit-activities .toolkit-explainer {
+  padding: 1rem 1.25rem;
+}
+
+/* Tape the card's far corner, clear of the tabs. */
+.toolkit-activities .quiz-tape {
+  left: auto;
+  right: 1.25rem;
+  width: 5.5rem;
+  transform: rotate(4deg);
+}
+
+/* On phones the tabs share the width, and long labels wrap. */
+@media (max-width: 34rem) {
+  .toolkit-activity-btn {
+    flex: 1 1 0;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.92rem;
+  }
+
+  .toolkit-activity-btn[aria-expanded="true"] {
+    padding-bottom: calc(0.5rem + 1px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
