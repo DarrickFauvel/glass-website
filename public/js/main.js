@@ -3195,6 +3195,12 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
     if (!clicked) return;
     const opening = clicked.getAttribute('aria-expanded') !== 'true';
     buttons.forEach((button) => setOpen(button, button === clicked && opening));
+    // Bring the entry's title to the top, so its definition stays in view
+    // above the open panel.
+    if (opening) {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      activities.closest('.toolkit-entry')?.querySelector('h3')?.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'instant' : 'smooth' });
+    }
   });
 
   row.hidden = false;
