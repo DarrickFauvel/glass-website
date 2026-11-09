@@ -11,7 +11,7 @@
 <% it.posts.forEach(function (post) { %>
         <li class="claim reveal<%= post.picture ? '' : ' claim--no-picture' %>">
 <% if (post.picture) { %>
-          <div class="claim-lens">
+          <div class="claim-lens" style="view-transition-name: lens-<%= post.slug %>">
             <img src="<%= post.picture.src %>" alt="<%= post.picture.alt %>" loading="lazy" decoding="async"
               width="400" height="400" style="object-position: <%= post.picture.position %>">
           </div>

@@ -1,6 +1,6 @@
 // GLASS — Service Worker
 
-const CACHE = 'glass-v105';
+const CACHE = 'glass-v106';
 const ASSETS = [
   '/',
   '/css/style.css',

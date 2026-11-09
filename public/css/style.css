@@ -5468,3 +5468,48 @@ main {
   .profile-tools,
   .profile-picture { transform: none; }
 }
+
+/* ===== PAGE TRANSITIONS =====
+   The header holds still while the next page is laid down like a sheet of
+   paper. A post's round picture carries between its card and its article,
+   paired by the view-transition-name set inline in the templates.
+   Browsers without support, and reduced motion, navigate normally. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  header { view-transition-name: site-header; }
+
+  ::view-transition { background: var(--cream); }
+
+  ::view-transition-group(*) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  ::view-transition-old(root) {
+    animation: page-lift 0.12s ease-in both;
+  }
+
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+    transform-origin: 50% 0;
+    animation: page-settle 0.24s cubic-bezier(0.2, 0.7, 0.2, 1) 0.06s both;
+  }
+}
+
+@keyframes page-lift {
+  to { opacity: 0; }
+}
+
+@keyframes page-settle {
+  from {
+    opacity: 0;
+    transform: translateY(8px) rotate(-0.25deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

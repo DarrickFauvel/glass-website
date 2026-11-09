@@ -16,6 +16,18 @@
       var theme = localStorage.getItem('glass-theme') || 'light';
       document.documentElement.setAttribute('data-theme', theme);
     })();
+
+    // Coming from a post, its card must already be in place so the page
+    // transition can land the picture on it. Skips that card's scroll reveal.
+    (function() {
+      var activation = window.navigation && window.navigation.activation;
+      var from = activation && activation.from && activation.from.url;
+      var match = from && new URL(from).pathname.match(/^\/blog\/([a-z0-9-]+)$/);
+      if (!match) return;
+      var style = document.createElement('style');
+      style.textContent = '.claim.reveal:has(a[href="/blog/' + match[1] + '"]) { opacity: 1; transform: none; transition: none; }';
+      document.head.appendChild(style);
+    })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
