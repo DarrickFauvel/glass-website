@@ -82,6 +82,43 @@ Attacking the person making an argument instead of the argument itself.[^4]
 
 That dismisses the speaker without addressing the evidence. The same goes in reverse: calling believers "idiots" refutes nothing.
 
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="ad-hominem-try"><span class="toolkit-activity-open">Try it: change the speaker</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="ad-hominem-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0tj5qbia7">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="ad-hominem-try" data-fallacy-lab="ad-hominem" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Here's an argument about a made-up pill. Rate how strong it is, then rate it again as the name tag changes. The words never change.</p>
+  <p class="fallacy-lab-argument">"Three independent teams tested this pill and published their full results. In each trial, people taking it did no better than people taking a dummy pill. So we have no good reason to think it works."</p>
+  <div data-lab-step="rate">
+    <p class="fallacy-lab-tag" data-lab-speaker="No name" aria-live="polite">Nobody told you who said this.</p>
+    <p class="fallacy-lab-tag" data-lab-speaker="Paid spokesperson" aria-live="polite" hidden>Said by a paid spokesperson for a rival drug company.</p>
+    <p class="fallacy-lab-tag" data-lab-speaker="Prize-winning scientist" aria-live="polite" hidden>Said by a prize-winning scientist.</p>
+    <p class="fallacy-lab-tag" data-lab-speaker="Someone you can't stand" aria-live="polite" hidden>Said by someone you can't stand.</p>
+    <div class="fallacy-lab-rating"><label for="ad-hominem-rating">How strong is the argument?</label><input id="ad-hominem-rating" type="range" min="0" max="10" step="1" value="5" data-lab-strength><output for="ad-hominem-rating" data-lab-strength-value>5</output></div>
+    <div class="fallacy-lab-actions" style="margin-top: 1rem"><button type="button" class="quiz-btn" data-lab-action="next">Next name tag</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <div data-lab-ratings></div>
+    <p>Your ratings moved by <strong data-lab-moved></strong>. The argument didn't change by a word.</p>
+    <p data-lab-reply="moved" hidden>An argument can feel different depending on who's making it, in either direction. A flattering name tag adds no more evidence than an unflattering one takes away.</p>
+    <p data-lab-reply="steady" hidden>You held steady, which is the point: the evidence was the same each time.</p>
+    <p>Who's speaking does matter when a claim rests on their word alone, as with a witness. And if a speaker has a motive, that's a good reason to check the evidence more carefully. It isn't a reason to dismiss the argument without checking. Ask what would be left if you didn't know who said it.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="ad-hominem-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0tj5qbia7" title="The ad hominem fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0tj5qbia7">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
+
 ### Straw man
 
 Attributing an easily refuted position to your opponent instead of the one they actually hold.[^4]
@@ -134,6 +171,57 @@ Most skeptics think witnesses saw something real and misidentified it.
 ### Appeal to authority
 
 Backing up a claim mainly by pointing to someone who supports it.[^4] Expertise matters, but it's evidence, not proof, and it only counts within the expert's own field. A celebrated physicist endorsing a supplement is speaking outside theirs.
+
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="appeal-to-authority-try"><span class="toolkit-activity-open">Try it: check the expert</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="appeal-to-authority-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide04ogvl9mn">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="appeal-to-authority-try" data-fallacy-lab="appeal-to-authority" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Two made-up experts have something to say about a made-up arthritis supplement. Each starts with a full stack of weight behind their word. Run the four checks and see what's left.</p>
+  <div data-lab-stacks></div>
+  <div data-lab-step="first" data-lab-expert="first">
+    <p><strong>A famous physicist says:</strong> "This supplement relieves arthritis. Trust me."</p>
+    <ul class="fallacy-lab-checks">
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="fails">Is this their field?</button><p class="fallacy-lab-finding" hidden>No. They study particle physics, not joints.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="fails">What do others in the field say?</button><p class="fallacy-lab-finding" hidden>Arthritis specialists in this made-up world don't back it.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="fails">Do they gain from it?</button><p class="fallacy-lab-finding" hidden>Yes. The maker pays them for the endorsement.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="fails">What evidence do they point to?</button><p class="fallacy-lab-finding" hidden>A story about their aunt.</p></li>
+    </ul>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="next" data-lab-next="second" hidden>Now the second expert</button></div>
+  </div>
+  <div data-lab-step="second" data-lab-expert="second" hidden>
+    <p><strong>A joint specialist says:</strong> "This supplement doesn't relieve arthritis. The trials show no benefit."</p>
+    <ul class="fallacy-lab-checks">
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="passes">Is this their field?</button><p class="fallacy-lab-finding" hidden>Yes. They treat arthritis and study its treatments.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="passes">What do others in the field say?</button><p class="fallacy-lab-finding" hidden>Most of their colleagues in this made-up world agree.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="passes">Do they gain from it?</button><p class="fallacy-lab-finding" hidden>No. They have no money riding on the answer.</p></li>
+      <li><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="check" data-lab-check="passes">What evidence do they point to?</button><p class="fallacy-lab-finding" hidden>Published trials that anyone can read.</p></li>
+    </ul>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="next" data-lab-next="verdict" hidden>Weigh them up</button></div>
+  </div>
+  <div data-lab-step="verdict" hidden>
+    <p>The specialist's stack is still full. So what does their word give you?</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="proof">Proof that it doesn't work</button> <button type="button" class="quiz-btn" data-lab-action="verdict" data-lab-verdict="reason">A good reason to trust it, and a place to look</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p data-lab-reply="proof" hidden>Not quite. Even a very good expert can be wrong. Their word is strong evidence, not proof.</p>
+    <p data-lab-reply="reason" hidden>Yes. Their word is strong evidence, and it points you at the trials, which are what would settle it.</p>
+    <p>Trusting real experts is reasonable, because nobody can check everything themselves. The fallacy is treating a name as the end of the matter, especially a name from outside the field.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="appeal-to-authority-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide04ogvl9mn" title="The appeal to authority: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide04ogvl9mn">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
 
 ### Appeal to ignorance
 

@@ -4579,6 +4579,69 @@ main {
 .fallacy-lab-trend--all,
 .fallacy-lab-trend--all.is-cooling { stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 7 5; }
 
+/* Ad hominem: one argument on a slip, with a tag that changes and a row of
+   hand-ruled ratings. Appeal to authority: two stacks of weights and a list
+   of checks. */
+.fallacy-lab .fallacy-lab-argument {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 4px 10px -8px rgba(28, 20, 16, 0.5);
+  transform: rotate(-0.3deg);
+}
+
+.fallacy-lab .fallacy-lab-tag {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  background: var(--crimson-pale);
+  border: 1px dashed var(--crimson);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.fallacy-lab-track-row {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+}
+
+.fallacy-lab-track-bar {
+  display: block;
+  height: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--ink-mid);
+}
+
+.fallacy-lab-track-fill {
+  display: block;
+  height: 100%;
+  background: var(--crimson);
+}
+
+.fallacy-lab-block { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+
+.fallacy-lab-checks {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.fallacy-lab-checks li { margin-bottom: 0.55rem; }
+
+.fallacy-lab .fallacy-lab-finding {
+  margin: 0.35rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--crimson);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallacy-lab .fallacy-lab-argument { transform: none; }
+}
+
 /* Slippery slope: each link with its own slider, then a staircase of the
    whole chain's odds. */
 .fallacy-lab-chain {
