@@ -36,7 +36,7 @@ export const claimPictures = {
   },
   psychics: {
     src: '/images/claims/psychics.jpg',
-    alt: 'Caravaggio’s painting of a fortune teller holding a young man’s hand to read his palm while the two look at each other',
+    alt: 'Detail of a red stage poster for the mentalist Alexander, “The Man Who Knows”: a staring face beneath a large jewelled turban',
     position: '50% 50%',
   },
   ufos: {
@@ -82,9 +82,9 @@ export const pictureCredits = [
     via: 'Wikimedia Commons',
   },
   {
-    title: 'The Fortune Teller',
-    page: 'https://commons.wikimedia.org/wiki/File:The_Fortune_Teller-Caravaggio_(Louvre).jpg',
-    creator: 'Caravaggio, c. 1595',
+    title: 'Alexander the man who knows',
+    page: 'https://commons.wikimedia.org/wiki/File:Alexander_the_man_who_knows_LCCN2014636877.jpg',
+    creator: 'an unknown artist, before 1923 (Library of Congress)',
     license: 'public domain',
     licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
     via: 'Wikimedia Commons',
