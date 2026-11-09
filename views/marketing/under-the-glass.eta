@@ -10,7 +10,7 @@
 <% it.claims.forEach(function (claim) { %>
         <li class="claim reveal<%= claim.picture ? '' : ' claim--no-picture' %>">
 <% if (claim.picture) { %>
-          <div class="claim-lens">
+          <div class="claim-lens" style="view-transition-name: lens-<%= claim.slug %>">
             <img src="<%= claim.picture.src %>" alt="<%= claim.picture.alt %>" loading="lazy" decoding="async"
               width="400" height="400" style="object-position: <%= claim.picture.position %>">
           </div>
