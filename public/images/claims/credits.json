@@ -96,26 +96,26 @@
  {
   "file": "public/images/claims/psychics.jpg",
   "media": "image",
-  "ref": "commons:15219703",
-  "title": "The Fortune Teller",
-  "creator": "Caravaggio",
+  "ref": "commons:66177105",
+  "title": "Alexander the man who knows",
+  "creator": "an unknown artist",
   "creatorUrl": null,
-  "date": "c. 1595",
+  "date": "before 1923",
   "license": "public domain",
   "licenseCode": "pd",
   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
   "creditRequired": false,
-  "page": "https://commons.wikimedia.org/wiki/File:The_Fortune_Teller-Caravaggio_(Louvre).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Alexander_the_man_who_knows_LCCN2014636877.jpg",
   "via": "Wikimedia Commons",
-  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/The_Fortune_Teller-Caravaggio_%28Louvre%29.jpg/960px-The_Fortune_Teller-Caravaggio_%28Louvre%29.jpg",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Alexander_the_man_who_knows_LCCN2014636877.jpg/960px-Alexander_the_man_who_knows_LCCN2014636877.jpg",
   "width": 960,
-  "height": 725,
-  "credit": "\"The Fortune Teller\" by Caravaggio, public domain, via Wikimedia Commons",
+  "height": 1427,
+  "credit": "\"Alexander the man who knows\", public domain, via Wikimedia Commons",
   "notes": [
-   "Painting in the Louvre."
+   "Commons licence: PD-old-70-1923. Library of Congress Performing Arts Posters, LCCN 2014636877."
   ],
   "saved": "2026-11-09",
-  "note": "Cropped square around the two figures."
+  "note": "Cropped square around the face and turban."
  },
  {
   "file": "public/images/claims/ufos.jpg",
