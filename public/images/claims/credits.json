@@ -70,6 +70,28 @@
   "note": "Cropped square around the two bowls."
  },
  {
+  "file": "public/images/claims/prayer.jpg",
+  "media": "image",
+  "ref": "commons:21792217",
+  "title": "Praying Hands",
+  "creator": "Albrecht Dürer",
+  "creatorUrl": null,
+  "date": "1508",
+  "license": "public domain",
+  "licenseCode": "pd",
+  "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+  "creditRequired": false,
+  "page": "https://commons.wikimedia.org/wiki/File:Albrecht_D%C3%BCrer_-_Praying_Hands,_1508_-_Google_Art_Project.jpg",
+  "via": "Wikimedia Commons",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Albrecht_D%C3%BCrer_-_Praying_Hands%2C_1508_-_Google_Art_Project.jpg/960px-Albrecht_D%C3%BCrer_-_Praying_Hands%2C_1508_-_Google_Art_Project.jpg",
+  "width": 960,
+  "height": 1397,
+  "credit": "\"Praying Hands\" by Albrecht Dürer, public domain, via Wikimedia Commons",
+  "notes": [],
+  "saved": "2026-11-09",
+  "note": "Cropped square around the hands."
+ },
+ {
   "file": "public/images/claims/psychics.jpg",
   "media": "image",
   "ref": "commons:Hubert_Pearce_with_J._B._Rhine.png",

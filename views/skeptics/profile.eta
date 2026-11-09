@@ -2,12 +2,12 @@
     <article class="article-page">
       <div class="article-header">
         <a href="/skeptics" class="article-back">&larr; All profiles</a>
+        <h1><%= it.skeptic.name %></h1>
+        <p class="auth-subtitle"><%= it.skeptic.summary %></p>
         <p class="blog-meta">
           <span><%= it.skeptic.lifespan %></span>
           <span class="blog-topic"><%= it.skeptic.role %></span>
         </p>
-        <h1><%= it.skeptic.name %></h1>
-        <p class="auth-subtitle"><%= it.skeptic.summary %></p>
       </div>
 
 <% if (it.skeptic.picture) { %>

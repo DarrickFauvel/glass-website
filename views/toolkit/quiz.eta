@@ -1,7 +1,8 @@
   <main id="main-content">
     <article class="article-page quiz-page">
       <div class="article-header">
-        <p class="blog-meta"><span class="blog-topic">Skeptic's Toolkit</span></p>
+        <span class="section-label">Skeptic's Toolkit</span>
+        <a href="/toolkit" class="article-back">&larr; Toolkit</a>
         <h1><%= it.quiz.title %></h1>
         <p class="auth-subtitle"><%= it.quiz.summary %></p>
       </div>

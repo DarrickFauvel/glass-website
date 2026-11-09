@@ -1,7 +1,7 @@
   <main id="main-content">
     <section class="claims" aria-labelledby="blog-heading">
       <div class="claims-intro">
-        <p class="section-title">Blog</p>
+        <span class="section-label">Blog</span>
         <h1 id="blog-heading">Questioning Everything</h1>
         <p>Evidence-based looks at popular claims: what people believe, why it's compelling, and what the science actually shows.</p>
       </div>
