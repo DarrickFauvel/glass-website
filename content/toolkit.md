@@ -90,6 +90,47 @@ Attributing an easily refuted position to your opponent instead of the one they 
 
 Most skeptics think witnesses saw something real and misidentified it.
 
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="straw-man-try"><span class="toolkit-activity-open">Try it: make it easier to knock down</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="straw-man-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0npk3j9ji">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="straw-man-try" data-fallacy-lab="straw-man" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Your neighbor has told you what they think. Your job is to win the argument. Drag the slider to reword their position, or select it and use the arrow keys, then knock down whichever version you like.</p>
+  <p class="fallacy-lab-position" data-lab-version="0" data-lab-easy-value="10" data-lab-faithful-value="100">"Supplements should have to show they're safe and accurately labeled before they're sold."</p>
+  <p class="fallacy-lab-position" data-lab-version="1" data-lab-easy-value="30" data-lab-faithful-value="75" hidden>"Supplements should be tested just like medicines."</p>
+  <p class="fallacy-lab-position" data-lab-version="2" data-lab-easy-value="55" data-lab-faithful-value="45" hidden>"Supplements are dangerous and need tight control."</p>
+  <p class="fallacy-lab-position" data-lab-version="3" data-lab-easy-value="80" data-lab-faithful-value="20" hidden>"The government should decide what you can put in your own body."</p>
+  <p class="fallacy-lab-position" data-lab-version="4" data-lab-easy-value="100" data-lab-faithful-value="0" hidden>"Ban all vitamins and arrest anyone who sells them!"</p>
+  <div class="fallacy-lab-meter"><span>Easy to knock down</span><span class="fallacy-lab-meter-track" role="img"><span class="fallacy-lab-meter-fill" data-lab-easy></span></span></div>
+  <div class="fallacy-lab-meter"><span>Still what they said</span><span class="fallacy-lab-meter-track" role="img"><span class="fallacy-lab-meter-fill fallacy-lab-meter-fill--plain" data-lab-faithful></span></span></div>
+  <div class="fallacy-lab-rating"><label for="straw-man-twist">Reword it</label><input id="straw-man-twist" type="range" min="0" max="4" step="1" value="0" data-lab-twist></div>
+  <div data-lab-step="twist">
+    <div class="fallacy-lab-actions" style="margin-top: 1rem"><button type="button" class="quiz-btn" data-lab-action="attack">Knock it down</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p style="margin-top: 1rem" data-lab-reply="0" hidden>You took on what they really said. That's the hard way, and it's the only way an answer reaches their actual view.</p>
+    <p style="margin-top: 1rem" data-lab-reply="1" hidden>A small shift, and already an easier target. Saying a product should be shown to be safe isn't the same as demanding full medicine-style testing, so your answer misses part of their point.</p>
+    <p style="margin-top: 1rem" data-lab-reply="2" hidden>Now they're saying supplements are dangerous, which they never claimed. Asking for proof of safety doesn't assume there's danger in every bottle.</p>
+    <p style="margin-top: 1rem" data-lab-reply="3" hidden>That one's easy to get angry at, which is the appeal. But a rule about labels and safety is a long way from deciding what goes in your body.</p>
+    <p style="margin-top: 1rem" data-lab-reply="4" hidden>Who wants vitamin raids? You win easily. And your neighbor, who never said any of it, hasn't been answered at all.</p>
+    <p>This doesn't tell you whether your neighbor is right. It only shows what an argument has to do to count as an answer.</p>
+    <p>A straw man can happen by accident, through a careless summary. To avoid one, restate someone's view until they'd say, "Yes, that's what I think," then answer the strongest version of it. Some people call that steelmanning.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Try again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="straw-man-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0npk3j9ji" title="The straw man fallacy: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0npk3j9ji">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
+
 ### Appeal to authority
 
 Backing up a claim mainly by pointing to someone who supports it.[^4] Expertise matters, but it's evidence, not proof, and it only counts within the expert's own field. A celebrated physicist endorsing a supplement is speaking outside theirs.
@@ -196,6 +237,51 @@ Presenting too few options and implying you must choose one of them.[^4]
 > "Either contrails are normal condensation or the government is spraying us."
 
 That leaves out everything in between, and skips the evidence that settles it.
+
+<div class="toolkit-activities" data-toolkit-activities>
+  <div class="toolkit-activity-buttons" hidden>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="false-dilemma-try"><span class="toolkit-activity-open">Try it: find the missing options</span><span class="toolkit-activity-close">Hide the exercise</span></button>
+    <button type="button" class="toolkit-activity-btn" aria-expanded="false" aria-controls="false-dilemma-watch"><svg class="toolkit-activity-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg><span class="toolkit-activity-open">Watch the explainer</span><span class="toolkit-activity-close">Hide the explainer</span></button>
+  </div>
+  <noscript><p><a href="https://scrimba.com/explain/guide0j46cfjrl">Watch the explainer on Scrimba</a></p></noscript>
+  <div class="fallacy-lab" id="false-dilemma-try" data-fallacy-lab="false-dilemma" hidden>
+  <span class="quiz-tape" aria-hidden="true"></span>
+  <p>Someone saw a strange light in the sky. A friend says, "It was either an alien craft or the witness is lying." Sort each possibility below into one of those two boxes, or into the space between them.</p>
+  <div class="fallacy-lab-boxes">
+    <div class="fallacy-lab-box"><p class="fallacy-lab-box-title">Alien craft</p><ul data-lab-tray="aliens"></ul></div>
+    <div class="fallacy-lab-box fallacy-lab-box--between"><p class="fallacy-lab-box-title">Neither box</p><ul data-lab-tray="neither"></ul></div>
+    <div class="fallacy-lab-box"><p class="fallacy-lab-box-title">Witness is lying</p><ul data-lab-tray="lying"></ul></div>
+  </div>
+  <ul hidden>
+    <li data-lab-possibility="neither">An airplane seen from an odd angle</li>
+    <li data-lab-possibility="lying">The witness invented it for attention</li>
+    <li data-lab-possibility="neither">A satellite catching the sun</li>
+    <li data-lab-possibility="aliens">A real craft from another planet</li>
+    <li data-lab-possibility="neither">A reflection on a car window</li>
+    <li data-lab-possibility="neither">Something real, honestly misremembered</li>
+    <li data-lab-possibility="neither">Too little information to tell</li>
+  </ul>
+  <p class="fallacy-lab-score" data-lab-score aria-live="polite"></p>
+  <div data-lab-step="sort">
+    <p class="fallacy-lab-position" data-lab-current aria-live="polite"></p>
+    <p data-lab-hint aria-live="polite"></p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn" data-lab-action="sort" data-lab-to="aliens">Alien craft</button> <button type="button" class="quiz-btn" data-lab-action="sort" data-lab-to="neither">Neither box</button> <button type="button" class="quiz-btn" data-lab-action="sort" data-lab-to="lying">Witness is lying</button></div>
+  </div>
+  <div data-lab-step="result" hidden>
+    <p><strong data-lab-outside></strong> of these <strong data-lab-total></strong> possibilities fit neither box. Offering only two made all of them disappear, including the most honest answer available: we can't tell yet.</p>
+    <p>Real either-or choices do exist. Two options are enough when they cover every case and can't both be true. When someone offers you two, ask what else could be true.</p>
+    <div class="fallacy-lab-actions"><button type="button" class="quiz-btn quiz-btn--quiet" data-lab-action="restart">Sort them again</button></div>
+  </div>
+  </div>
+  <div class="toolkit-explainer" id="false-dilemma-watch" hidden>
+  <figure>
+    <div class="toolkit-explainer-frame">
+      <iframe src="https://scrimba.com/explain/guide0j46cfjrl" title="The false dilemma: a narrated visual walkthrough" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <figcaption>A narrated walkthrough, generated with AI on Scrimba and reviewed by GLASS organizers. <a href="https://scrimba.com/explain/guide0j46cfjrl">Open it on Scrimba</a>.</figcaption>
+  </figure>
+  </div>
+</div>
 
 ### Slippery slope
 

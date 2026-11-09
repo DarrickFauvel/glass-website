@@ -4615,6 +4615,90 @@ main {
 
 .fallacy-lab-stair.is-last { fill: var(--crimson-glow); stroke: var(--crimson); }
 
+/* Straw man: the reworded position on a paper slip, with two hand-ruled meters.
+   False dilemma: two boxes with the space between them filling up. */
+.fallacy-lab .fallacy-lab-position {
+  margin: 0.5rem 0 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 4px 10px -8px rgba(28, 20, 16, 0.5);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.3;
+  transform: rotate(-0.4deg);
+}
+
+.fallacy-lab-meter {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+}
+
+.fallacy-lab-meter-track {
+  display: block;
+  height: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--ink-mid);
+}
+
+.fallacy-lab-meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--crimson);
+  transition: width 0.2s ease-out;
+}
+
+.fallacy-lab-meter-fill--plain { background: var(--ink-mid); }
+
+.fallacy-lab-boxes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.fallacy-lab-box {
+  min-height: 7rem;
+  padding: 0.55rem;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+}
+
+.fallacy-lab-box--between {
+  background: transparent;
+  border: 2px dashed var(--crimson);
+}
+
+.fallacy-lab .fallacy-lab-box-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.fallacy-lab-box ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.fallacy-lab-box li { margin-bottom: 0.4rem; }
+
+@media (max-width: 540px) {
+  .fallacy-lab-boxes { grid-template-columns: minmax(0, 1fr); }
+  .fallacy-lab-box { min-height: 3rem; }
+  .fallacy-lab-box--between { order: 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallacy-lab .fallacy-lab-position { transform: none; }
+  .fallacy-lab-meter-fill { transition: none; }
+}
+
 /* Appeal to ignorance: a pile of report cards, crimson question marks until
    each one is identified. */
 .fallacy-lab-report rect { fill: var(--crimson-pale); stroke: var(--crimson); stroke-width: 1.5; }
