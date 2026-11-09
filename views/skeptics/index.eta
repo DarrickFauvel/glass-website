@@ -1,7 +1,7 @@
   <main id="main-content">
     <section class="claims" aria-labelledby="skeptics-heading">
       <div class="claims-intro">
-        <p class="section-title">Profiles</p>
+        <span class="section-label">Profiles</span>
         <h1 id="skeptics-heading">Skeptics, Past and Present</h1>
         <p>Skepticism isn't a club of people who are always right. These are people who changed how we test claims, along with where they got it wrong or drew fair criticism.</p>
       </div>

@@ -1,6 +1,7 @@
   <main id="main-content">
     <article class="article-page">
       <div class="article-header<%= it.picture ? ' article-header--picture' : '' %>">
+        <span class="section-label">Blog</span>
         <a href="/blog" class="article-back">&larr; All posts</a>
 <% if (it.picture) { %>
         <div class="article-lens">
@@ -8,14 +9,14 @@
             width="400" height="400" style="object-position: <%= it.picture.position %>">
         </div>
 <% } %>
+        <h1><%= it.post.title %></h1>
+        <p class="auth-subtitle"><%= it.post.summary %></p>
         <p class="blog-meta">
           <time datetime="<%= it.post.date %>"><%= it.formatPostDate(it.post.date) %></time>
 <% if (it.post.topic) { %>
           <span class="blog-topic"><%= it.post.topic %></span>
 <% } %>
         </p>
-        <h1><%= it.post.title %></h1>
-        <p class="auth-subtitle"><%= it.post.summary %></p>
       </div>
 
 <%~ include("../partials/listen-bar") %>

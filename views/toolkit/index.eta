@@ -1,7 +1,7 @@
   <main id="main-content">
     <article class="article-page toolkit-page">
       <div class="article-header">
-        <p class="blog-meta"><span class="blog-topic">Reference</span></p>
+        <span class="section-label">Reference</span>
         <h1><%= it.toolkit.title %></h1>
         <p class="auth-subtitle"><%= it.toolkit.summary %></p>
         <div class="quiz-promo quiz-promo--callout">

@@ -1,6 +1,6 @@
   <main id="main-content">
     <section class="about" aria-labelledby="about-heading">
-      <p class="section-title reveal">About</p>
+      <span class="section-label reveal">About</span>
       <h1 id="about-heading" class="about-heading reveal">Skeptics from around Greater Lowell</h1>
       <div class="about-grid">
         <div class="about-text reveal">

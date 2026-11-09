@@ -29,6 +29,11 @@ export const claimPictures = {
     alt: 'A faked spirit photograph from the 1920s: Harry Houdini, holding an open book, looks across at a ghostly image of Abraham Lincoln',
     position: '50% 50%',
   },
+  prayer: {
+    src: '/images/claims/prayer.jpg',
+    alt: 'Albrecht Dürer’s 1508 drawing of two hands pressed together in prayer, in white and black on blue paper',
+    position: '50% 50%',
+  },
   psychics: {
     src: '/images/claims/psychics.jpg',
     alt: 'Two men at a table in 1934 during an ESP card test: one turns over cards while the other writes down the results',
@@ -95,6 +100,14 @@ export const pictureCredits = [
     title: 'Houdini and the ghost of Abraham Lincoln',
     page: 'https://commons.wikimedia.org/wiki/File:Houdini_and_Lincoln.jpg',
     creator: 'Harry Houdini, c. 1920–1930 (Library of Congress)',
+    license: 'public domain',
+    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
+    via: 'Wikimedia Commons',
+  },
+  {
+    title: 'Praying Hands',
+    page: 'https://commons.wikimedia.org/wiki/File:Albrecht_D%C3%BCrer_-_Praying_Hands,_1508_-_Google_Art_Project.jpg',
+    creator: 'Albrecht Dürer, 1508',
     license: 'public domain',
     licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
     via: 'Wikimedia Commons',
