@@ -2563,6 +2563,190 @@ document.querySelectorAll('[data-fallacy-lab="appeal-to-ignorance"]').forEach((l
   reset();
 });
 
+// Bandwagon exercise.
+// Twenty people say in turn whether a made-up remedy works. Each has one
+// private test and hears only what those ahead said aloud. Once the spoken
+// tally leads by two, one test can't outweigh it, so people copy: an
+// information cascade. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="bandwagon"]').forEach((lab) => {
+  const PEOPLE = 20;
+  const YOU = 4; // zero-based: the visitor is fifth in line
+  const COLUMNS = 10;
+  const CELL = 40;
+  const SECTION = 100;
+  const RIGHT_ODDS = 0.7;
+  const CASCADE_LEAD = 2;
+  const RUNS = 1000;
+
+  const svg = svgEl('svg', { role: 'img' });
+  lab.querySelector('[data-lab-line]').append(svg);
+  const score = lab.querySelector('[data-lab-score]');
+  let tests = [];
+  let said = [];
+
+  // True means the test or the person says the remedy works, which is wrong.
+  const drawTest = () => Math.random() >= RIGHT_ODDS;
+  const yeses = (list) => list.filter(Boolean).length;
+
+  function speak(test, spoken) {
+    const lead = yeses(spoken) - (spoken.length - yeses(spoken));
+    return Math.abs(lead) >= CASCADE_LEAD ? lead > 0 : test;
+  }
+
+  // The first two tests mislead on purpose, the visitor's points the right
+  // way, and most of the tests have to say the remedy does nothing.
+  function deal() {
+    let dealt;
+    do {
+      dealt = Array.from({ length: PEOPLE }, () => drawTest());
+      dealt[0] = true;
+      dealt[1] = true;
+      dealt[YOU] = false;
+    } while (yeses(dealt) > 8);
+    return dealt;
+  }
+
+  // One fresh line left to chance. Returns true if its majority ends up wrong.
+  function majorityWrong(copying) {
+    const fresh = Array.from({ length: PEOPLE }, () => drawTest());
+    if (!copying) return yeses(fresh) > PEOPLE / 2;
+    const spoken = [];
+    fresh.forEach((test) => spoken.push(speak(test, spoken)));
+    return yeses(spoken) > PEOPLE / 2;
+  }
+
+  function section(title, values, top) {
+    const heading = svgEl('text', { class: 'fallacy-lab-axis', x: 2, y: top + 13 });
+    heading.textContent = title;
+    return [heading, ...Array.from({ length: PEOPLE }, (unused, i) => {
+      const x = (i % COLUMNS) * CELL + CELL / 2;
+      const y = top + 20 + Math.floor(i / COLUMNS) * CELL + CELL / 2;
+      const value = values[i];
+      const state = value === undefined ? 'is-waiting' : value ? 'is-yes' : 'is-no';
+      const card = svgEl('g', { transform: `translate(${x} ${y}) rotate(${((i * 7) % 7) - 3})`, class: `fallacy-lab-vote ${state}${i === YOU ? ' is-you' : ''}` });
+      card.append(svgEl('rect', { x: -16, y: -14, width: 32, height: 28, rx: 3 }));
+      const mark = svgEl('text', { y: 5, 'text-anchor': 'middle' });
+      mark.textContent = value === undefined ? '?' : value ? 'Yes' : 'No';
+      card.append(mark);
+      return card;
+    })];
+  }
+
+  function draw(reveal) {
+    svg.setAttribute('viewBox', `0 0 ${COLUMNS * CELL} ${reveal ? SECTION * 2 + 8 : SECTION}`);
+    svg.replaceChildren(
+      ...section('Said out loud (your card has the heavy outline)', said, 0),
+      ...(reveal ? section('Private tests', tests, SECTION + 8) : []),
+    );
+    const yes = yeses(said);
+    const no = said.length - yes;
+    const testNote = reveal ? ` Private tests: ${yeses(tests)} said it works and ${PEOPLE - yeses(tests)} said it doesn't.` : '';
+    svg.setAttribute('aria-label', `Said out loud: ${yes} said it works, ${no} said it doesn't, ${PEOPLE - said.length} haven't spoken.${testNote}`);
+    score.textContent = `Said out loud: ${yes} say it works, ${no} say it doesn't`;
+  }
+
+  function showStep(name) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset() {
+    tests = deal();
+    said = [];
+    for (let i = 0; i < YOU; i += 1) said.push(speak(tests[i], said));
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    draw(false);
+  }
+
+  const actions = {
+    say(button) {
+      said[YOU] = button.dataset.labSay === 'yes';
+      for (let i = YOU + 1; i < PEOPLE; i += 1) said[i] = speak(tests[i], said.slice(0, i));
+      draw(true);
+      lab.querySelector(`[data-lab-reply="${button.dataset.labSay}"]`).hidden = false;
+      lab.querySelector('[data-lab-said]').textContent = yeses(said);
+      lab.querySelector('[data-lab-tests]').textContent = yeses(tests);
+      const wrong = (copying) => Array.from({ length: RUNS }, () => majorityWrong(copying)).filter(Boolean).length;
+      lab.querySelector('[data-lab-copying]').textContent = wrong(true);
+      lab.querySelector('[data-lab-reporting]').textContent = wrong(false);
+      showStep('result');
+    },
+    restart() {
+      reset();
+      showStep('say');
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset();
+});
+
+// Special pleading exercise.
+// A made-up psychic keeps failing tests. Each excuse the visitor picks rules
+// out the kind of test that just failed, until nothing could count against
+// her. The copy lives in content/toolkit.md.
+document.querySelectorAll('[data-fallacy-lab="special-pleading"]').forEach((lab) => {
+  const slips = [...lab.querySelectorAll('[data-lab-slip]')];
+  const rounds = [...lab.querySelectorAll('[data-lab-step^="round-"]')];
+  const score = lab.querySelector('[data-lab-score]');
+  let round = 0;
+
+  function tally() {
+    const left = slips.filter((slip) => !slip.classList.contains('is-ruled-out')).length;
+    score.textContent = left
+      ? `Tests that could still prove her wrong: ${left} of ${slips.length}`
+      : `Tests that could still prove her wrong: 0 of ${slips.length}. Nothing can count against her now.`;
+  }
+
+  function showStep(name, focus = true) {
+    lab.querySelectorAll('[data-lab-step]').forEach((el) => { el.hidden = el.dataset.labStep !== name; });
+    if (focus) lab.querySelector(`[data-lab-step="${name}"] button`).focus({ preventScroll: true });
+  }
+
+  function reset(focus) {
+    round = 0;
+    slips.forEach((slip) => {
+      slip.classList.remove('is-ruled-out');
+      slip.querySelector('.visually-hidden')?.remove();
+    });
+    lab.querySelectorAll('[data-lab-reply]').forEach((reply) => { reply.hidden = true; });
+    tally();
+    showStep(rounds[0].dataset.labStep, focus);
+  }
+
+  const actions = {
+    excuse() {
+      rounds[round].dataset.labRulesOut.split(' ').forEach((name) => {
+        const slip = lab.querySelector(`[data-lab-slip="${name}"]`);
+        slip.classList.add('is-ruled-out');
+        const note = document.createElement('span');
+        note.className = 'visually-hidden';
+        note.textContent = ' (ruled out)';
+        slip.append(note);
+      });
+      tally();
+      round += 1;
+      showStep(round < rounds.length ? rounds[round].dataset.labStep : 'verdict');
+    },
+    verdict(button) {
+      lab.querySelector(`[data-lab-reply="${button.dataset.labVerdict}"]`).hidden = false;
+      showStep('result');
+    },
+    restart() {
+      reset(true);
+    },
+  };
+  lab.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-lab-action]');
+    if (action) actions[action.dataset.labAction](action);
+  });
+
+  reset(false);
+});
+
 // Anecdotal evidence exercise.
 // A bracelet that does nothing gets glowing reviews, because buyers whose back
 // pain eased by itself are far likelier to write in. The visitor guesses how
