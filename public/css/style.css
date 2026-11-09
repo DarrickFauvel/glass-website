@@ -5497,6 +5497,22 @@ main {
     transform-origin: 50% 0;
     animation: page-settle 0.24s cubic-bezier(0.2, 0.7, 0.2, 1) 0.06s both;
   }
+
+  /* A post's text comes up as its picture lands. The picture has its own
+     transition name, so it isn't part of this fade. */
+  .article-page--post { view-transition-name: post-text; }
+
+  ::view-transition-old(post-text) {
+    animation: page-lift 0.12s ease-in both;
+  }
+
+  ::view-transition-new(post-text) {
+    animation: post-text-in 0.4s ease-out 0.16s both;
+  }
+}
+
+@keyframes post-text-in {
+  from { opacity: 0; }
 }
 
 @keyframes page-lift {

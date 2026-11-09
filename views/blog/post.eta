@@ -1,5 +1,5 @@
   <main id="main-content">
-    <article class="article-page">
+    <article class="article-page article-page--post">
       <div class="article-header<%= it.picture ? ' article-header--picture' : '' %>">
         <span class="section-label">Blog</span>
         <a href="/blog" class="article-back">&larr; All posts</a>
