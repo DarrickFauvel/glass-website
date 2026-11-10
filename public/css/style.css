@@ -1997,19 +1997,6 @@ main {
   .claim:focus-within .claim-lens img { transform: scale(1.08); }
 }
 
-/* ===== FOOTER CREDITS ===== */
-.site-footer .footer-credits {
-  flex-basis: 100%;
-  order: 10;
-  max-width: 60rem;
-  line-height: 1.6;
-}
-
-.footer-credits a {
-  color: var(--cream);
-  text-decoration-color: currentColor;
-}
-
 .site-footer a:focus-visible {
   outline: 2px solid var(--cream);
   outline-offset: 2px;
@@ -3089,7 +3076,6 @@ main {
   transition: color 0.2s;
 }
 
-.footer-credits a:hover,
 .footer-dev a:hover,
 .footer-legal a:hover {
   text-decoration-color: var(--crimson-hi);
