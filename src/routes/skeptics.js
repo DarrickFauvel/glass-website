@@ -11,9 +11,9 @@ skepticsRouter.get('/skeptics', async (req, res) => {
   });
 });
 
-skepticsRouter.get('/skeptics/:slug', async (req, res) => {
+skepticsRouter.get('/skeptics/:slug', async (req, res, next) => {
   const skeptic = await findSkepticBySlug(req.params.slug);
-  if (!skeptic) return res.status(404).send('Profile not found.');
+  if (!skeptic) return next(); // falls through to the 404 page
 
   res.render('skeptics/profile', {
     skeptic,

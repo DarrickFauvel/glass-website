@@ -240,6 +240,16 @@ header {
   color: var(--crimson);
 }
 
+/* Spells out the name on every page but home, where the hero does it. Sits
+   outside the sticky header so it scrolls away and the header stays slim. */
+.site-tagline {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.5rem var(--gutter) 0;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+}
+
 
 @media (min-width: 640px) {
   .header-tagline { display: block; }
