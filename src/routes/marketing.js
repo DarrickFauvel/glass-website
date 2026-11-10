@@ -109,3 +109,10 @@ async function clueArticlesJson() {
 marketingRouter.get('/privacy', (req, res) => {
   res.render('legal/privacy');
 });
+
+marketingRouter.get('/credits', (req, res) => {
+  res.render('legal/credits', {
+    pageTitle: 'Picture credits',
+    pageDescription: 'Where the pictures on the GLASS website come from, and the terms they are used under.',
+  });
+});

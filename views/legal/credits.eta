@@ -1,0 +1,14 @@
+  <main id="main-content">
+    <div class="legal-page">
+      <span class="section-label">Credits</span>
+      <h1>Picture credits</h1>
+
+      <p>Where the pictures on this site come from, and the terms they're used under.</p>
+
+      <ul>
+<% it.pictureCredits.forEach((c) => { %>
+        <li><a href="<%= c.page %>" target="_blank" rel="noopener noreferrer">“<%= c.title %>”</a> by <%= c.creator %>, <a href="<%= c.licenseUrl %>" target="_blank" rel="noopener noreferrer"><%= c.license %></a>, via <%= c.via %>.</li>
+<% }); %>
+      </ul>
+    </div>
+  </main>

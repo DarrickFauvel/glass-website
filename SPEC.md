@@ -95,7 +95,7 @@ Turso (libSQL). IDs are text and timestamps are ISO strings. The exception is `e
 
 | Access | Routes |
 | --- | --- |
-| Public pages | `GET /`, `/about`, `/privacy`, `/events`, `/blog`, `/blog/:slug`, `/toolkit`, `/toolkit/quiz`, `/skeptics`, `/skeptics/:slug`, `/healthz` |
+| Public pages | `GET /`, `/about`, `/privacy`, `/credits`, `/events`, `/blog`, `/blog/:slug`, `/toolkit`, `/toolkit/quiz`, `/skeptics`, `/skeptics/:slug`, `/healthz` |
 | Auth | `GET`/`POST /register`, `/login`, `/forgot-password`, `/reset-password`; `GET /verify-email`, `/confirm-reminders` |
 | Logged in | `POST /logout`, `POST /rsvps/:eventId/:signalKey`, `GET /account`, `GET /account/export`, `POST /account/*` |
 | Admin | `GET`/`POST /admin/events`, `GET /admin/events/:id/edit`, `POST /admin/events/:id` |
