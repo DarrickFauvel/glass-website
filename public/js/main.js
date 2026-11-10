@@ -1754,7 +1754,10 @@ if (prefersReducedMotion) {
     }
     const wordsBefore = chunks.slice(0, index).reduce((sum, chunk) => sum + chunk.words, 0);
     const remainingWords = totalWords - wordsBefore - doneInChunk;
-    timeEl.textContent = `${formatClock(remainingWords / wordsPerSecond())} left of ${formatMinutes(totalSeconds)}`;
+    const detail = document.createElement('span');
+    detail.className = 'listen-time-detail';
+    detail.textContent = ` left of ${formatMinutes(totalSeconds)}`;
+    timeEl.replaceChildren(formatClock(remainingWords / wordsPerSecond()), detail);
   }
 
   function startTimeTicker() {
@@ -1874,9 +1877,18 @@ if (prefersReducedMotion) {
     render();
   }
 
+  // The tip clears itself so it doesn't hold a second row open on small screens.
+  const JUMP_TIP = 'Tip: click any sentence to jump there.';
+
   function playFrom(i, s = 0) {
-    if (!sessionActive) status.textContent = 'Tip: click any sentence to jump there.';
-    else status.textContent = '';
+    if (!sessionActive) {
+      status.textContent = JUMP_TIP;
+      setTimeout(() => {
+        if (status.textContent === JUMP_TIP) status.textContent = '';
+      }, 6000);
+    } else {
+      status.textContent = '';
+    }
     playing = true;
     sessionActive = true;
     render();
@@ -1923,6 +1935,15 @@ if (prefersReducedMotion) {
     return Math.max(0, found);
   }
   stopBtn.addEventListener('click', finish);
+
+  // Speed, voice and follow settings stay tucked away until asked for.
+  const optionsToggle = document.getElementById('listen-options-toggle');
+  const optionsPanel = document.getElementById('listen-options');
+  optionsToggle.addEventListener('click', () => {
+    optionsPanel.hidden = !optionsPanel.hidden;
+    optionsToggle.setAttribute('aria-expanded', String(!optionsPanel.hidden));
+  });
+
   // Reading speed is remembered per browser, like the voice and auto-scroll choices.
   const RATE_KEY = 'glass-listen-rate';
   try {
@@ -3175,9 +3196,22 @@ document.querySelectorAll('[data-fallacy-lab="anecdotal-evidence"]').forEach((la
 // ===== Toolkit activities =====
 // Each entry's Try it and Watch buttons open one panel at a time. The buttons
 // stay hidden without JavaScript, where a <noscript> link replaces them.
+
+// Each entry's title sticks below whatever is already pinned to the top of
+// the page: the header, then the jump bar on smaller screens (it measures 0 on
+// wide ones). Returns that offset in pixels.
+function pinToolkitTitles() {
+  // The toggle, not the whole bar, so opening the dropdown doesn't move titles.
+  const top = (document.querySelector('header')?.offsetHeight ?? 0) + (document.querySelector('.toolkit-jumpbar-toggle')?.offsetHeight ?? 0);
+  document.documentElement.style.setProperty('--toolkit-title-top', `${top}px`);
+  return top;
+}
+
+// Only one activity is open on the page at a time.
+const allActivityButtons = [...document.querySelectorAll('[data-toolkit-activities] .toolkit-activity-buttons button')];
+
 document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
   const row = activities.querySelector('.toolkit-activity-buttons');
-  const buttons = [...row.querySelectorAll('button')];
 
   function setOpen(button, open) {
     const panel = document.getElementById(button.getAttribute('aria-controls'));
@@ -3194,12 +3228,17 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
     const clicked = e.target.closest('button');
     if (!clicked) return;
     const opening = clicked.getAttribute('aria-expanded') !== 'true';
-    buttons.forEach((button) => setOpen(button, button === clicked && opening));
-    // Bring the entry's title to the top, so its definition stays in view
-    // above the open panel.
-    if (opening) {
+    allActivityButtons.forEach((button) => setOpen(button, button === clicked && opening));
+    // Line the activity up just below the entry's stuck title.
+    const title = activities.closest('.toolkit-entry')?.querySelector('h3');
+    if (opening && title) {
+      const titleTop = pinToolkitTitles();
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      activities.closest('.toolkit-entry')?.querySelector('h3')?.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'instant' : 'smooth' });
+      const gapBelowTitle = 12;
+      window.scrollTo({
+        top: activities.getBoundingClientRect().top + window.scrollY - titleTop - title.offsetHeight - gapBelowTitle,
+        behavior: reduceMotion ? 'instant' : 'smooth',
+      });
     }
   });
 
@@ -3227,16 +3266,21 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
     [...root.querySelectorAll('a[href^="#"]')].map((a) => [decodeURIComponent(a.hash.slice(1)), a])
   ));
   const railLinks = linkSets[0];
-  const headings = [...document.querySelectorAll('.article-prose :is(h2, h3)[id]')].filter((h) => railLinks.has(h.id));
+  const headings = [...document.querySelectorAll('.article-prose :is(h2, .toolkit-entry)[id]')].filter((h) => railLinks.has(h.id));
   if (!headings.length) return;
 
   if (bar) bar.hidden = false; // shown/hidden from here on by .is-shown
+  // Re-measure whenever these change height; on phones the jump bar grows a
+  // line once it names the current part.
+  const titleOffsets = new ResizeObserver(() => pinToolkitTitles());
+  [siteHeader, toggle].forEach((el) => el && titleOffsets.observe(el));
 
   function headerHeight() {
     return siteHeader ? siteHeader.getBoundingClientRect().height : 0;
   }
 
   let current = [];
+  let stuckTitle = null;
   function update() {
     const line = headerHeight() + 80;
     let active = null;
@@ -3245,7 +3289,8 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
       else break;
     }
     const groupHeading = active && (active.tagName === 'H2' ? active : active.closest('.toolkit-group')?.querySelector('h2'));
-    const ids = [groupHeading, active && active.tagName === 'H3' ? active : null].filter(Boolean).map((h) => h.id);
+    const activeEntry = active && active.tagName === 'SECTION' ? active : null;
+    const ids = [groupHeading, activeEntry].filter(Boolean).map((h) => h.id);
     const next = linkSets.flatMap((links) => ids.map((id) => links.get(id)).filter(Boolean));
 
     if (bar) {
@@ -3256,6 +3301,12 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
       if (!pastContents) closePanel(false);
       if (currentLabel) currentLabel.textContent = groupHeading ? groupHeading.textContent : '';
     }
+
+    // Only a title that's actually pinned gets the shadow.
+    const title = activeEntry && activeEntry.querySelector('h3');
+    stuckTitle?.classList.remove('is-stuck');
+    stuckTitle = title && title.getBoundingClientRect().top <= parseFloat(getComputedStyle(title).top) + 1 ? title : null;
+    stuckTitle?.classList.add('is-stuck');
 
     if (next.length === current.length && next.every((a, i) => a === current[i])) return;
     current.forEach((a) => { a.classList.remove('is-current'); a.removeAttribute('aria-current'); });

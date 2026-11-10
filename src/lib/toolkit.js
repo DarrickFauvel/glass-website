@@ -80,7 +80,12 @@ function structure(html) {
     const isCoda = i === lastIndex && i > 0 && entries.length === 0;
     const kicker = isCoda ? 'Finally' : `Part ${ROMAN[i] ?? i + 1}`;
     const head = groupHead.replace(/^(<h2 id="[^"]+">)/, `<p class="toolkit-part" aria-hidden="true">${kicker}</p>\n$1`);
-    const entryHtml = entries.map((entry) => `<section class="toolkit-entry">\n${entryParts(entry)}</section>\n`).join('');
+    // The entry's id goes on its section, not its sticky title: a browser can
+    // misjudge where to scroll when jumping back up to a stuck element.
+    const entryHtml = entries.map((entry) => {
+      const [, id, rest] = entry.match(/^<h3 id="([^"]+)">([\s\S]*)$/);
+      return `<section class="toolkit-entry" id="${id}">\n${entryParts(`<h3>${rest}`)}</section>\n`;
+    }).join('');
     return `<section class="toolkit-group${isCoda ? ' toolkit-group--coda' : ''}">\n${head}${entryHtml}</section>\n`;
   });
 
