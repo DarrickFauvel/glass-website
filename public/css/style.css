@@ -3767,11 +3767,6 @@ main {
 }
 
 .listen-bar {
-  /* Sticks just below the sticky site header; `top` is set from the header's
-     measured height in main.js, with this as the fallback. */
-  position: sticky;
-  top: 4rem;
-  z-index: 50;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3791,12 +3786,47 @@ main {
   display: none;
 }
 
-/* The toolkit's jump bar already sticks under the header on smaller screens,
-   so the listen bar scrolls away there instead of stacking on top of it. */
-@media (max-width: 1099px) {
-  .toolkit-page .listen-bar {
-    position: static;
-    box-shadow: none;
+/* Scrolls away with the page until someone is listening, then sticks just
+   below the sticky site header; `top` is set from the header's measured height
+   in main.js, with this as the fallback. */
+.listen-session .listen-bar {
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+}
+
+.listen-options {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+}
+
+.listen-options[hidden] {
+  display: none;
+}
+
+#listen-options-toggle[aria-expanded="true"] {
+  background: var(--crimson-pale);
+}
+
+/* One slim row on phones: the play button keeps its name for screen readers
+   but shows only its icon, and the time shrinks to the clock. */
+@media (max-width: 480px) {
+  .listen-session .listen-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .listen-time-detail {
+    display: none;
   }
 }
 
@@ -4149,7 +4179,7 @@ main {
 
   .toolkit-contents {
     grid-column: 1;
-    grid-row: 1 / span 3;
+    grid-row: 1 / span 2;
     position: sticky;
     top: 6.5rem;
     max-height: calc(100vh - 8rem);
@@ -4853,6 +4883,34 @@ main {
   margin: 1.75rem 0;
 }
 
+/* Each entry's title stays in view while you read that entry, on a pink band
+   that's the pale crimson laid over solid cream, so text can't show through
+   it. --toolkit-title-top is measured in main.js. The negative margins keep
+   the title's text in line with the text below it. */
+.article-prose .toolkit-entry > h3 {
+  position: sticky;
+  top: var(--toolkit-title-top, 9rem);
+  z-index: 40;
+  margin: -0.4rem -0.4rem 0.5rem;
+  padding: 0.4rem;
+  background: linear-gradient(var(--crimson-pale), var(--crimson-pale)), var(--cream);
+  border-radius: calc(2px + 0.4rem);
+}
+
+.article-prose .toolkit-entry > h3.is-stuck {
+  box-shadow: 0 8px 12px -12px rgba(28, 20, 16, 0.45);
+}
+
+/* Contents links land with the title just clear of the header... */
+.article-prose .toolkit-entry[id] {
+  scroll-margin-top: var(--toolkit-title-top, 9rem);
+}
+
+/* ...and footnote jumps inside an entry land below its stuck title. */
+.article-prose .toolkit-entry [id] {
+  scroll-margin-top: calc(var(--toolkit-title-top, 9rem) + 4.5rem);
+}
+
 .toolkit-activity-buttons {
   position: relative;
   z-index: 2; /* the open tab covers the card's top border */
@@ -5077,7 +5135,7 @@ main {
 .toolkit-group--coda > h2 ~ p { font-style: normal; }
 
 /* An entry reached from a post's link gets a brief highlight. */
-.toolkit-page .article-prose :is(h2, h3):target {
+.toolkit-page .article-prose h2:target {
   background: var(--crimson-pale);
   box-shadow: 0 0 0 0.4rem var(--crimson-pale);
   border-radius: 2px;
