@@ -17,9 +17,9 @@ blogRouter.get('/blog', async (req, res) => {
   });
 });
 
-blogRouter.get('/blog/:slug', async (req, res) => {
+blogRouter.get('/blog/:slug', async (req, res, next) => {
   const post = await findPostBySlug(req.params.slug);
-  if (!post) return res.status(404).send('Post not found.');
+  if (!post) return next(); // falls through to the 404 page
 
   res.render('blog/post', {
     post,

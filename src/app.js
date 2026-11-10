@@ -83,5 +83,10 @@ export function createApp() {
   app.use(rsvpsRouter);
   app.use(adminRouter);
 
+  // Nothing above matched.
+  app.use((req, res) => {
+    res.status(404).render('errors/not-found', { pageTitle: 'Page not found' });
+  });
+
   return app;
 }

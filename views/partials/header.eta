@@ -42,3 +42,6 @@
       </div>
     </div>
   </header>
+<% if (path !== '/') { %>
+  <p class="site-tagline">Greater Lowell Area <span style="white-space:nowrap">Science-based</span> Skeptics</p>
+<% } %>

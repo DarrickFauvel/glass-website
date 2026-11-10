@@ -1,0 +1,10 @@
+  <main id="main-content">
+    <div class="legal-page">
+      <span class="section-label">404</span>
+      <h1>Nothing under the glass here</h1>
+
+      <p>We looked, and there's no evidence this page exists. The link may be old, or the address may have a typo.</p>
+
+      <p>Try <a href="/">the home page</a>, <a href="/blog">the blog</a>, <a href="/toolkit">the Skeptic's Toolkit</a> or <a href="/events">upcoming events</a>.</p>
+    </div>
+  </main>
