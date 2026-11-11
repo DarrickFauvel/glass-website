@@ -229,18 +229,19 @@
  {
   "file": "public/images/claims/ufo-files.jpg",
   "media": "image",
-  "title": "Go Fast Official USG Footage of UAP for Public Release",
-  "creator": "United States Navy",
-  "date": "released 2020",
+  "title": "U-2 Pilot over Central Continental United States",
+  "creator": "U.S. Department of Defense",
+  "date": "2023-02-03",
   "license": "public domain",
   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
   "creditRequired": false,
-  "page": "https://commons.wikimedia.org/wiki/File:Go_Fast_Official_USG_Footage_of_UAP_for_Public_Release.webm",
+  "page": "https://commons.wikimedia.org/wiki/File:U-2_Pilot_over_Central_Continental_United_States_(7644960).jpg",
   "via": "Wikimedia Commons",
-  "width": 636,
-  "height": 636,
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/U-2_Pilot_over_Central_Continental_United_States_%287644960%29.jpg/1280px-U-2_Pilot_over_Central_Continental_United_States_%287644960%29.jpg",
+  "width": 800,
+  "height": 800,
   "saved": "2026-11-11",
-  "note": "Still from the video's Commons poster frame (960px), cropped square inside the display's black border."
+  "note": "Replaces the grayscale GoFast still with a color photo. A U.S. Air Force pilot looks down at the suspected Chinese surveillance balloon, Feb. 3, 2023. Cropped square around the balloon from the 1280px version; resized to 800px."
  },
  {
   "file": "public/images/claims/chiropractic.jpg",
