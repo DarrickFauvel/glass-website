@@ -5634,9 +5634,11 @@ main {
 
 .quiz-btn--link:hover { color: #fff; }
 
-.article-quiz-nudge {
-  margin: 0;
-  color: var(--ink-mid);
+/* The quiz card at the foot of a post tilts the other way from the toolkit's,
+   and leaves room above the meetup button. */
+.quiz-promo--post {
+  margin: 2rem 0 2.25rem;
+  transform: rotate(0.5deg);
 }
 
 /* The longer footer buttons need to wrap on phones, and to sit apart when

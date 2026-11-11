@@ -29,7 +29,11 @@
 <% if (it.post.aiAssisted) { %>
         <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
 <% } %>
-        <p class="article-quiz-nudge">Practice spotting bad reasoning: <a href="/toolkit/quiz">try Spot the Fallacy</a>, a quick quiz of ten short cases.</p>
+        <div class="quiz-promo quiz-promo--callout quiz-promo--post">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <p class="quiz-promo-text"><strong>Practice spotting bad reasoning.</strong> Ten short cases, some flawed and some sound. Can you tell which is which?</p>
+          <a href="/toolkit/quiz" class="quiz-btn quiz-btn--link">Play Spot the Fallacy <span aria-hidden="true">&rarr;</span></a>
+        </div>
         <a href="/#events" class="events-see-all-btn">Discuss this at our next meetup &rarr;</a>
         <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
       </div>
