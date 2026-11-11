@@ -46,8 +46,8 @@ export const claimPictures = {
   },
   'ufo-files': {
     src: '/images/claims/ufo-files.jpg',
-    alt: 'Still from the Navy “GoFast” infrared video: a small object locked in the targeting reticle over dark ocean, with range, angle and altitude readouts around the edge',
-    position: '50% 45%',
+    alt: 'View from a U-2 spy plane cockpit high above the farmland of the central United States: below the wing, a large white balloon carrying a solar-panel payload, with the curve of the Earth on the horizon',
+    position: '50% 50%',
   },
   chiropractic: {
     src: '/images/claims/chiropractic.jpg',
@@ -123,9 +123,9 @@ export const pictureCredits = [
     via: 'Wikimedia Commons',
   },
   {
-    title: 'Go Fast Official USG Footage of UAP for Public Release',
-    page: 'https://commons.wikimedia.org/wiki/File:Go_Fast_Official_USG_Footage_of_UAP_for_Public_Release.webm',
-    creator: 'the U.S. Navy',
+    title: 'U-2 Pilot over Central Continental United States',
+    page: 'https://commons.wikimedia.org/wiki/File:U-2_Pilot_over_Central_Continental_United_States_(7644960).jpg',
+    creator: 'the U.S. Department of Defense, 2023',
     license: 'public domain',
     licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
     via: 'Wikimedia Commons',
