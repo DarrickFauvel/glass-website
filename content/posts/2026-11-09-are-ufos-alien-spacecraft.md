@@ -38,7 +38,7 @@ The first half of that question is right, and it's worth defending. Some cases r
 
 Evidence that would actually point to alien technology looks different. It would mean physical material that independent labs could examine and that couldn't have been made on Earth. It would mean measurements from several well-calibrated instruments that agree with one another and rule out balloons, drones, birds, and glare. And it would mean results that hold up when other scientists check them. NASA's study team put it plainly: in the peer-reviewed scientific literature, "there is no conclusive evidence suggesting an extraterrestrial origin for UAP." The team called extraterrestrial life the "hypothesis of last resort," the answer to turn to only once every other possibility has been ruled out.[^4]
 
-None of this proves we're alone, and it doesn't mean pilots are making things up. They're reporting real objects they couldn't identify, often for good reasons. It just means that, so far, every case with enough data to solve has had an earthly answer.[^3][^6]
+None of this proves we're alone, and it doesn't mean pilots are making things up. They're reporting real objects they couldn't identify, often for good reasons. It just means that, so far, every case with enough data to solve has had an earthly answer.[^3][^6] (For how to read the videos and documents the Pentagon began releasing in 2026, see [Do the Pentagon's UFO Files Show Aliens?](/blog/do-the-pentagons-ufo-files-show-aliens).)
 
 ## The thinking tool: "unidentified" isn't an identification
 

@@ -44,6 +44,11 @@ export const claimPictures = {
     alt: 'A meteorologist holds up a large white weather balloon against a blue sky, about to release it',
     position: '50% 50%',
   },
+  'ufo-files': {
+    src: '/images/claims/ufo-files.jpg',
+    alt: 'Still from the Navy “GoFast” infrared video: a small object locked in the targeting reticle over dark ocean, with range, angle and altitude readouts around the edge',
+    position: '50% 45%',
+  },
 };
 
 // Credit line for every archival picture on the site (claims above, plus the
@@ -108,6 +113,14 @@ export const pictureCredits = [
     title: 'Old woman is praying before her meal',
     page: 'https://commons.wikimedia.org/wiki/File:Katarina_Ivanovi%C4%87_-_Starica_se_moli_pred_obed_(1843-45).jpg',
     creator: 'Katarina Ivanović, 1843–45',
+    license: 'public domain',
+    licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
+    via: 'Wikimedia Commons',
+  },
+  {
+    title: 'Go Fast Official USG Footage of UAP for Public Release',
+    page: 'https://commons.wikimedia.org/wiki/File:Go_Fast_Official_USG_Footage_of_UAP_for_Public_Release.webm',
+    creator: 'the U.S. Navy',
     license: 'public domain',
     licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
     via: 'Wikimedia Commons',
