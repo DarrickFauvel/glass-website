@@ -241,5 +241,29 @@
   "height": 636,
   "saved": "2026-11-11",
   "note": "Still from the video's Commons poster frame (960px), cropped square inside the display's black border."
+ },
+ {
+  "file": "public/images/claims/chiropractic.jpg",
+  "media": "image",
+  "ref": "commons:12390085",
+  "title": "Chiropractic spinal adjustment",
+  "creator": "Michael Dorausch",
+  "creatorUrl": "https://www.flickr.com/photos/57009135@N00",
+  "date": "2010-01-22",
+  "license": "CC BY-SA 2.0",
+  "licenseCode": "by-sa",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "creditRequired": true,
+  "page": "https://commons.wikimedia.org/wiki/File:Chiropractic_spinal_adjustment.jpg",
+  "via": "Wikimedia Commons",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Chiropractic_spinal_adjustment.jpg/1280px-Chiropractic_spinal_adjustment.jpg",
+  "width": 800,
+  "height": 800,
+  "credit": "\"Chiropractic spinal adjustment\" by Michael Dorausch, CC BY-SA 2.0, via Wikimedia Commons",
+  "notes": [
+   "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
+  ],
+  "saved": "2026-11-11",
+  "note": "Cropped square around the practitioner and the adjustment from the 1280px version; resized to 800px."
  }
 ]

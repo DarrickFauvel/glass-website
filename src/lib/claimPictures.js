@@ -49,6 +49,11 @@ export const claimPictures = {
     alt: 'Still from the Navy “GoFast” infrared video: a small object locked in the targeting reticle over dark ocean, with range, angle and altitude readouts around the edge',
     position: '50% 45%',
   },
+  chiropractic: {
+    src: '/images/claims/chiropractic.jpg',
+    alt: 'A chiropractor in a tweed jacket leans over a man lying face down on a treatment table, pressing on his upper back with both hands',
+    position: '50% 50%',
+  },
 };
 
 // Credit line for every archival picture on the site (claims above, plus the
@@ -123,6 +128,14 @@ export const pictureCredits = [
     creator: 'the U.S. Navy',
     license: 'public domain',
     licenseUrl: 'https://creativecommons.org/publicdomain/mark/1.0/',
+    via: 'Wikimedia Commons',
+  },
+  {
+    title: 'Chiropractic spinal adjustment',
+    page: 'https://commons.wikimedia.org/wiki/File:Chiropractic_spinal_adjustment.jpg',
+    creator: 'Michael Dorausch',
+    license: 'CC BY-SA 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0',
     via: 'Wikimedia Commons',
   },
   {
