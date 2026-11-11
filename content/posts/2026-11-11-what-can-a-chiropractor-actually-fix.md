@@ -53,7 +53,7 @@ Assuming that because B came after A, A caused B, is called the *post hoc* falla
 
 [^1]: **Review article.** Homola, S. (2006). "Chiropractic: History and overview of theories and methods." *Clinical Orthopaedics and Related Research*, 444, 236–242. https://doi.org/10.1097/01.blo.0000200258.95865.87
 
-[^2]: **Government agency.** National Center for Complementary and Integrative Health. (2019, April; usage figures for 2022). "Chiropractic: In depth." https://www.nccih.nih.gov/health/chiropractic-in-depth <!-- VERIFY: the page shows "last updated April 2019" but cites 2022 usage data; confirm the date and the 85.7% figure on the live page -->
+[^2]: **Government agency.** National Center for Complementary and Integrative Health. (2019, April; usage figures for 2022). "Chiropractic: In depth." https://www.nccih.nih.gov/health/chiropractic-in-depth
 
 [^3]: **Government agency.** Clarke, T. C., Barnes, P. M., Black, L. I., Stussman, B. J., & Nahin, R. L. (2018, November). *Use of Yoga, Meditation, and Chiropractors Among U.S. Adults Aged 18 and Over* (NCHS Data Brief No. 325). National Center for Health Statistics. https://www.cdc.gov/nchs/products/databriefs/db325.htm
 
