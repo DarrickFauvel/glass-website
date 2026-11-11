@@ -16,3 +16,4 @@ The first ten come from the hero-section "clues" in `public/js/main.js`. Each on
 - [ ] **aliens** — *Belief:* Extraterrestrials have visited Earth and governments suppress the evidence. *Question:* What testable evidence supports a visit to Earth specifically?
 - [ ] **ghosts** — *Belief:* Ghosts linger in the physical world, detectable by cold spots, EVP, or EMF meters. *Question:* What evidence links EMF fluctuations to anything other than wiring and electronics?
 - [ ] **flat-earth** — *Belief:* Earth is a flat disc and space agencies hide its true shape. *Question:* What flat-Earth model makes predictions as precise as GPS, eclipses, and circumnavigation?
+- [ ] **chiropractic** — *Belief:* Spinal adjustments correct misalignments ("subluxations") that cause pain and disease, so regular chiropractic care keeps you healthy. *Question:* What does chiropractic add that exercise and physical therapy don't, and what's the evidence beyond back and neck pain?
