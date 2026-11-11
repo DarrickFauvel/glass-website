@@ -48,7 +48,7 @@ For UFOs, the government has published that number. Every case AARO had enough d
 
 [^1]: **Journalism.** Binkley, C., & Kim, S. M. (2026, May 8). "Pentagon begins releasing new files on UFOs and says the public can draw its own conclusions." *Associated Press* (via KSL.com). https://www.ksl.com/article/pentagon-begins-releasing-new-files-on-ufos-and-says-the-public-can-draw-its-own-conclusions/51494975
 
-[^2]: **Journalism.** Burman, B., Ramsey, M., & Weber, J. (2026, October). "Roswell UFO wreckage account resurfaces in seventh file drop." *NewsNation*. https://www.newsnationnow.com/us-news/west/roswell-ufo-eyewitness-walter-haut/amp/ <!-- VERIFY: the page shows only a relative date ("3 weeks ago"), so the exact day is unconfirmed. war.gov/UFO returns 403 to fetching, so the batch dates couldn't be checked against the official listing -->
+[^2]: **Journalism.** Burman, B., Ramsey, M., & Weber, J. (2026, October). "Roswell UFO wreckage account resurfaces in seventh file drop." *NewsNation*. https://www.newsnationnow.com/us-news/west/roswell-ufo-eyewitness-walter-haut/amp/
 
 [^3]: **Journalism.** Chappell, B. (2026, May 8). "UFO files spanning decades are released by Defense Department." *NPR* (via OPB). https://www.opb.org/article/2026/05/08/ufo-files-released-defense-department-publishes-trove-of-records/
 
