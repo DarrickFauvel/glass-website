@@ -573,6 +573,11 @@ if (prefersReducedMotion) {
     // hero-content stays in flow: .hero-mag repeats the hero's own flex
     // centring and padding, so the copy lines up with the original even after
     // fonts load or the hero resizes.
+    // The copy's links work under the glass (what you see is what you click),
+    // but stay out of the tab order and don't duplicate the page's ids:
+    // keyboard and screen-reader users have the real links.
+    [clone, ...clone.querySelectorAll('[id]')].forEach(node => node.removeAttribute('id'));
+    clone.querySelectorAll('a, button').forEach(node => node.setAttribute('tabindex', '-1'));
     mag.appendChild(clone);
   });
   // Wire clicks on the cloned secrets in the mag layer
@@ -1084,10 +1089,17 @@ if (prefersReducedMotion) {
     const t = e.changedTouches[0];
     const isTap = Math.hypot(t.clientX - touchStartClientX, t.clientY - touchStartClientY) < 10;
     if (isTap) {
+      // touchstart swallowed the tap (to grab the lens), so act on it here:
+      // a secret opens its card, and a link or button, magnified or real,
+      // is clicked.
       const el = touchStartElement;
-      if (el && el.classList.contains('hero-secret') && el.dataset.clue) {
-        const clue = clues.find(c => c.text === el.dataset.clue);
+      const secret = el?.closest('.hero-secret');
+      const control = el?.closest('a, button');
+      if (secret && secret.dataset.clue) {
+        const clue = clues.find(c => c.text === secret.dataset.clue);
         if (clue) openSecretModal(clue);
+      } else if (control) {
+        control.click();
       }
       velHistory.length = 0;
       resetIdleTimer();
