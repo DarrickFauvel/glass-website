@@ -528,6 +528,14 @@ nav a.nav-active::after {
   transition: color 0.2s;
 }
 
+/* A long display name is cut short in the header; the full name is on the
+   account page and in the link's title. */
+.nav-user-name-text {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .nav-user-name:hover {
   color: var(--crimson);
 }
@@ -1555,6 +1563,7 @@ nav a.nav-active::after {
 .hero-next-where {
   font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.05rem);
   color: var(--ink);
+  overflow-wrap: anywhere; /* a long venue can't push past the screen */
 }
 
 .hero-btn {
@@ -2359,6 +2368,7 @@ main {
 .upcoming-date-detail {
   font-size: 0.95rem;
   color: var(--ink-mid);
+  overflow-wrap: anywhere;
 }
 
 .upcoming-date-text-short {
@@ -2601,6 +2611,9 @@ main {
   border: none;
   overflow: visible;
   width: max-content;
+  /* A 280-character note wraps instead of running off-screen. */
+  max-width: min(20rem, calc(100vw - 2rem));
+  overflow-wrap: anywhere;
   padding: 0.5rem 0.7rem;
   background: var(--ink);
   color: var(--white);
@@ -2699,6 +2712,7 @@ main {
    serif rather than the mono used for meta/labels elsewhere in this block. */
 .rsvp-attendee-name {
   display: block;
+  overflow-wrap: anywhere; /* members do use an email as their display name */
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 600;
@@ -2707,6 +2721,7 @@ main {
 
 .rsvp-attendee-comment {
   display: block;
+  overflow-wrap: anywhere;
   font-family: var(--font-body);
   color: var(--ink-dim);
   font-style: italic;
@@ -5828,4 +5843,36 @@ main {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ===== Dev-only homepage data switcher =====
+   Rendered only outside production (src/routes/marketing.js). Plain chrome,
+   deliberately not part of the design under test. */
+.dev-data-toggle {
+  position: fixed;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--cream-3);
+  border: 1px solid var(--border-hi);
+  border-radius: 999px;
+  font: 600 12px/1 system-ui, sans-serif;
+  box-shadow: 0 4px 14px rgba(28, 20, 16, 0.18);
+}
+
+.dev-data-toggle a {
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: var(--ink-mid);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dev-data-toggle a[aria-current="page"] {
+  background: var(--surface);
+  color: var(--ink);
 }

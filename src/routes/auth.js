@@ -40,6 +40,7 @@ authRouter.post('/register', async (req, res) => {
   let error;
   if (!cleanName) error = 'Please enter your name.';
   else if (!cleanDisplayName) error = 'Please enter a display name.';
+  else if (cleanDisplayName.length > 100) error = 'Display name must be 100 characters or fewer.';
   else if (!EMAIL_RE.test(cleanEmail)) error = 'Please enter a valid email address.';
   else if (!password || password.length < 8) error = 'Password must be at least 8 characters.';
   else if (password !== confirmPassword) error = 'Passwords do not match.';

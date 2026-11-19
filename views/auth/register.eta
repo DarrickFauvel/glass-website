@@ -20,7 +20,7 @@
           </div>
           <div class="form-group">
             <label for="register-display-name">Display Name</label>
-            <input type="text" id="register-display-name" data-bind="register.displayName" required autocomplete="nickname">
+            <input type="text" id="register-display-name" data-bind="register.displayName" required maxlength="100" autocomplete="nickname">
             <p class="form-hint">Shown publicly instead of your name — e.g. on the site nav.</p>
           </div>
           <div class="form-group">

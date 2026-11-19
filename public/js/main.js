@@ -1199,6 +1199,9 @@ if (prefersReducedMotion) {
       tooltip.appendChild(comment);
     }
     if (!tooltip.matches(':popover-open')) tooltip.showPopover();
+    // Keep a wide tooltip inside the viewport's right edge.
+    const maxLeft = window.innerWidth - tooltip.offsetWidth - 16;
+    tooltip.style.left = `${Math.max(16, Math.min(rect.left, maxLeft))}px`;
   }
 
   function hideTooltip(el) {
