@@ -26,7 +26,7 @@
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.classList.add('theme-transitioning');
     applyTheme(next);
-    setTimeout(() => html.classList.remove('theme-transitioning'), 500);
+    setTimeout(() => html.classList.remove('theme-transitioning'), 350);
   });
 })();
 
@@ -229,25 +229,6 @@ if (prefersReducedMotion) {
   }, { passive: true });
 }());
 
-// ===== Button Ripple =====
-(function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  document.querySelectorAll('.hero-btn, .form-submit').forEach((btn) => {
-    btn.addEventListener('mouseenter', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - size / 2;
-      const y = e.clientY - rect.top - size / 2;
-
-      const ripple = document.createElement('span');
-      ripple.className = 'btn-ripple';
-      ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
-      btn.appendChild(ripple);
-      ripple.addEventListener('animationend', () => ripple.remove());
-    });
-  });
-}());
 
 // ===== QR Code Modal =====
 (function () {
@@ -307,6 +288,10 @@ if (prefersReducedMotion) {
   const LENS_R     = 60;
   const ATTRACT_R  = 200;
   const TOUCH_LIFT = -48; // px upward offset when finger is on lens
+
+  // Frame timing for raf() and lerp() below.
+  let lastFrameTs = 0;
+  let frameScale = 1;
 
   // Compute resting lens center before CSS hides the eyepiece
   const hr0 = hero.getBoundingClientRect();
@@ -517,7 +502,7 @@ if (prefersReducedMotion) {
       following  = false;
       attracting = false;
       cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(restoreTick);
+      rafId = raf(restoreTick);
     });
 
     sClose.addEventListener('click', () => sModal.close());
@@ -621,14 +606,14 @@ if (prefersReducedMotion) {
 
   overlay.style.width  = LENS_R * 2 + 'px';
   overlay.style.height = LENS_R * 2 + 'px';
-  overlay.style.left   = REST.x + 'px';
-  overlay.style.top    = REST.y + 'px';
+  overlay.style.transform = `translate(${REST.x}px, ${REST.y}px) translate(-50%, -50%)`;
   // Glass layers inside the lens: a thick ground edge (whose bright inner rim
   // lags behind movement like a reflection) and a faint colour fringe.
-  ['hero-lens-edge', 'hero-lens-rim', 'hero-lens-fringe'].forEach(cls => {
+  const [, rim] = ['hero-lens-edge', 'hero-lens-rim', 'hero-lens-fringe'].map(cls => {
     const layer = document.createElement('span');
     layer.className = cls;
     overlay.appendChild(layer);
+    return layer;
   });
   hero.insertBefore(overlay, eyepiece);
 
@@ -736,7 +721,7 @@ if (prefersReducedMotion) {
     applyLens(lensX, lensY);
 
     if (Math.hypot(flickVx, flickVy) > 0.4) {
-      rafId = requestAnimationFrame(momentumTick);
+      rafId = raf(momentumTick);
     } else {
       rafId = null;
       resetIdleTimer();
@@ -773,7 +758,7 @@ if (prefersReducedMotion) {
         lensY = lerp(lensY, REST.y, 0.04);
         applyLens(lensX, lensY);
         if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.8) {
-          rafId = requestAnimationFrame(introTick);
+          rafId = raf(introTick);
         } else {
           lensX = REST.x;
           lensY = REST.y;
@@ -781,11 +766,23 @@ if (prefersReducedMotion) {
           resetIdleTimer();
         }
       }
-      rafId = requestAnimationFrame(introTick);
-    }, 1600);
+      rafId = raf(introTick);
+    }, 750); // just after the hero text has settled
   }
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
+  // Every tick's easing factor is tuned for 60fps. Scale it by the real frame
+  // time so the lens moves at the same speed on a 120Hz screen.
+  function raf(tick) {
+    return requestAnimationFrame((ts) => {
+      // A long gap means the lens was resting, not a slow frame.
+      const dt = ts - lastFrameTs;
+      frameScale = lastFrameTs && dt < 100 ? dt / (1000 / 60) : 1;
+      lastFrameTs = ts;
+      tick(ts);
+    });
+  }
+
+  function lerp(a, b, t) { return a + (b - a) * (1 - Math.pow(1 - t, frameScale)); }
 
   function applyLens(x, y) {
     const at = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
@@ -799,16 +796,17 @@ if (prefersReducedMotion) {
       mag.style.transformOrigin = at;
       mag.style.transform       = `scale(${SCALE})`;
     }
-    overlay.style.left = x + 'px';
-    overlay.style.top  = y + 'px';
-    caustic.style.left = (x + LENS_R * 0.32) + 'px';
-    caustic.style.top  = (y + LENS_R * 0.42) + 'px';
-    // The rim's reflection lags a few pixels behind the lens's movement.
+    // Positioned with transforms, not left/top, so following the pointer
+    // never forces a layout pass.
+    overlay.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
+    caustic.style.transform =
+      `translate(${(x + LENS_R * 0.32).toFixed(1)}px, ${(y + LENS_R * 0.42).toFixed(1)}px) translate(-50%, -50%)`;
+    // The rim's reflection lags a few pixels behind the lens's movement. Set
+    // on the rim itself so only that element restyles.
     if (motionOK && prevX !== null) {
       const lagX = Math.max(-4, Math.min(4, -(x - prevX) * 0.5));
       const lagY = Math.max(-4, Math.min(4, -(y - prevY) * 0.5));
-      overlay.style.setProperty('--lens-lag-x', lagX.toFixed(2) + 'px');
-      overlay.style.setProperty('--lens-lag-y', lagY.toFixed(2) + 'px');
+      rim.style.transform = `translate(${lagX.toFixed(2)}px, ${lagY.toFixed(2)}px)`;
     }
     prevX = x;
     prevY = y;
@@ -840,7 +838,7 @@ if (prefersReducedMotion) {
     lensX = lerp(lensX, targetX, 0.1);
     lensY = lerp(lensY, targetY, 0.1);
     applyLens(lensX, lensY);
-    rafId = requestAnimationFrame(followTick);
+    rafId = raf(followTick);
   }
 
   // Touch follow — faster lerp so lift and drag feel responsive
@@ -848,7 +846,7 @@ if (prefersReducedMotion) {
     lensX = lerp(lensX, targetX, 0.25);
     lensY = lerp(lensY, targetY, 0.25);
     applyLens(lensX, lensY);
-    rafId = requestAnimationFrame(touchFollowTick);
+    rafId = raf(touchFollowTick);
   }
 
   // Slowly drift toward cursor when nearby but not grabbed
@@ -856,7 +854,7 @@ if (prefersReducedMotion) {
     lensX = lerp(lensX, targetX, 0.03);
     lensY = lerp(lensY, targetY, 0.03);
     applyLens(lensX, lensY);
-    rafId = requestAnimationFrame(attractTick);
+    rafId = raf(attractTick);
   }
 
   // Glide back to REST after attraction ends (mag stays visible)
@@ -865,7 +863,7 @@ if (prefersReducedMotion) {
     lensY = lerp(lensY, REST.y, 0.06);
     applyLens(lensX, lensY);
     if (Math.hypot(lensX - REST.x, lensY - REST.y) > 0.8) {
-      rafId = requestAnimationFrame(restoreTick);
+      rafId = raf(restoreTick);
     } else {
       lensX = REST.x;
       lensY = REST.y;
@@ -924,7 +922,7 @@ if (prefersReducedMotion) {
     }
 
     applyLens(lensX, lensY);
-    rafId = requestAnimationFrame(idleTick);
+    rafId = raf(idleTick);
   }
 
   function startIdleDrift() {
@@ -936,7 +934,7 @@ if (prefersReducedMotion) {
     idleVx = Math.cos(angle) * IDLE_SPEED;
     idleVy = Math.sin(angle) * IDLE_SPEED;
     cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(idleTick);
+    rafId = raf(idleTick);
   }
 
   function stopIdleDrift() {
@@ -975,7 +973,7 @@ if (prefersReducedMotion) {
       cancelAnimationFrame(rafId);
       targetX = lensX = mx;
       targetY = lensY = my;
-      rafId = requestAnimationFrame(followTick);
+      rafId = raf(followTick);
       return;
     }
 
@@ -990,7 +988,7 @@ if (prefersReducedMotion) {
         setLensOpacity('1');
         applyLens(lensX, lensY);
       }
-      rafId = requestAnimationFrame(attractTick);
+      rafId = raf(attractTick);
     }
   });
 
@@ -1008,7 +1006,7 @@ if (prefersReducedMotion) {
         setLensOpacity('1');
         applyLens(lensX, lensY);
       }
-      rafId = requestAnimationFrame(attractTick);
+      rafId = raf(attractTick);
     }
   });
 
@@ -1024,13 +1022,13 @@ if (prefersReducedMotion) {
       if (Math.hypot(vx, vy) > 1.5) {
         flickVx = vx;
         flickVy = vy;
-        rafId = requestAnimationFrame(momentumTick);
+        rafId = raf(momentumTick);
         return;
       }
     }
     following = false;
     cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(restoreTick);
+    rafId = raf(restoreTick);
   });
 
   // ===== Touch support =====
@@ -1061,7 +1059,7 @@ if (prefersReducedMotion) {
     // Target is finger position offset upward — lerp smoothly rises to it
     targetX = tx;
     targetY = ty + TOUCH_LIFT;
-    rafId = requestAnimationFrame(touchFollowTick);
+    rafId = raf(touchFollowTick);
   }, { passive: false });
 
   hero.addEventListener('touchmove', (e) => {
@@ -1097,7 +1095,7 @@ if (prefersReducedMotion) {
       if (Math.hypot(vx, vy) > 1.5) {
         flickVx = vx;
         flickVy = vy;
-        rafId = requestAnimationFrame(momentumTick);
+        rafId = raf(momentumTick);
       } else {
         resetIdleTimer();
       }
@@ -1130,31 +1128,6 @@ if (prefersReducedMotion) {
   }
 }());
 
-// ===== Eyepiece Pulse Rings =====
-(function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const eyepiece = document.querySelector('.hero-eyepiece');
-  if (!eyepiece) return;
-
-  function scheduleRing(ring) {
-    const delay = 800 + Math.random() * 5000;
-    setTimeout(() => {
-      ring.classList.add('hero-ring--pulse');
-      ring.addEventListener('animationend', function onEnd() {
-        ring.removeEventListener('animationend', onEnd);
-        ring.classList.remove('hero-ring--pulse');
-        scheduleRing(ring);
-      }, { once: true });
-    }, delay);
-  }
-
-  for (let i = 0; i < 3; i++) {
-    const ring = document.createElement('div');
-    ring.className = 'hero-ring';
-    eyepiece.appendChild(ring);
-    scheduleRing(ring);
-  }
-}());
 
 // ===== Animated attendee list expand/collapse =====
 // Delegated (not bound per-element) because the RSVP attendee <details> is
