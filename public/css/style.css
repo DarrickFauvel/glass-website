@@ -881,9 +881,16 @@ nav a.nav-active::after {
     linear-gradient(90deg, rgba(28, 20, 16, 0.18) 1px, transparent 1px);
 }
 
-/* Make secrets in the mag layer clickable */
-.hero-mag .hero-secret {
+/* The magnified copy is clickable where it shows: its secrets, and the
+   copied hero links and button. The lens's clip-path (light) or the beam's
+   (dark) keeps hits inside the glass. */
+.hero-mag .hero-secret,
+.hero-mag a,
+.hero-mag button {
   pointer-events: auto;
+}
+
+.hero-mag .hero-secret {
   cursor: pointer;
 }
 
