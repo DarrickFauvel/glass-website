@@ -84,9 +84,11 @@ accountRouter.post('/account/name', requireAuth, async (req, res) => {
 accountRouter.post('/account/display-name', requireAuth, async (req, res) => {
   const displayName = String(req.body.profileName?.value ?? '').trim();
 
-  if (!displayName) {
+  if (!displayName || displayName.length > 100) {
     startSSE(res);
-    patchSignals(res, { profileName: { submitting: false, error: 'Please enter a name.' } });
+    patchSignals(res, {
+      profileName: { submitting: false, error: displayName ? 'Display name must be 100 characters or fewer.' : 'Please enter a name.' },
+    });
     return res.end();
   }
 

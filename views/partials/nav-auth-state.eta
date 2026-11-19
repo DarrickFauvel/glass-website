@@ -1,7 +1,7 @@
 <% if (it.user) { %>
-              <a href="/account" class="nav-user-name">
+              <a href="/account" class="nav-user-name" title="<%= it.user.display_name %>">
                 <%~ include("avatar", { displayName: it.user.display_name, userId: it.user.id, avatarColor: it.user.avatar_color, size: 'sm', id: 'avatar-nav' }) %>
-                <%= it.user.display_name %>
+                <span class="nav-user-name-text"><%= it.user.display_name %></span>
               </a>
 <% if (it.user.is_admin) { %>
               <a href="/admin/events" class="nav-auth-link">Admin</a>

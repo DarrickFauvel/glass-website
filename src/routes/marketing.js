@@ -13,6 +13,8 @@ import {
 } from '../lib/calendarLinks.js';
 import { listPosts } from '../lib/posts.js';
 import { claimPictures } from '../lib/claimPictures.js';
+import { config } from '../config.js';
+import { HOME_FIXTURES, homeFixture } from '../lib/homeFixtures.js';
 
 export const marketingRouter = Router();
 
@@ -24,6 +26,12 @@ marketingRouter.get('/about', (req, res) => {
 });
 
 marketingRouter.get('/', async (req, res) => {
+  // Dev only: ?data=worst|empty|one swaps in stand-in data (see homeFixtures.js).
+  const fixtureKind = config.nodeEnv !== 'production' && HOME_FIXTURES.includes(req.query.data)
+    ? req.query.data
+    : null;
+  if (fixtureKind) return renderHome(req, res, { ...homeFixture(fixtureKind), fixtureKind });
+
   const events = await listUpcomingEvents(3);
   const eventIds = events.map((event) => event.id);
 
@@ -37,29 +45,40 @@ marketingRouter.get('/', async (req, res) => {
       listRsvpsForEvents(eventIds),
     ]);
     rsvpsByEvent = allRsvps;
-    const rsvps = {};
-    events.forEach((event, i) => {
-      const userRsvp = userRsvps.get(event.id);
-      const comment = userRsvp?.comment ?? '';
-      rsvps[`e${i}`] = {
-        status: userRsvp?.status ?? '',
-        comment,
-        savedComment: comment,
-        saved: false,
-        noteOpen: Boolean(comment),
-      };
-    });
-    rsvpSignalsJson = JSON.stringify({ rsvps });
+    rsvpSignalsJson = rsvpSignals(events, userRsvps);
   }
 
+  return renderHome(req, res, { events, rsvpsByEvent, rsvpSignalsJson, claims: await claimsUnderTheGlass() });
+});
+
+function rsvpSignals(events, userRsvps) {
+  const rsvps = {};
+  events.forEach((event, i) => {
+    const userRsvp = userRsvps.get(event.id);
+    const comment = userRsvp?.comment ?? '';
+    rsvps[`e${i}`] = {
+      status: userRsvp?.status ?? '',
+      comment,
+      savedComment: comment,
+      saved: false,
+      noteOpen: Boolean(comment),
+    };
+  });
+  return JSON.stringify({ rsvps });
+}
+
+async function renderHome(req, res, { events, rsvpsByEvent, rsvpSignalsJson, claims, user, fixtureKind }) {
   res.render('marketing/home', {
     clueArticlesJson: await clueArticlesJson(),
-    claims: await claimsUnderTheGlass(),
+    claims,
     events,
+    rsvpsByEvent,
+    rsvpSignalsJson: rsvpSignalsJson ?? rsvpSignals(events, new Map()),
+    ...(user ? { user } : {}),
+    // Dev-only data switcher; null on real data in production.
+    dataToggle: config.nodeEnv !== 'production' ? (fixtureKind ?? 'real') : null,
     nextEvent: events.find((event) => !event.cancelled_at) ?? null,
     formatEventTimeLabel,
-    rsvpsByEvent,
-    rsvpSignalsJson,
     formatEventDateLabel,
     formatEventDateLabelShort,
     eventDateParts,
@@ -68,7 +87,7 @@ marketingRouter.get('/', async (req, res) => {
     icsDataUri,
     icsRecurDataUri,
   });
-});
+}
 
 // The newest posts, as claims examined on the homepage. Like the hero links,
 // a broken post file shouldn't take the homepage down.

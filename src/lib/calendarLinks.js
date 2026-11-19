@@ -47,8 +47,26 @@ export function formatEventTimeLabel(startsAt) {
   );
 }
 
+// An online meetup's location is (or contains) the meeting link. A long URL
+// is noise in a sentence, so the page says "Online" and the link stays in
+// the calendar entry.
+function isOnlineLocation(location) {
+  return /https?:\/\//i.test(String(location ?? ''));
+}
+
+// "Panera Bread — 188 Boston Rd, Billerica, MA" -> "Panera Bread, 188 Boston Rd".
+// The place before " — " is kept whole, commas and all, so a room or entrance
+// note survives; only the address is cut to its street.
+function shortVenue(location) {
+  const text = String(location ?? '').trim();
+  if (isOnlineLocation(text)) return 'Online';
+  const [place, address] = text.split(/\s+—\s+/);
+  if (address !== undefined) return `${place.trim()}, ${address.split(',')[0].trim()}`;
+  return text.split(',')[0].trim();
+}
+
 // Pieces for the calendar-leaf date tile on each upcoming date, plus a short
-// venue name ("Panera Bread, 188 Boston Rd, ..." -> "Panera Bread").
+// venue name (see shortVenue).
 export function eventDateParts(event) {
   const date = parseLocalDateTime(event.starts_at);
   const fmt = (options) => new Intl.DateTimeFormat('en-US', options).format(date);
@@ -56,7 +74,7 @@ export function eventDateParts(event) {
     month: fmt({ month: 'short' }),
     day: fmt({ day: 'numeric' }),
     time: formatEventTimeLabel(event.starts_at),
-    venue: String(event.location ?? '').split(',')[0].replace(/\s+—\s+/, ', ').trim(),
+    venue: shortVenue(event.location),
   };
 }
 

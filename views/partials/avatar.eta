@@ -1,8 +1,13 @@
 <%
   const displayName = String(it.displayName || '').trim();
-  const words = displayName.split(/\s+/).filter(Boolean);
+  // Initials from the first letter of the first and last words. Words with
+  // no letter (an emoji) and name suffixes (Jr, III) are skipped, and
+  // Array.from keeps an accented or astral letter whole.
+  const SUFFIXES = /^(jr|sr|ii|iii|iv|phd|md)\.?$/i;
+  const firstLetter = (word) => Array.from(word).find((ch) => /\p{L}/u.test(ch));
+  const words = displayName.split(/\s+/).filter((word) => firstLetter(word) && !SUFFIXES.test(word));
   const initials = words.length
-    ? (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase()
+    ? (firstLetter(words[0]) + (words.length > 1 ? firstLetter(words[words.length - 1]) : '')).toUpperCase()
     : '?';
   let tint = it.avatarColor;
   if (tint === null || tint === undefined) {

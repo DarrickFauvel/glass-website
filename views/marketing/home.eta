@@ -17,3 +17,12 @@
 
 <%~ include("contact-form", it) %>
 
+
+<% if (it.dataToggle) { %>
+<%/* Dev-only data switcher for stress-testing the homepage (homeFixtures.js). Never rendered in production. */%>
+<nav class="dev-data-toggle" aria-label="Homepage test data (dev only)">
+<% [['real', 'Real data'], ['worst', 'Worst case'], ['empty', 'Empty'], ['one', 'One']].forEach(function ([key, label]) { %>
+  <a href="<%= key === 'real' ? '/' : '/?data=' + key %>"<%~ it.dataToggle === key ? ' aria-current="page"' : '' %>><%= label %></a>
+<% }); %>
+</nav>
+<% } %>

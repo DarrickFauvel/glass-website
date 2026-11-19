@@ -12,15 +12,16 @@
 <% if (it.nextEvent) {
      const [place, address] = it.nextEvent.location.split(' — ');
      const town = address ? address.split(',')[1]?.trim() : '';
+     const where = /https?:\/\//i.test(it.nextEvent.location) ? 'Online' : town ? place + ', ' + town : it.nextEvent.location;
 %>
       <p class="hero-next">
         <span class="hero-next-label">Next meetup</span>
         <span class="hero-next-date"><%= it.formatEventDateLabel(it.nextEvent.starts_at).replace(/, \d{4}$/, '') %></span>
-        <span class="hero-next-where"><%= it.formatEventTimeLabel(it.nextEvent.starts_at) %> · <%= town ? place + ', ' + town : it.nextEvent.location %></span>
+        <span class="hero-next-where"><%= it.formatEventTimeLabel(it.nextEvent.starts_at) %> · <%= where %></span>
       </p>
 <% } %>
       <div class="hero-actions">
-        <a href="#events" class="hero-btn"><%= it.user ? 'RSVP for the next meetup' : 'Meetup details' %></a>
+        <a href="#events" class="hero-btn"><%= it.user && it.nextEvent ? 'RSVP for the next meetup' : 'Meetup details' %></a>
         <a href="https://discord.gg/87g598FJjM" class="hero-link" target="_blank" rel="noopener noreferrer">or say hello on Discord</a>
       </div>
     </div>
