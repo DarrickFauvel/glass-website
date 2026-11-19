@@ -55,6 +55,9 @@
   /* Above and below each page's main content. `main` supplies the side gutter. */
   --page-padding-y: clamp(5rem, 10vw, 8rem);
 
+  /* Motion: a strong ease-out for anything entering or responding. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
   color-scheme: light;
 }
 
@@ -143,7 +146,6 @@
   text-decoration: none;
   z-index: 9999;
   border-radius: 0 0 4px 4px;
-  transition: top 0.2s;
 }
 
 .skip-link:focus {
@@ -181,8 +183,8 @@ body {
 /* ===== Scroll Reveal ===== */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(12px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
 }
 
 .reveal.visible {
@@ -278,10 +280,12 @@ nav a::after {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 1px;
   background: var(--crimson);
-  transition: width 0.25s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--ease-out);
 }
 
 nav a:hover,
@@ -289,9 +293,14 @@ nav a.nav-active {
   color: var(--crimson);
 }
 
-nav a:hover::after,
 nav a.nav-active::after {
-  width: 100%;
+  transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  nav a:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 /* One plain action in the bar: the next meetup. */
@@ -384,12 +393,13 @@ nav a.nav-active::after {
 .theme-transitioning *,
 .theme-transitioning *::before,
 .theme-transitioning *::after {
+  /* Only the three properties every element changes, so the switch paints
+     less. (`background` was a duplicate of background-color; gradients and
+     shadows can't interpolate between themes anyway.) */
   transition:
-    background-color 0.4s ease,
-    background 0.4s ease,
-    color 0.4s ease,
-    border-color 0.4s ease,
-    box-shadow 0.4s ease !important;
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease !important;
 }
 
 
@@ -920,8 +930,8 @@ nav a.nav-active::after {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
     pointer-events: none;
-    transition: clip-path 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity   0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: clip-path 0.26s var(--ease-out),
+                opacity   0.2s var(--ease-out);
   }
 
   .nav-open #primary-nav {
@@ -939,7 +949,7 @@ nav a.nav-active::after {
     text-transform: none;
     color: var(--ink);
     padding: 0.7rem var(--gutter);
-    transition: color 0.18s, padding-left 0.22s;
+    transition: color 0.18s;
     opacity: 0;
     transform: translateX(-8px);
   }
@@ -965,7 +975,7 @@ nav a.nav-active::after {
   .nav-open #primary-nav .nav-tools {
     opacity: 1;
     transform: translateX(0);
-    transition: opacity 0.3s 0.26s ease, transform 0.3s 0.26s ease;
+    transition: opacity 0.2s 0.13s var(--ease-out), transform 0.2s 0.13s var(--ease-out);
   }
 
   #primary-nav .nav-tools [data-tooltip]::after {
@@ -987,20 +997,25 @@ nav a.nav-active::after {
   #primary-nav a:hover,
   #primary-nav a.nav-active {
     color: var(--crimson);
-    padding-left: calc(var(--gutter) + 0.5rem);
   }
 
-  /* Stagger link reveal */
+  /* The active page sits slightly indented. A transform, not padding, so it
+     never forces layout, and no hover shift: on touch a tap's hover sticks. */
+  .nav-open #primary-nav a.nav-active {
+    transform: translateX(0.5rem);
+  }
+
+  /* Stagger link reveal: quick and slightly uneven, done within ~320ms. */
   .nav-open #primary-nav a {
     opacity: 1;
     transform: translateX(0);
   }
-  .nav-open #primary-nav a:nth-child(1) { transition: opacity 0.3s 0.08s ease, transform 0.3s 0.08s ease, color 0.18s, padding-left 0.22s; }
-  .nav-open #primary-nav a:nth-child(2) { transition: opacity 0.3s 0.14s ease, transform 0.3s 0.14s ease, color 0.18s, padding-left 0.22s; }
-  .nav-open #primary-nav a:nth-child(3) { transition: opacity 0.3s 0.20s ease, transform 0.3s 0.20s ease, color 0.18s, padding-left 0.22s; }
-  .nav-open #primary-nav a:nth-child(4) { transition: opacity 0.3s 0.26s ease, transform 0.3s 0.26s ease, color 0.18s, padding-left 0.22s; }
-  .nav-open #primary-nav a:nth-child(5) { transition: opacity 0.3s 0.32s ease, transform 0.3s 0.32s ease, color 0.18s, padding-left 0.22s; }
-  .nav-open #primary-nav a:nth-child(6) { transition: opacity 0.3s 0.38s ease, transform 0.3s 0.38s ease, color 0.18s, padding-left 0.22s; }
+  .nav-open #primary-nav a:nth-child(1) { transition: opacity 0.2s 0s var(--ease-out), transform 0.2s 0s var(--ease-out), color 0.18s; }
+  .nav-open #primary-nav a:nth-child(2) { transition: opacity 0.2s 0.03s var(--ease-out), transform 0.2s 0.03s var(--ease-out), color 0.18s; }
+  .nav-open #primary-nav a:nth-child(3) { transition: opacity 0.2s 0.055s var(--ease-out), transform 0.2s 0.055s var(--ease-out), color 0.18s; }
+  .nav-open #primary-nav a:nth-child(4) { transition: opacity 0.2s 0.075s var(--ease-out), transform 0.2s 0.075s var(--ease-out), color 0.18s; }
+  .nav-open #primary-nav a:nth-child(5) { transition: opacity 0.2s 0.095s var(--ease-out), transform 0.2s 0.095s var(--ease-out), color 0.18s; }
+  .nav-open #primary-nav a:nth-child(6) { transition: opacity 0.2s 0.115s var(--ease-out), transform 0.2s 0.115s var(--ease-out), color 0.18s; }
 
   /* Log In, Sign Up and the account links stay small beside the theme toggle. */
   #primary-nav .nav-tools a {
@@ -1086,6 +1101,9 @@ nav a.nav-active::after {
   border-radius: 50%;
   pointer-events: none;
   z-index: 4;
+  /* main.js positions it with a transform that ends in translate(-50%, -50%). */
+  left: 0;
+  top: 0;
   transform: translate(-50%, -50%);
   background: radial-gradient(circle,
     transparent 0%,
@@ -1128,7 +1146,7 @@ nav a.nav-active::after {
     transparent 92%);
   -webkit-mask-image: linear-gradient(135deg, #000 15%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.15) 100%);
   mask-image: linear-gradient(135deg, #000 15%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.15) 100%);
-  transform: translate(var(--lens-lag-x, 0px), var(--lens-lag-y, 0px));
+  /* main.js sets the lag as a transform on this element. */
   transition: transform 0.25s ease-out;
 }
 
@@ -1150,6 +1168,8 @@ nav a.nav-active::after {
   z-index: 3;
   border-radius: 50%;
   pointer-events: none;
+  left: 0;
+  top: 0;
   transform: translate(-50%, -50%);
   background: radial-gradient(closest-side,
     rgba(255, 250, 232, 0.75) 0%,
@@ -1415,7 +1435,6 @@ nav a.nav-active::after {
 .hero-lens--2 {
   inset: 12%;
   border: 1px dashed rgba(28, 20, 16, 0.1);
-  animation: spin 45s linear infinite;
 }
 
 .hero-lens--3 {
@@ -1429,31 +1448,6 @@ nav a.nav-active::after {
   border: 2px solid rgba(155, 32, 32, 0.45);
   background: rgba(155, 32, 32, 0.06);
   box-shadow: 0 0 50px rgba(155, 32, 32, 0.1);
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* Pulse rings emanating from eyepiece center */
-.hero-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(155, 32, 32, 0.5);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.hero-ring--pulse {
-  animation: eyepiecePulse 5s ease-out forwards;
-}
-
-@keyframes eyepiecePulse {
-  0%   { transform: scale(0.2); opacity: 0;  }
-  8%   { opacity: 0.55;                       }
-  100% { transform: scale(1.9); opacity: 0;  }
 }
 
 .hero-content {
@@ -1484,11 +1478,12 @@ nav a.nav-active::after {
 .hero-line {
   display: block;
   white-space: nowrap;
-  animation: fadeUp 0.9s ease 0.3s both;
+  /* Hero entrance: one quick, slightly uneven cascade, done by ~720ms. */
+  animation: fadeUp 0.5s var(--ease-out) both;
 }
 
 .hero-line + .hero-line {
-  animation-delay: 0.48s;
+  animation-delay: 0.06s;
 }
 
 .hero-sub {
@@ -1497,7 +1492,7 @@ nav a.nav-active::after {
   max-width: 34rem;
   line-height: 1.6;
   margin-bottom: 2.5rem;
-  animation: fadeUp 0.9s ease 0.65s both;
+  animation: fadeUp 0.5s var(--ease-out) 0.12s both;
 }
 
 /* The answer to "when and where?" at the second size, on the first screen. */
@@ -1506,7 +1501,7 @@ nav a.nav-active::after {
   flex-direction: column;
   gap: 0.2rem;
   margin-bottom: 2.25rem;
-  animation: fadeUp 0.9s ease 0.75s both;
+  animation: fadeUp 0.5s var(--ease-out) 0.17s both;
 }
 
 .hero-next-label {
@@ -1542,40 +1537,33 @@ nav a.nav-active::after {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 700;
-  transition: background 0.22s, transform 0.22s;
-  animation: fadeUp 0.9s ease 0.85s both;
+  transition: background 0.22s, transform 0.16s var(--ease-out);
   position: relative;
   overflow: hidden;
 }
 
-.btn-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
-  transform: scale(0);
-  pointer-events: none;
-  animation: btn-ripple 0.6s ease-out forwards;
-}
-
-@keyframes btn-ripple {
-  to {
-    transform: scale(3);
-    opacity: 0;
-  }
-}
-
 .hero-btn::after {
   content: '→';
-  transition: transform 0.2s;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .hero-btn:hover {
   background: var(--crimson-hi);
-  transform: translateY(-2px);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .hero-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero-btn:hover::after {
+    transform: translateX(5px);
+  }
+}
+
+/* Pressed: the button gives a little under the finger. */
 .hero-btn:active {
-  transform: translateY(0);
+  transform: scale(0.97);
 }
 
 .hero-link {
@@ -1584,7 +1572,6 @@ nav a.nav-active::after {
   text-decoration: underline;
   text-decoration-color: var(--crimson);
   text-underline-offset: 0.25em;
-  animation: fadeUp 0.9s ease 1s both;
   transition: color 0.2s;
 }
 
@@ -1592,22 +1579,21 @@ nav a.nav-active::after {
   color: var(--crimson);
 }
 
-.hero-btn:hover::after {
-  transform: translateX(5px);
-}
-
+/* The entrance lives on the wrapper, not the button: an animation's filled
+   final frame would otherwise override the button's hover and press
+   transforms. */
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1.5rem;
   align-items: center;
+  animation: fadeUp 0.5s var(--ease-out) 0.22s both;
 }
 
 .hero-btn--outline {
   background: transparent;
   color: var(--crimson);
   border: 2px solid var(--crimson);
-  animation-delay: 1.0s;
 }
 
 .hero-btn--outline::after {
@@ -1624,7 +1610,7 @@ nav a.nav-active::after {
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -1639,6 +1625,13 @@ nav a.nav-active::after {
   overflow: hidden;
 }
 
+/* The photo layers below fill only the padding box, so each 1px border shows
+   the bare red gradient. Against the dark page that reads as a red rule. */
+[data-theme="dark"] .quote-band {
+  border-top: none;
+  border-bottom: none;
+}
+
 .quote-band::before {
   content: '';
   position: absolute;
@@ -1646,7 +1639,7 @@ nav a.nav-active::after {
   background: url('../images/carlsagan.jpg') center 20% / cover no-repeat;
   opacity: 0.18;
   mix-blend-mode: luminosity;
-  transition: opacity 1.2s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 0;
 }
@@ -1658,17 +1651,30 @@ nav a.nav-active::after {
   background: url('../images/carlsagan.jpg') center 20% / cover no-repeat;
   opacity: 0;
   mix-blend-mode: normal;
-  transition: opacity 1.2s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 0;
 }
 
-.quote-band:hover::before {
-  opacity: 0;
-}
+/* The hover reveal (photo comes into full colour, quote steps aside) needs a
+   real pointer: on touch a tap's hover sticks and moves the text away. */
+@media (hover: hover) and (pointer: fine) {
+  .quote-band:hover::before {
+    opacity: 0;
+  }
 
-.quote-band:hover::after {
-  opacity: 1;
+  .quote-band:hover::after {
+    opacity: 1;
+  }
+
+  .quote-band:hover .pull-quote {
+    transform: translateY(4.5rem);
+    color: #ffffff;
+  }
+
+  .quote-band:hover .pull-cite {
+    color: #ffffff;
+  }
 }
 
 .quote-band-inner {
@@ -1690,13 +1696,8 @@ nav a.nav-active::after {
   max-width: 750px;
   margin: 0 auto 1.25rem;
   position: relative;
-  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-              color 1s ease;
-}
-
-.quote-band:hover .pull-quote {
-  transform: translateY(4.5rem);
-  color: #ffffff;
+  transition: transform 0.5s var(--ease-out),
+              color 0.4s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1722,11 +1723,7 @@ nav a.nav-active::after {
   color: rgba(253, 246, 238, 0.92);
   text-transform: uppercase;
   font-style: normal;
-  transition: color 1s ease;
-}
-
-.quote-band:hover .pull-cite {
-  color: #ffffff;
+  transition: color 0.4s ease;
 }
 
 /* ===== SECTION LABEL ===== */
@@ -1846,17 +1843,22 @@ main {
   height: 100%;
   object-fit: cover;
   transform: scale(1.08);
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.6s ease;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.4s ease;
 }
 
-/* Touch screens have no hover to bring it into focus, so they stay sharp. */
+/* Touch screens have no hover to bring it into focus, so they stay sharp,
+   and a tap doesn't leave the picture stuck zoomed in. */
 @media (hover: hover) {
   .claim-lens img {
     filter: blur(2px);
   }
+
+  .claim:hover .claim-lens img {
+    filter: none;
+    transform: scale(1.35);
+  }
 }
 
-.claim:hover .claim-lens img,
 .claim:focus-within .claim-lens img {
   filter: none;
   transform: scale(1.35);
@@ -5731,7 +5733,7 @@ main {
   }
 
   ::view-transition-old(root) {
-    animation: page-lift 0.12s ease-in both;
+    animation: page-lift 0.12s ease-out both;
   }
 
   ::view-transition-new(root) {
@@ -5745,7 +5747,7 @@ main {
   .article-page--post { view-transition-name: post-text; }
 
   ::view-transition-old(post-text) {
-    animation: page-lift 0.12s ease-in both;
+    animation: page-lift 0.12s ease-out both;
   }
 
   ::view-transition-new(post-text) {
