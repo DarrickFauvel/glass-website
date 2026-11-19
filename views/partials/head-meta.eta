@@ -1,20 +1,22 @@
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title><%= it.pageTitle ? it.pageTitle + ' — GLASS' : 'GLASS — Greater Lowell Area Science-based Skeptics' %></title>
 <% if (it.pageDescription) { %>
   <meta name="description" content="<%= it.pageDescription %>" />
 <% } %>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#1c1410" />
+  <meta name="theme-color" content="#ede7da" id="theme-color" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="GLASS" />
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
   <script>
     (function() {
       var theme = localStorage.getItem('glass-theme') || 'light';
       document.documentElement.setAttribute('data-theme', theme);
+      // The browser bar matches the header's background (--cream-2).
+      if (theme === 'dark') document.getElementById('theme-color').setAttribute('content', '#1f1610');
     })();
 
     // Coming from a post, its card must already be in place so the page

@@ -10,6 +10,8 @@
     btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
     btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     localStorage.setItem('glass-theme', theme);
+    // Keep the browser bar matched to the header's background (--cream-2).
+    document.getElementById('theme-color')?.setAttribute('content', theme === 'dark' ? '#1f1610' : '#ede7da');
   }
 
   // Sync button state on load
