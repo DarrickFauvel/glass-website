@@ -48,6 +48,11 @@ That's why good tests use controls: a decoy reading, a target the sender didn't 
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#base-rates-compared-to-what), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **The Skeptic's Dictionary.** Robert Todd Carroll, "[Cold reading](https://www.skepdic.com/coldread.html)" (last updated 2016). A reference entry on the techniques that can make a reading feel personal, and on why clients tend to remember the hits and forget the misses.
+
+
 [^1]: **Survey.** Gecewicz, C. (2018, October 1). "'New Age' beliefs common among both religious and nonreligious Americans." *Pew Research Center*. https://www.pewresearch.org/short-reads/2018/10/01/new-age-beliefs-common-among-both-religious-and-nonreligious-americans/
 
 [^2]: **Review article.** Wiseman, R., & Watt, C. (2006). "Belief in psychic ability and the misattribution hypothesis: A qualitative review." *British Journal of Psychology*, 97(3), 323–338. https://doi.org/10.1348/000712605X72523

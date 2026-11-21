@@ -48,6 +48,11 @@ The honest move is to let "unknown" stay unknown until the evidence names someth
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#appeal-to-ignorance), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptic.** Michael Shermer, "[What Would Falsify Belief in Aliens?](https://www.skeptic.com/article/what-would-falsify-belief-in-aliens/)" (2025). Shermer answers a critic, explaining why he treats "we don't know" as a respectable position and what kind of evidence would change his mind.
+
+
 [^1]: **Survey.** Brenan, M. (2026, August 26). "Americans Still Skeptical That UFOs Are Aliens." *Gallup*. https://news.gallup.com/poll/713765/americans-skeptical-ufos-aliens.aspx
 
 [^2]: **Government agency.** Office of the Director of National Intelligence. (2021, June 25). *Preliminary Assessment: Unidentified Aerial Phenomena*. https://www.dni.gov/files/ODNI/documents/assessments/Prelimary-Assessment-UAP-20210625.pdf

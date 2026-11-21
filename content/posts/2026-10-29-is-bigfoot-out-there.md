@@ -44,6 +44,13 @@ A large breeding population of primates predicts carcasses, skeletons, roadkill,
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#absence-of-evidence-when-evidence-is-expected), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptical Inquirer.** Joe Nickell, "[Bigfoot as Big Myth: Seven Phases of Mythmaking](https://skepticalinquirer.org/2017/09/bigfoot-as-big-myth-seven-phases-of-mythmaking/)" (2017). A history of how the Bigfoot story changed over time, from "wild man" reports through the famous footprints and film to later paranormal versions.
+- **Skeptic.** Donald R. Prothero, "[Bigfoot DNA? It's Playing Possum!](https://archive.skeptic.com/archive/eskeptic/13-07-24)" (2013). A geologist looks at a 2013 claim to have sequenced Bigfoot DNA, and at what independent testing of the samples found: mostly human DNA, with contamination from other animals.
+- **The Skeptic's Dictionary.** Robert Todd Carroll, "[Bigfoot](https://skepdic.com/bigfoot.html)" (last updated 2015). A reference entry on the main kinds of Bigfoot evidence and why they fall short. It's older than some of the research cited above.
+
+
 [^1]: **Journalism.** Young, B. (2002, December 5). "Lovable trickster created a monster with Bigfoot hoax." *The Seattle Times*. https://archive.seattletimes.com/archive/20021205/raywallaceobit05m/lovable-trickster-created-a-monster-with-bigfoot-hoax
 
 [^2]: **Peer-reviewed study.** Sykes, B. C., Mullis, R. A., Hagenmuller, C., Melton, T. W., & Sartori, M. (2014). "Genetic analysis of hair samples attributed to yeti, bigfoot and other anomalous primates." *Proceedings of the Royal Society B*, 281, 20140161. https://doi.org/10.1098/rspb.2014.0161
