@@ -52,11 +52,11 @@ Assuming that because B came after A, A caused B, is called the *post hoc* falla
 
 ## Further reading
 
-Skeptical writers have been looking at chiropractic for decades. These pieces argue the case more sharply than this post does, but they draw the same line between spinal manipulation and the subluxation theory.
+Skeptical writers have been looking at chiropractic for decades. Hall's pieces argue the case more sharply than this post does, but they draw the same line between spinal manipulation and the subluxation theory. The Cochrane summary is the most recent look at the trials themselves.
 
 - **Skeptical Inquirer.** Harriet Hall, "[Chiropractors: Pro and Con](https://skepticalinquirer.org/exclusive/chiropractors-pro-and-con/)" (2017). Hall, a physician, agrees that manipulation is a reasonable option for back pain. She argues that the benefit comes from the manipulation itself, which physical therapists and osteopathic physicians also offer, and not from chiropractic theory.
 - **Skeptic.** Harriet Hall, "[Chiropractic: A Little Physical Therapy, a Lot of Nonsense](https://www.skeptic.com/article/chiropractic-a-little-physical-therapy-a-lot-of-nonsense/)" (2009). A short history of D. D. Palmer's founding ideas and why Hall considers them false, along with her case that manipulation helps some low back pain about as much as other treatments.
-- **The Skeptic's Dictionary.** Robert Todd Carroll, "[Chiropractic](https://skepdic.com/chiro.html)" (last updated 2015). A reference entry on the subluxation idea and the profession's history. It's older than the research cited above, so check its claims against newer sources.
+- **Cochrane.** de Zoete, A., et al., "[What are the benefits and risks of spinal manipulative therapy for chronic low back pain?](https://www.cochrane.org/evidence/CD008112_what-are-benefits-and-risks-spinal-manipulative-therapy-chronic-low-back-pain)" (2026). A plain-language summary of the latest Cochrane review of the trials. It finds that manipulation "may slightly reduce pain and moderately improve function" compared with a sham treatment, and the reviewers say they have "little confidence in the evidence."
 
 
 [^1]: **Review article.** Homola, S. (2006). "Chiropractic: History and overview of theories and methods." *Clinical Orthopaedics and Related Research*, 444, 236–242. https://doi.org/10.1097/01.blo.0000200258.95865.87

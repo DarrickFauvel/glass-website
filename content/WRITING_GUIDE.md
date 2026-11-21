@@ -24,7 +24,7 @@ No `#` heading in the body. The page renders the title from frontmatter.
 
 ## Further reading
 
-End every post with a `## Further reading` section, after the thinking tool and before the footnotes. It points readers to the skeptical literature on the topic, from **Skeptical Inquirer**, **Skeptic** and **The Skeptic's Dictionary**.
+End every post with a `## Further reading` section, after the thinking tool and before the footnotes. It points readers to the skeptical literature on the topic, from the outlets listed on the site's [resources page](/resources): **Skeptical Inquirer**, **Skeptic**, **Science-Based Medicine**, the **McGill Office for Science and Society**, **Skeptoid**, **The Skeptics' Guide to the Universe** and **The Skeptic's Dictionary**. A **Cochrane** plain-language summary also fits here when it's newer than, or adds to, what the post cites.
 
 - **One to three pieces.** One from each publication is ideal, but don't pad the list. One good piece beats three weak ones.
 - **Not citations.** Never use these to support a claim in the body. Empirical claims still need footnotes from the source hierarchy above.

@@ -51,6 +51,7 @@ The honest move is to let "unknown" stay unknown until the evidence names someth
 ## Further reading
 
 - **Skeptic.** Michael Shermer, "[What Would Falsify Belief in Aliens?](https://www.skeptic.com/article/what-would-falsify-belief-in-aliens/)" (2025). Shermer answers a critic, explaining why he treats "we don't know" as a respectable position and what kind of evidence would change his mind.
+- **Skeptoid.** Brian Dunning, "[What THEY Don't Want You to Know About UFOs](https://skeptoid.com/episodes/866)" (2023). Dunning argues for a high bar on the quality of UFO evidence, while saying alien life elsewhere is still a live possibility. The episode also promotes his own UFO documentary.
 
 
 [^1]: **Survey.** Brenan, M. (2026, August 26). "Americans Still Skeptical That UFOs Are Aliens." *Gallup*. https://news.gallup.com/poll/713765/americans-skeptical-ufos-aliens.aspx
