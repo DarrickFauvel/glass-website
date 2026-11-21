@@ -52,6 +52,13 @@ So when you hear "a scientist saw it" or "I saw it with my own eyes," ask what w
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#appeal-to-authority), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptic.** James Randi, "[Magic and Skepticism](https://www.skeptic.com/article/magic-and-skepticism/)" (2011). The magician and investigator explains why he thought scientists, who expect honest observations, are poorly placed to spot deliberate trickery, and why "anyone can be fooled."
+- **Skeptical Inquirer.** Joe Nickell, "[Mind Over Metal](https://skepticalinquirer.org/2013/07/mind-over-metal/)" (2013). A former stage magician attends a spoon-bending workshop and explains how ordinary force, applied while distracted, can feel like the metal bent by itself.
+- **The Skeptic's Dictionary.** Robert Todd Carroll, "[Project Alpha](https://www.skepdic.com/projectalpha.html)" (last updated 2015). A reference entry on James Randi's hoax, in which two young magicians fooled a university parapsychology lab, and on the debate over whether it was ethical.
+
+
 [^1]: **Expert commentary.** Mörck, N. C. Review of *The Spectacle of Illusion*, by Matthew L. Tompkins (Thames & Hudson, 2019). *Society for Psychical Research*. https://www.spr.ac.uk/node/15486
 
 [^2]: **Review article.** Kuhn, G., Amlani, A. A., & Rensink, R. A. (2008). "Towards a science of magic." *Trends in Cognitive Sciences*, 12(9), 349–354. https://doi.org/10.1016/j.tics.2008.05.008
