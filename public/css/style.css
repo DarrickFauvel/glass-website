@@ -3817,7 +3817,7 @@ main {
   }
 
   .article-header--picture > .article-back {
-    display: block;
+    display: flex;
     width: max-content;
   }
 
@@ -3837,18 +3837,68 @@ main {
   padding: var(--page-padding-y) 0;
 }
 
+/* A small index tab pinned to the top of the page: quieter than the
+   see-all buttons, with a slight hand-placed tilt. */
 .article-back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
   color: var(--crimson);
+  background: var(--white);
+  border: 1px solid var(--border-hi);
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 var(--border);
+  padding: 0.4rem 0.8rem;
   margin-bottom: 1.5rem;
+  transform: rotate(-0.8deg);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s var(--ease-out);
+}
+
+.article-back .back-arrow {
+  display: inline-block;
+  transition: transform 0.2s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .article-back:hover {
+    border-color: var(--crimson);
+    background: var(--crimson-pale);
+    transform: rotate(0deg);
+  }
+
+  .article-back:hover .back-arrow {
+    transform: translateX(-3px);
+  }
+}
+
+.article-back:focus-visible {
+  outline: 3px solid var(--crimson);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-back,
+  .article-back .back-arrow {
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .article-back:hover {
+    transform: rotate(-0.8deg);
+  }
+
+  .article-back:hover .back-arrow {
+    transform: none;
+  }
 }
 
 /* Under a section label, the back link takes its own line. */
 .section-label + .article-back {
-  display: block;
+  display: flex;
   width: max-content;
   margin-top: 0.75rem;
 }

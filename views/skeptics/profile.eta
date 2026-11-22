@@ -1,7 +1,7 @@
   <main id="main-content">
     <article class="article-page">
       <div class="article-header">
-        <a href="/skeptics" class="article-back">&larr; All profiles</a>
+        <a href="/skeptics" class="article-back"><span class="back-arrow" aria-hidden="true">&larr;</span> All profiles</a>
         <h1><%= it.skeptic.name %></h1>
         <p class="auth-subtitle"><%= it.skeptic.summary %></p>
         <p class="blog-meta">
