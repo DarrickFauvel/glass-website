@@ -53,6 +53,11 @@ That doesn't make every official statement true or every institution trustworthy
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#occams-razor), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptical Inquirer.** Mick West, "[What Happened to Chemtrails?](https://skepticalinquirer.org/2023/12/what-happened-to-chemtrails/)" (2024). West, who has spent years answering chemtrail claims, traces where the theory came from and argues that it hasn't gone away, even though it gets less attention than it used to.
+
+
 [^1]: **Peer-reviewed study.** Tingley, D., & Wagner, G. (2017). "Solar geoengineering and the chemtrails conspiracy on social media." *Palgrave Communications*, 3, 12. https://doi.org/10.1057/s41599-017-0014-3
 
 [^2]: **Government agency.** U.S. Environmental Protection Agency. "Information on Contrails from Aircraft." https://www.epa.gov/regulations-emissions-vehicles-and-engines/information-contrails-aircraft

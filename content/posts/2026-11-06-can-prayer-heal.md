@@ -62,6 +62,13 @@ Most people recover from many illnesses anyway, and we tend to remember the reco
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#post-hoc), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptic.** Tim Callahan, "[Does Prayer Work?](https://www.skeptic.com/article/does-prayer-work/)" (2026). Skeptic's religion editor looks at the controlled prayer trials, including the large STEP study of heart-surgery patients. He argues that a handful of unexplained recoveries can't show that prayer caused them.
+- **Skeptical Inquirer.** Victor J. Stenger, "[The Science of Prayer](https://skepticalinquirer.org/sb/show/science_of_prayer)" (2001). A physicist explains why the early positive prayer studies are weaker than they look, with a close look at how their statistics were read.
+- **Science-Based Medicine.** Steven Novella, "[The Power of Faith and Prayer?](https://sciencebasedmedicine.org/the-power-of-faith-and-prayer/)" (2011). A neurologist reviews the prayer trials and concludes there is no good evidence that praying for others heals them. He also explains why any health benefit of faith itself is hard to separate from things like social support, and says plainly that the site "is not anti-faith or anti-religion."
+
+
 [^1]: **Survey.** Smith, G. A., Cooperman, A., et al. (2025, February 26). "Prayer and other religious practices." In *Decline of Christianity in the U.S. Has Slowed, May Have Leveled Off*. Pew Research Center. https://www.pewresearch.org/religion/2025/02/26/prayer-and-other-religious-practices/
 
 [^2]: **Peer-reviewed study.** Benson, H., et al. (2006). "Study of the Therapeutic Effects of Intercessory Prayer (STEP) in cardiac bypass patients." *American Heart Journal*, 151(4), 934–942. https://doi.org/10.1016/j.ahj.2005.05.028. The statement of what the trial wasn't designed to test is in the study's methods paper: Dusek, J. A., et al. (2002). *American Heart Journal*, 143(4), 577–584. https://doi.org/10.1067/mhj.2002.122172

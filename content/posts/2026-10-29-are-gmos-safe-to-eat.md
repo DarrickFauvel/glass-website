@@ -51,6 +51,12 @@ It also helps to unbundle a debate. "Are GM foods safe to eat?", "Is herbicide-r
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#the-body-of-evidence-beats-a-single-study), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptical Inquirer.** Steven Novella, "[No Health Risks from GMOs](https://skepticalinquirer.org/2014/07/no-health-risks-from-gmos/)" (2014). Novella, a neurologist, walks through the scientific reviews behind the consensus that approved GM crops are safe to eat, and argues that much public fear comes from the idea that "natural" means safe.
+- **Skeptical Inquirer.** Matan Shelomi, "[We Are All GMOs](https://skepticalinquirer.org/2015/11/we-are-all-gmos/)" (2015). An entomologist explains horizontal gene transfer, the natural movement of genes between unrelated species, and what it means for the claim that genetic engineering is uniquely unnatural.
+
+
 [^1]: **Survey.** Pew Research Center. (2015, January 29). "Public and Scientists Express Strikingly Different Views about Science-Related Issues." https://www.pewresearch.org/internet/2015/01/29/public-and-scientists-express-strikingly-different-views-about-science-related-issues/
 
 [^2]: **Peer-reviewed study (retracted).** Séralini, G.-E., et al. (2012). "Long term toxicity of a Roundup herbicide and a Roundup-tolerant genetically modified maize." *Food and Chemical Toxicology*, 50, 4221–4231. Retracted; see retraction notice, *Food and Chemical Toxicology* (2014), https://doi.org/10.1016/j.fct.2013.11.047. Original: https://doi.org/10.1016/j.fct.2012.08.005

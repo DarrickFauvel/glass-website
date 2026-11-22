@@ -18,7 +18,22 @@ This is the editorial brief for every post on `/blog`, whether a person or an AI
 4. **The question**: answer the hero clue's `question` (see `content/topics.md`) directly.
 5. **The thinking tool**: one reusable reasoning skill the topic illustrates (burden of proof, base rates, confirmation bias, misidentification, consensus vs. a single study, and so on). End the section with a line linking the matching entry in `content/toolkit.md` (served at `/toolkit`), for example `*This tool has an entry in [The Skeptic's Toolkit](/toolkit#occams-razor), our guide to reasoning tools, logical fallacies, and cognitive biases.*` Anchors are the entry's heading, slugified. If the toolkit has no matching entry yet, add one in the same PR, sourced to the same standard as a post.
 
+6. **Further reading**: see below.
+
 No `#` heading in the body. The page renders the title from frontmatter.
+
+## Further reading
+
+End every post with a `## Further reading` section, after the thinking tool and before the footnotes. It points readers to the skeptical literature on the topic, from the outlets listed on the site's [resources page](/resources): **Skeptical Inquirer**, **Skeptic**, **Science-Based Medicine**, the **McGill Office for Science and Society**, **Skeptoid**, **The Skeptics' Guide to the Universe** and **The Skeptic's Dictionary**. A **Cochrane** plain-language summary also fits here when it's newer than, or adds to, what the post cites.
+
+- **One to three pieces.** One from each publication is ideal, but don't pad the list. One good piece beats three weak ones.
+- **Not citations.** Never use these to support a claim in the body. Empirical claims still need footnotes from the source hierarchy above.
+- **Read every piece.** Fetch and read it, then describe it in one or two sentences, attributed to its author ("Hall argues…"). The description has to match what the piece actually says.
+- **Keep to the site's voice.** Leave out pieces that mock believers, call them names, or take partisan political jabs, even if their facts are sound. Sharp criticism of named frauds and promoters is fine. Prefer pieces that agree with the evidence the post presents, and skip anything that overstates the debunk.
+- **Must be free to read.** Skip anything behind a subscriber wall.
+- **The Skeptic's Dictionary is dated.** It's one author's reference work and most entries were last updated around 2015. Include its "last updated" year, and only use an entry that's still accurate.
+- **Format:**
+  `- **Skeptical Inquirer.** Harriet Hall, "[Chiropractors: Pro and Con](https://skepticalinquirer.org/exclusive/chiropractors-pro-and-con/)" (2017). One or two sentences on what it argues.`
 
 ## Sourcing (non-negotiable)
 
@@ -107,3 +122,4 @@ The PR body must include:
 1. A **source table** with one row per footnote: claim supported → source → tier → verified (✓ / ✗ + note).
 2. Every `VERIFY` item.
 3. Confirmation that the topic was checked off in `content/topics.md`.
+4. A **further reading table**: piece → what the description says → verified it says that (✓ / ✗ + note).

@@ -46,6 +46,12 @@ For UFOs, the government has published that number. Every case AARO had enough d
 
 *This tool has an entry in [The Skeptic's Toolkit](/toolkit#base-rates-compared-to-what), our guide to reasoning tools, logical fallacies, and cognitive biases.*
 
+## Further reading
+
+- **Skeptical Inquirer.** Mick West, "[Quick Guide to Modern Video Analysis Techniques for UAP (and UFOs)](https://skepticalinquirer.org/2024/12/quick-guide-to-modern-video-analysis-techniques-for-uap-and-ufos/)" (2025). A practical guide to checking a UFO video yourself: finding the original file, avoiding "enhancements" that invent detail, and matching what's on screen against flight records and star charts.
+- **Skeptic.** Byron DeLear, "[Ufology: Stories in the Smoke](https://www.skeptic.com/article/ufo-disclosure-myth-explained/)" (2026). DeLear traces the idea that the government is hiding alien evidence back to the 1950s, and argues that the story has grown over the decades while the promised proof never arrives.
+
+
 [^1]: **Journalism.** Binkley, C., & Kim, S. M. (2026, May 8). "Pentagon begins releasing new files on UFOs and says the public can draw its own conclusions." *Associated Press* (via KSL.com). https://www.ksl.com/article/pentagon-begins-releasing-new-files-on-ufos-and-says-the-public-can-draw-its-own-conclusions/51494975
 
 [^2]: **Journalism.** Burman, B., Ramsey, M., & Weber, J. (2026, October). "Roswell UFO wreckage account resurfaces in seventh file drop." *NewsNation*. https://www.newsnationnow.com/us-news/west/roswell-ufo-eyewitness-walter-haut/amp/
