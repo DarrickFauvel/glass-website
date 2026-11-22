@@ -26,9 +26,42 @@
 
     const html = document.documentElement;
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.classList.add('theme-transitioning');
-    applyTheme(next);
-    setTimeout(() => html.classList.remove('theme-transitioning'), 350);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Without view transitions, or with reduced motion, the colors fade in place.
+    if (!document.startViewTransition || reduceMotion) {
+      html.classList.add('theme-transitioning');
+      applyTheme(next);
+      setTimeout(() => html.classList.remove('theme-transitioning'), 350);
+      return;
+    }
+
+    // The new theme spreads out from the toggle as a soft-edged circle. The
+    // mask is a radial gradient that's solid to 75% of its radius, so it
+    // must grow to farthest-corner / 0.375 to cover the whole screen.
+    const rect = btn.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const size = Math.ceil(reach / 0.375);
+
+    html.classList.add('theme-reveal');
+    const transition = document.startViewTransition(() => applyTheme(next));
+    transition.ready.then(() => {
+      html.animate(
+        {
+          maskSize: ['0px 0px', `${size}px ${size}px`],
+          maskPosition: [`${x}px ${y}px`, `${x - size / 2}px ${y - size / 2}px`],
+        },
+        {
+          duration: 1400,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          fill: 'forwards',
+          pseudoElement: '::view-transition-new(root)',
+        },
+      );
+    }).catch(() => {});
+    transition.finished.finally(() => html.classList.remove('theme-reveal'));
   });
 })();
 
