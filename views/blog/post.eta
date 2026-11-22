@@ -2,7 +2,7 @@
     <article class="article-page article-page--post">
       <div class="article-header<%= it.picture ? ' article-header--picture' : '' %>">
         <span class="section-label">Blog</span>
-        <a href="/blog" class="article-back">&larr; All posts</a>
+        <a href="/blog" class="article-back"><span class="back-arrow" aria-hidden="true">&larr;</span> All posts</a>
 <% if (it.picture) { %>
         <div class="article-lens" style="view-transition-name: lens-<%= it.post.slug %>">
           <img src="<%= it.picture.src %>" alt="<%= it.picture.alt %>" decoding="async"
