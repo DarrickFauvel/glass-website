@@ -9,7 +9,7 @@
           <p>We meet every month to talk through everything from pseudoscience and the paranormal to medical myths and
             the habits of clear thinking.</p>
           <p>Lifelong skeptic or just starting to question the world around you, you’re welcome here.</p>
-          <a href="/events" class="events-see-all-btn about-page-link">Come to a meetup &rarr;</a>
+          <a href="/events" class="events-see-all-btn about-page-link">Come to a meetup <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
         </div>
         <figure class="about-figure reveal">
           <img src="/images/region/lowell-1856.jpg" width="1400" height="1168" decoding="async"

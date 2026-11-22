@@ -70,10 +70,10 @@
 <% if (it.toolkit.aiAssisted) { %>
         <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
 <% } %>
-        <a href="/toolkit/quiz" class="events-see-all-btn">Test yourself with Spot the Fallacy &rarr;</a>
-        <a href="/blog" class="events-see-all-btn">See these tools in action on the blog &rarr;</a>
-        <a href="/skeptics" class="events-see-all-btn">Meet the skeptics behind them &rarr;</a>
-        <a href="/resources" class="events-see-all-btn">Keep reading with skeptical publications and podcasts &rarr;</a>
+        <a href="/toolkit/quiz" class="events-see-all-btn">Test yourself with Spot the Fallacy <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="/blog" class="events-see-all-btn">See these tools in action on the blog <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="/skeptics" class="events-see-all-btn">Meet the skeptics behind them <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="/resources" class="events-see-all-btn">Keep reading with skeptical publications and podcasts <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
         <a href="#top" class="back-to-top" data-back-to-top>Back to top <span aria-hidden="true">&uarr;</span></a>
       </div>
     </article>
