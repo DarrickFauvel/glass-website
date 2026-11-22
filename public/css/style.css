@@ -5918,6 +5918,30 @@ main {
   }
 }
 
+/* ===== THEME REVEAL =====
+   Switching light/dark, the new theme spreads from the toggle as a circle
+   with a soft edge (main.js animates the mask). The page goes as one
+   snapshot, so the names that page transitions use are switched off. */
+.theme-reveal header,
+.theme-reveal .article-page--post,
+.theme-reveal [style*="view-transition-name"] {
+  view-transition-name: none !important;
+}
+
+.theme-reveal::view-transition-old(root) {
+  animation: none;
+}
+
+.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  -webkit-mask-image: radial-gradient(closest-side, #000 75%, transparent);
+  mask-image: radial-gradient(closest-side, #000 75%, transparent);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-size: 0 0;
+}
+
 @keyframes post-text-in {
   from { opacity: 0; }
 }
