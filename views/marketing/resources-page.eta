@@ -1,0 +1,89 @@
+  <main id="main-content">
+    <div class="legal-page resources-page">
+      <span class="section-label">Resources</span>
+      <h1>Keep reading</h1>
+
+      <p>GLASS is a small group, and a lot of good skeptical work happens elsewhere. These publications and podcasts have been
+        looking into strange claims, medical myths and the habits of clear thinking for years, some of them for decades. Our blog
+        posts often end with a piece or two from them.</p>
+
+      <p>A note on how we use them: we link to articles, not to whole organizations. Our posts are sourced to the research itself,
+        such as scientific reviews and peer-reviewed studies, and not to these outlets. Their writers are sometimes sharper with
+        believers than we try to be, and sometimes they take sides in debates well outside science. Read them the way you'd read
+        anything else: with your own questions ready.</p>
+
+      <h2>Skeptical publications and podcasts</h2>
+
+      <ul class="resources-list">
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://skepticalinquirer.org/" target="_blank" rel="noopener noreferrer">Skeptical Inquirer</a></h3>
+          <p class="resource-meta">Magazine &middot; Committee for Skeptical Inquiry, a program of the Center for Inquiry &middot; since 1976</p>
+          <p>The longest-running outlet here. It's the journal of a committee whose founding members included Carl Sagan, Isaac Asimov,
+            Ray Hyman and James Randi. It's strongest on careful investigations of specific cases: a photo, a sighting, a psychic's
+            reading. Some articles are for subscribers only.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://www.skeptic.com/" target="_blank" rel="noopener noreferrer">Skeptic</a></h3>
+          <p class="resource-meta">Magazine and podcast &middot; The Skeptics Society &middot; since 1992</p>
+          <p>Long essays, book reviews, interviews and debates. It's good for the bigger picture of why people believe what they do,
+            and leans more toward essays and argument than toward investigating individual cases.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://www.mcgill.ca/oss/" target="_blank" rel="noopener noreferrer">McGill Office for Science and Society</a></h3>
+          <p class="resource-meta">Articles, videos and radio &middot; McGill University &middot; since 1999</p>
+          <p>A university office whose motto is "Separating Sense from Nonsense." Its short, friendly articles on food, chemistry and
+            health claims explain the science without talking down to anyone, and it takes no funding from any vested interest.
+            A good first stop.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://skeptoid.com/" target="_blank" rel="noopener noreferrer">Skeptoid</a></h3>
+          <p class="resource-meta">Podcast &middot; Brian Dunning, Skeptoid Media &middot; since 2006</p>
+          <p>A short weekly podcast that takes on one claim per episode. Episodes come with a written version and a list of
+            references, so you can check the sources yourself.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://www.theskepticsguide.org/" target="_blank" rel="noopener noreferrer">The Skeptics' Guide to the Universe</a></h3>
+          <p class="resource-meta">Podcast &middot; Steven Novella and co-hosts, New England Skeptical Society &middot; since 2005</p>
+          <p>A weekly science-news show with a panel of hosts, plus quizzes and segments on logical fallacies. Each episode links to
+            a free transcript. The same society runs Science-Based Medicine, below.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://sciencebasedmedicine.org/" target="_blank" rel="noopener noreferrer">Science-Based Medicine</a></h3>
+          <p class="resource-meta">Blog &middot; New England Skeptical Society &middot; since 2008</p>
+          <p>Edited by physicians, it looks at medical treatments and products in the light of the clinical evidence. It's one of the
+            most thorough skeptical sources on health claims. It isn't medical advice, and neither is anything on our site.</p>
+        </li>
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://skepdic.com/" target="_blank" rel="noopener noreferrer">The Skeptic&rsquo;s Dictionary</a></h3>
+          <p class="resource-meta">Reference &middot; Robert Todd Carroll &middot; 1994&ndash;2016</p>
+          <p>An A&ndash;Z reference on hundreds of strange beliefs, plus a guide to critical thinking. It's handy for a quick overview
+            of a topic. Carroll died in 2016 and the site hasn't been updated since, so check its entries against newer research.</p>
+        </li>
+      </ul>
+
+      <h2>Where the evidence comes from</h2>
+
+      <p>Skeptical writers are a good guide, but the strongest evidence comes from reviews that gather all the studies on a question
+        and weigh them together. That's the kind of source our posts lean on most.</p>
+
+      <ul class="resources-list">
+        <li class="resource-card">
+          <span class="quiz-tape" aria-hidden="true"></span>
+          <h3><a href="https://www.cochrane.org/" target="_blank" rel="noopener noreferrer">Cochrane</a></h3>
+          <p class="resource-meta">Systematic reviews &middot; Independent nonprofit network of health researchers</p>
+          <p>Cochrane publishes systematic reviews of health treatments, on everything from turmeric for pain to cancer surgery.
+            Every review comes with a free plain-language summary, so you can see what the research as a whole says without
+            reading the full paper.</p>
+        </li>
+      </ul>
+
+      <p>GLASS isn't affiliated with any of these. If there's one you think belongs on this list, <a href="/#contact">tell us</a>.</p>
+    </div>
+  </main>

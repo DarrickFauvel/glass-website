@@ -135,3 +135,10 @@ marketingRouter.get('/credits', (req, res) => {
     pageDescription: 'Where the pictures on the GLASS website come from, and the terms they are used under.',
   });
 });
+
+marketingRouter.get('/resources', (req, res) => {
+  res.render('marketing/resources-page', {
+    pageTitle: 'Resources',
+    pageDescription: 'Skeptical publications worth reading, and how GLASS uses them.',
+  });
+});

@@ -5883,3 +5883,49 @@ main {
   background: var(--surface);
   color: var(--ink);
 }
+
+/* ===== RESOURCES PAGE ===== */
+/* Each publication on its own taped index card, tilted a little differently. */
+.legal-page .resources-list {
+  list-style: none;
+  padding: 0;
+  margin: 2.5rem 0;
+  gap: 2.25rem;
+}
+
+.resource-card {
+  position: relative;
+  padding: 1.6rem 1.4rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 2px 0 var(--border), 0 14px 28px -20px rgba(28, 20, 16, 0.45);
+  transform: rotate(-0.5deg);
+}
+
+.resource-card:nth-child(4n + 2) { transform: rotate(0.4deg); --tape-x: -18%; --tape-tilt: -2deg; }
+.resource-card:nth-child(4n + 3) { transform: rotate(-0.25deg); --tape-x: 14%; --tape-tilt: 4deg; }
+.resource-card:nth-child(4n + 4) { transform: rotate(0.55deg); --tape-x: -8%; --tape-tilt: -3deg; }
+
+.legal-page .resource-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+}
+
+.legal-page .resource-card h3 a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.legal-page .resource-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-dim);
+  margin-bottom: 0.6rem;
+}
+
+.legal-page .resource-card p:last-child {
+  margin-bottom: 0;
+}
