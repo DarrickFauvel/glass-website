@@ -49,7 +49,7 @@
       googleCalUrl: it.googleCalUrl,
       icsDataUri: it.icsDataUri,
     }) %>
-          <a href="/events" class="events-see-all-btn">See all events &rarr;</a>
+          <a href="/events" class="events-see-all-btn">See all events <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </section>

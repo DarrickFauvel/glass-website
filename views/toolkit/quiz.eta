@@ -31,7 +31,7 @@
 <% if (it.quiz.aiAssisted) { %>
         <p class="article-disclosure">Drafted with AI assistance and reviewed by GLASS organizers. Spot an error or a better source? <a href="/#contact">Let us know</a>.</p>
 <% } %>
-        <a href="/toolkit#logical-fallacies" class="events-see-all-btn">Read the fallacies in the toolkit &rarr;</a>
+        <a href="/toolkit#logical-fallacies" class="events-see-all-btn">Read the fallacies in the toolkit <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
       </div>
     </article>
   </main>

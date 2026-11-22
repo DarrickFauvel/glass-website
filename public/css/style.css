@@ -3608,32 +3608,64 @@ main {
   opacity: 0.5;
 }
 
+/* A paper tab with a crimson ink edge. The offset shadow gives it a little
+   lift off the page, and pressing it pushes it flat. */
 .events-see-all-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   margin-top: 1.5rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-decoration: none;
   color: var(--crimson);
-  background: transparent;
+  background: var(--white);
   border: 1px solid var(--crimson);
   border-radius: 3px;
-  padding: 0.55rem 1.1rem;
+  box-shadow: 3px 3px 0 var(--crimson-glow);
+  padding: 0.6rem 1.1rem;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, box-shadow 0.15s var(--ease-out), transform 0.15s var(--ease-out);
 }
 
-.events-see-all-btn:hover {
-  background: var(--crimson-pale);
+.events-see-all-btn .btn-arrow {
+  display: inline-block;
+  transition: transform 0.2s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .events-see-all-btn:hover {
+    background: var(--crimson-pale);
+  }
+
+  .events-see-all-btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+}
+
+.events-see-all-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--crimson-glow);
 }
 
 .events-see-all-btn:focus-visible {
   outline: 3px solid var(--crimson);
   outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events-see-all-btn,
+  .events-see-all-btn .btn-arrow {
+    transition: background 0.2s;
+  }
+
+  .events-see-all-btn:active,
+  .events-see-all-btn:hover .btn-arrow {
+    transform: none;
+  }
 }
 
 /* ===== LEGAL PAGES ===== */
@@ -5721,10 +5753,13 @@ main {
   transform: rotate(0.5deg);
 }
 
-/* The longer footer buttons need to wrap on phones, and to sit apart when
-   there are two side by side. */
+/* Footer buttons stack as a tidy column, each as wide as its label, and
+   the longer labels wrap on phones. */
 .article-footer .events-see-all-btn {
-  margin-right: 0.6rem;
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 0.85rem;
   white-space: normal;
 }
 
