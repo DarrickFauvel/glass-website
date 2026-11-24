@@ -5380,7 +5380,66 @@ main {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-dim);
-  margin: 0 0 1rem;
+  margin: 0;
+}
+
+/* Heading row: label, source count, and the compact/full toggle. */
+.article-prose .footnotes-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.article-prose .footnotes-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+}
+
+.article-prose .footnotes-toggle {
+  margin-left: auto;
+  padding: 0.3rem 0.1rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
+
+.article-prose .footnotes-toggle:hover {
+  text-decoration: underline;
+}
+
+.article-prose .footnotes-toggle:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Compact view: one line per source, with the long URL and ↩ links hidden.
+   A footnote jump still lands on its line, and that one opens up in full. */
+.article-prose .footnotes.is-compact li {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+
+.article-prose .footnotes.is-compact li:not(:target) p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+}
+
+.article-prose .footnotes.is-compact li:not(:target) .external-link,
+.article-prose .footnotes.is-compact li:not(:target) [data-footnote-backref] {
+  display: none;
 }
 
 .article-prose .footnotes li {

@@ -3380,6 +3380,54 @@ document.querySelectorAll('[data-toolkit-activities]').forEach((activities) => {
   update();
 }());
 
+// ===== Compact References =====
+// The References list (src/lib/markdown.js) starts in a compact view, one
+// line per source, with a button to show it in full. Without JavaScript the
+// full list shows and the button stays hidden.
+(function () {
+  const section = document.querySelector('.footnotes');
+  const toggle = section?.querySelector('.footnotes-toggle');
+  if (!toggle) return;
+
+  function setCompact(compact) {
+    section.classList.toggle('is-compact', compact);
+    toggle.setAttribute('aria-expanded', compact ? 'false' : 'true');
+    toggle.textContent = compact ? 'Show full references' : 'Show less';
+  }
+
+  const list = section.querySelector('ol');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let running = null;
+
+  // Animate the list's height from its old size to its new one, and fade the
+  // list's contents in when it opens up.
+  function switchView() {
+    const compact = !section.classList.contains('is-compact');
+    if (reduceMotion.matches || !list.animate) {
+      setCompact(compact);
+      return;
+    }
+    const from = list.getBoundingClientRect().height;
+    running?.cancel();
+    setCompact(compact);
+    const to = list.getBoundingClientRect().height;
+    running = list.animate(
+      [
+        { height: `${from}px`, overflow: 'hidden' },
+        { height: `${to}px`, overflow: 'hidden' },
+      ],
+      { duration: 320, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' }
+    );
+    if (!compact) {
+      list.animate([{ opacity: 0.55 }, { opacity: 1 }], { duration: 320, easing: 'ease-out' });
+    }
+  }
+
+  toggle.addEventListener('click', switchView);
+  setCompact(true);
+  toggle.hidden = false;
+}());
+
 // ===== Back to top =====
 // "Back to top" links (end of posts and the toolkit, and the toolkit's
 // mobile jump panel) scroll to the very top, then move keyboard focus to the
