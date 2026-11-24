@@ -3,7 +3,7 @@ name: "Harry Houdini"
 born: 1874
 died: 1926
 role: "Escape artist and investigator of mediums"
-summary: "An escape artist put a magician's training to work exposing fraudulent mediums, and in his best-known case he was accused of planting evidence himself."
+summary: "An escape artist put a magician's training to work exposing fraudulent mediums, and carried his campaign against them from the stage to a Scientific American prize committee and to Congress."
 tools: [anecdotal-evidence, extraordinary-claims-require-extraordinary-evidence]
 aiAssisted: true
 picture:
@@ -27,17 +27,6 @@ Spiritualists believed mediums could carry messages from the dead. Houdini's adv
 - **Undercover work.** He employed investigators, including Rose Mackenberg, to visit mediums.[^2]
 - **Congress.** In 1926 he testified in support of a bill that would have made fortune-telling for hire a crime in Washington, DC.[^2]
 
-## Mistakes and criticism
-
-The most serious charge against Houdini comes from the Margery case. During a séance in a cabinet built to restrict her, a collapsible carpenter's ruler turned up under a pillow at her feet. Houdini said she had hidden it to ring a bell. Crandon said his assistant, Jim Collins, had planted it to discredit her, and Arthur Conan Doyle, who had endorsed her, wrote that the culprit could only be Houdini.[^3]
-
-Collins swore he hadn't put the ruler there. In 1959, the writer William Lindsay Gresham quoted him as confessing, "The Boss told me to do it." Neither side is neutral. Milbourne Christopher, a magician who wrote a book about Houdini, traced the story to a magician who had just read Houdini's unflattering comments about him, and called it "sheer fiction."[^3] Nobody tested the ruler at the time, so we'll probably never know. As the skeptic Massimo Polidoro put it, the committee "was not that scientific after all."[^3]
-
-Houdini also claimed more than his evidence could show. He called Spiritualism "a fraud from start to finish."[^2] Exposing many mediums is strong evidence about those mediums, but it can't prove that every medium is a fake. It also says nothing against the people who went to them, some of whom were looking for comfort in grief, as he had been.[^4]
-
-The bill he backed died in committee, after members told him the First Amendment protected Spiritualism even if it was fraudulent. "The gentleman is taking the entire matter entirely too seriously," one representative said, and some critics compared the hearings to a witch trial.[^2]
-
-Not all the hostility was about evidence. Crandon's husband called Houdini "this low-minded Jew" in a letter to Conan Doyle.[^2]
 
 [^1]: **Journalism.** Roth, M. "Harry Houdini." *My Jewish Learning*. https://www.myjewishlearning.com/article/harry-houdini/
 [^2]: **Journalism.** Greene, B. (2021, October 28). "For Harry Houdini, Séances and Spiritualism Were Just an Illusion." *Smithsonian Magazine*. https://www.smithsonianmag.com/history/for-harry-houdini-seances-and-spiritualism-were-just-an-illusion-180978944/

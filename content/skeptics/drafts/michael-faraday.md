@@ -22,14 +22,8 @@ The result didn't depend on anyone's honesty. When the indicator was hidden, it 
 
 Faraday's explanation is the part that has lasted. He didn't call the sitters liars. He said that seeing the indicator made them "unable unwittingly to deceive themselves."[^4] Sincere people can be wrong about what their own hands are doing, so a good test measures the hands.
 
-## Mistakes and criticism
-
-Faraday's test answered a narrow question, and it didn't end the belief. Months later, a correspondent wrote to him that the subject was still "much vexed," despite the letter to *The Times* "which every one has read," and described "most curious and startling facts" at his own home.[^5]
-
-His private reaction was less patient than his public one. "What a weak credulous incredulous, unbelieving superstitious, bold, frightened, what a ridiculous world ours is," he wrote to the chemist Christian Schoenbein that July.[^3] The frustration is understandable, but it's also a reminder that showing how a trick of the mind works isn't the same as persuading people, and scorn rarely helps.
 
 [^1]: **Primary source.** Royal Institution. "Michael Faraday (1791–1867)." https://www.rigb.org/explore-science/explore/person/michael-faraday-1791-1867
 [^2]: **Primary source.** Royal Institution. "Michael Faraday's generator." https://www.rigb.org/explore-science/explore/collection/michael-faradays-generator
 [^3]: **Primary source.** Faraday, M. (1853, July 25). Letter to Christian Friedrich Schoenbein. Epsilon: Faraday's letters. https://epsilon.ac.uk/view/faraday/letters/Faraday2705
 [^4]: **Primary source.** Faraday, M. (1853, June 28). Letter to the Editor of *The Times*, printed June 30, 1853. Epsilon: Faraday's letters. https://epsilon.ac.uk/view/faraday/letters/Faraday2691
-[^5]: **Primary source.** Wilson, G. G. (1853, October 26). Letter to Michael Faraday. Epsilon: Faraday's letters. https://epsilon.ac.uk/view/faraday/letters/Faraday2748
