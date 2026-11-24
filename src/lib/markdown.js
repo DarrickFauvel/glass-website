@@ -39,19 +39,21 @@ const externalLinks = {
 // starts hidden: public/js/main.js shows it and switches the list to a compact
 // view (one line per source), so without JavaScript the full list still shows.
 // The <section class="footnotes"> wrapper stays first, since toolkit.js splits
-// on it.
+// on it. The heading keeps the plugin's own attributes: toolkit.js builds its
+// contents list from headings that open exactly `<h2 id="...">`, and the extra
+// class is what keeps References out of it.
 const FOOTNOTES_BLOCK =
-  /<section class="footnotes" data-footnotes>\s*<h2 id="footnote-label"[^>]*>([^<]*)<\/h2>\s*<ol>([\s\S]*?)<\/ol>\s*<\/section>/;
+  /<section class="footnotes" data-footnotes>\s*(<h2 id="footnote-label"[^>]*>[^<]*<\/h2>)\s*<ol>([\s\S]*?)<\/ol>\s*<\/section>/;
 
 const compactFootnotes = {
   hooks: {
     postprocess(html) {
-      return html.replace(FOOTNOTES_BLOCK, (match, label, items) => {
+      return html.replace(FOOTNOTES_BLOCK, (match, heading, items) => {
         const count = (items.match(/<li id="footnote-/g) ?? []).length;
         const noun = count === 1 ? 'source' : 'sources';
         return `<section class="footnotes" data-footnotes>
 <div class="footnotes-head">
-<h2 id="footnote-label">${label}</h2>
+${heading}
 <span class="footnotes-count">${count} ${noun}</span>
 <button type="button" class="footnotes-toggle" aria-controls="footnotes-list" aria-expanded="true" hidden>Show less</button>
 </div>
