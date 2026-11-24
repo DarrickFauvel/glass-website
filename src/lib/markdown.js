@@ -35,8 +35,40 @@ const externalLinks = {
   },
 };
 
+// The References heading gets a source count and a toggle button. The button
+// starts hidden: public/js/main.js shows it and switches the list to a compact
+// view (one line per source), so without JavaScript the full list still shows.
+// The <section class="footnotes"> wrapper stays first, since toolkit.js splits
+// on it.
+const FOOTNOTES_BLOCK =
+  /<section class="footnotes" data-footnotes>\s*<h2 id="footnote-label"[^>]*>([^<]*)<\/h2>\s*<ol>([\s\S]*?)<\/ol>\s*<\/section>/;
+
+const compactFootnotes = {
+  hooks: {
+    postprocess(html) {
+      return html.replace(FOOTNOTES_BLOCK, (match, label, items) => {
+        const count = (items.match(/<li id="footnote-/g) ?? []).length;
+        const noun = count === 1 ? 'source' : 'sources';
+        return `<section class="footnotes" data-footnotes>
+<div class="footnotes-head">
+<h2 id="footnote-label">${label}</h2>
+<span class="footnotes-count">${count} ${noun}</span>
+<button type="button" class="footnotes-toggle" aria-controls="footnotes-list" aria-expanded="true" hidden>Show less</button>
+</div>
+<ol id="footnotes-list">${items}</ol>
+</section>`;
+      });
+    },
+  },
+};
+
 export function createMarked(...extensions) {
-  return new Marked().use(markedFootnote({ description: 'References' }), externalLinks, ...extensions);
+  return new Marked().use(
+    markedFootnote({ description: 'References' }),
+    externalLinks,
+    compactFootnotes,
+    ...extensions
+  );
 }
 
 // "Carl Sagan's Baloney Detection Kit" → "carl-sagans-baloney-detection-kit".
