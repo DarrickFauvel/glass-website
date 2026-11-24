@@ -9,7 +9,6 @@ import { loadToolkit } from './toolkit.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SKEPTICS_DIR = path.join(__dirname, '..', '..', 'content', 'skeptics');
 const FILENAME_PATTERN = /^([a-z0-9-]+)\.md$/;
-const CRITICISM_HEADING = /^## Mistakes and criticism$/m;
 const MIN_SOURCES = 3;
 
 const marked = createMarked();
@@ -18,7 +17,7 @@ let cached = null;
 
 // Each profile is a Markdown file in content/skeptics/, and its filename is
 // its URL slug. The writing guide's rules for profiles are enforced here: a
-// bad toolkit slug, too few sources or a missing criticism section throws
+// bad toolkit slug or too few sources throws
 // rather than publishing a page that breaks them.
 export async function listSkeptics() {
   // Re-read on every request in dev, since `node --watch` doesn't watch content files.
@@ -54,9 +53,6 @@ async function loadSkeptic(filename, toolLabels) {
   const sourceCount = new Set(content.match(/^\[\^[^\]]+\]:/gm) ?? []).size;
   if (sourceCount < MIN_SOURCES) {
     throw new Error(`content/skeptics/${filename}: has ${sourceCount} sources, needs at least ${MIN_SOURCES}`);
-  }
-  if (!CRITICISM_HEADING.test(content)) {
-    throw new Error(`content/skeptics/${filename}: missing the "## Mistakes and criticism" section`);
   }
 
   if (data.picture && !(data.picture.src && data.picture.alt)) {

@@ -21,7 +21,7 @@ All content is Markdown in `content/`, read from disk with no database. Merging 
 | Blog | `/blog`, `/blog/:slug` | `content/posts/YYYY-MM-DD-<slug>.md` | Newest first. A future-dated post stays hidden until that date in New York time. |
 | Toolkit | `/toolkit` | `content/toolkit.md` | `##` groups and `###` entries with deep-linkable heading ids. Links to unpublished posts render as plain text. Entries can offer a hands-on exercise and a Scrimba explainer. |
 | Quiz | `/toolkit/quiz` | `content/quiz.md` | Spot the Fallacy. A bad toolkit slug or missing explanation throws. Best score is kept in `localStorage`. |
-| Skeptics | `/skeptics`, `/skeptics/:slug` | `content/skeptics/<slug>.md` | Oldest first by birth year. Needs valid toolkit slugs, at least 3 sources, and a `## Mistakes and criticism` section, or it throws. `drafts/` isn't loaded. |
+| Skeptics | `/skeptics`, `/skeptics/:slug` | `content/skeptics/<slug>.md` | Oldest first by birth year. Needs valid toolkit slugs, and at least 3 sources, or it throws. `drafts/` isn't loaded. |
 
 The homepage shows the next 3 active meetups and the 6 newest posts. A broken post file must not take the homepage down, so those loaders log the error and fall back to empty.
 

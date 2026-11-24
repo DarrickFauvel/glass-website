@@ -3,7 +3,7 @@ name: "Carl Sagan"
 born: 1934
 died: 1996
 role: "Astronomer and science communicator"
-summary: "The astronomer behind Cosmos gave skeptics the Baloney Detection Kit, then publicly listed the times he had been wrong himself."
+summary: "The astronomer behind Cosmos co-founded the Committee for Skeptical Inquiry and gave everyone the Baloney Detection Kit, a set of tools for testing new ideas."
 tools: [carl-sagans-baloney-detection-kit, extraordinary-claims-require-extraordinary-evidence]
 aiAssisted: true
 picture:
@@ -22,20 +22,16 @@ In 1976, Sagan joined James Randi, Martin Gardner and Isaac Asimov in founding w
 
 His best-known skeptical work is *The Demon-Haunted World*, the source of the Baloney Detection Kit: a set of tools to use "whenever new ideas are offered for consideration."[^3] The kit is aimed at the reader's own thinking as much as anyone else's. One of its rules is not to get overly attached to a hypothesis just because it's yours.
 
-## Mistakes and criticism
+## Science on television
 
-Sagan made one of his best-known mistakes in public. Just before Kuwait's oil wells were set alight in January 1991, he warned that the burning could be comparable to the 1815 eruption of Tambora, which made 1816 the "year without a summer."[^4] "We think the net effects will be very similar," he said on *Nightline*, recalling the crop failures of 1816 and saying that "especially for South Asia, that seems to be in the cards."[^5]
+Sagan was one of the best-known scientists on television. In 1973 he made a brief *Tonight Show* appearance to promote *The Cosmic Connection*, and he impressed Johnny Carson so much that Carson kept inviting him back. He became such a frequent guest that his Cornell students greeted him with a mock *Tonight Show* introduction: "Heeere's Carl!"[^4] Carson's impression of him is where "billions and billions" came from. Sagan said he never actually said it, and later gave the phrase a wink in the title of his final book.[^5]
 
-It didn't happen. Airborne studies found that the smoke was less black than expected, stayed lower in the atmosphere and cleared faster, and that it "probably had insignificant global effects."[^6] The effects near the fires were real, though. They just weren't on the scale he had described.[^5]
+He co-wrote *Cosmos* with Ann Druyan.[^5] In 2014 it returned as *Cosmos: A Spacetime Odyssey*, hosted by [Neil deGrasse Tyson](/skeptics/neil-degrasse-tyson), a series that grew out of Tyson's connections with Druyan.[^6]
 
-Sagan said so himself, in the same book as the Baloney Detection Kit. In a list of times he'd been wrong, he wrote that "it was pitch black at noon and the temperatures dropped 4-6°C over the Persian Gulf, but not much smoke reached stratospheric altitudes and Asia was spared. I did not sufficiently stress the uncertainty of the calculations."[^7]
-
-He introduced that list with a suggestion for his colleagues: "It might be useful for scientists now and again to list some of their mistakes."[^7]
 
 [^1]: **Primary source.** Cornell University News Service. (1996, December 20). "Carl Sagan, Cornell astronomer, dies today (Dec. 20) in Seattle." https://news.cornell.edu/stories/1996/12/carl-sagan-cornell-astronomer-dies-today-dec-20-seattle
 [^2]: **Journalism.** Ball, P. (2020). "James Randi (1928–2020)." *Nature*, 587, 34. https://doi.org/10.1038/d41586-020-03050-5
 [^3]: **Primary source.** Sagan, C. (1995). *The Demon-Haunted World: Science as a Candle in the Dark*, chapter 12, "The Fine Art of Baloney Detection." New York: Random House.
-[^4]: **Journalism.** Roylance, F. D. (1991, January 23). "Burning oil wells could be disaster, Sagan says." *The Baltimore Sun*. https://www.baltimoresun.com/news/bs-xpm-1991-01-23-1991023131-story.html
-[^5]: **Journalism.** "Ecowar." (1992, January 31). *Discover*. https://carlzimmer.com/ecowar/
-[^6]: **Peer-reviewed study.** Hobbs, P. V., & Radke, L. F. (1992). "Airborne studies of the smoke from the Kuwait oil fires." *Science*, 256(5059), 987–991. https://doi.org/10.1126/science.256.5059.987
-[^7]: **Primary source.** Sagan, C. (1995). *The Demon-Haunted World: Science as a Candle in the Dark*, chapter 14, "Antiscience." New York: Random House.
+[^4]: **Journalism.** Golden, F. (1980, October 20). "Science: The Cosmic Explainer." *Time*. https://content.time.com/time/subscriber/article/0,33009,951539-7,00.html
+[^5]: **Primary source.** Cornellians. (2024, November 11). "'Cosmos,' a Pulitzer, and More: Fascinating Facts about Carl Sagan." Cornell University. https://alumni.cornell.edu/cornellians/sagan-facts
+[^6]: **Primary source.** National Academy of Sciences. (2015, February). "Neil deGrasse Tyson to Receive Public Welfare Medal, Academy's Most Prestigious Award." https://nationalacademies.org/news/2015/02/neil-degrasse-tyson-to-receive-public-welfare-medal-academys-most-prestigious-award

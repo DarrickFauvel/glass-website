@@ -83,9 +83,10 @@ The reviewer resolves every `VERIFY` before merging. List all of them in the PR 
 `content/skeptics/<slug>.md` holds one profile per person, served at `/skeptics/<slug>`. Profiles go through the same review as a post, and the sourcing rules above apply, with these differences:
 
 - **Minimum per profile:** 3 distinct sources, at least one of them a primary or scholarly source. The 5-source post minimum doesn't apply.
-- **Include the failures.** Every profile needs a `## Mistakes and criticism` section. The page won't load without it, or with fewer than 3 sources. Report a person's real mistakes and the fairest version of the criticism, and say when a critic has a stake in the dispute.
+- **Focus on the contribution.** A profile is about what the person did for skepticism and for science: the tests they designed, the claims they checked and the ideas they gave the rest of us. Don't add a section on their mistakes or the criticism of them; readers can find that elsewhere. The page won't load with fewer than 3 sources.
+- **Don't overclaim.** Leaving out criticism isn't a licence to exaggerate. Describe each achievement only as far as the sources support it, and don't present a disputed result as settled.
 - **Be careful with living people.** Stick to their public work. Attribute criticism to the person making it, and keep personal details to what they've said publicly and what bears on that work. Before publishing or editing, check that a living subject's page is still accurate.
-- **Don't write a hagiography or a takedown.** The point is to show how good reasoning works in practice, including when it fails.
+- **Show the reasoning.** The point is to show how good reasoning works in practice, so explain how a test or argument worked, not just that it succeeded.
 
 Add `tools` to the frontmatter with toolkit heading slugs, and the page links them. A bad slug throws an error.
 

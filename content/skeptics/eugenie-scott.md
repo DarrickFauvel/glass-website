@@ -2,7 +2,7 @@
 name: "Eugenie Scott"
 born: 1945
 role: "Anthropologist and science educator"
-summary: "A physical anthropologist who spent more than 26 years defending the teaching of evolution, and who took heat from fellow scientists for how she did it."
+summary: "A physical anthropologist who spent more than 26 years defending the teaching of evolution, and who helped keep “intelligent design” out of public school science classes."
 tools: [false-dilemma, the-body-of-evidence-beats-a-single-study]
 aiAssisted: true
 picture:
@@ -23,11 +23,6 @@ NCSE served as a pro bono consultant to the plaintiffs in *Kitzmiller v. Dover*,
 
 Her most distinctive argument is about what science can say. Science explains nature through natural causes because that approach works, which, she argues, "requires neutrality towards God." Scott describes herself as a nontheist, and she treats that as her personal philosophy, separate from science. Supporters of evolution, she writes, should avoid "forcing a choice between God and Darwin."[^7]
 
-## Mistakes and criticism
-
-That position has drawn fire from other scientists. In 1997, the National Association of Biology Teachers was asked to remove the words "unsupervised" and "impersonal" from its definition of evolution. Scott urged the board to agree. By her own account, about 100 scientists then signed a letter accusing the board, and her, of capitulating to political pressure from "fundamentalists."[^7] She answered that she had acted out of respect for both science and humanism, since science can't say whether God acts in nature.[^7]
-
-The wider dispute continues. Biologist Jerry Coyne, who rejects the view that science and religion are compatible, argued in 2009 that scientific groups "such as the National Academy of Sciences" say they don't conflict "as a tactical matter."[^8] The argument is about strategy and honesty, not the evidence for evolution, on which both sides agree.
 
 [^1]: **Primary source.** National Center for Science Education. (2025). "Happy 80th birthday, Genie." https://ncse.ngo/happy-80th-birthday-genie
 [^2]: **Journalism.** Dean, C. (2013, September 2). "Standard-Bearer in Evolution Fight." *The New York Times*, reprinted by Portside. https://portside.org/node/3800/printable/print
@@ -36,4 +31,3 @@ The wider dispute continues. Biologist Jerry Coyne, who rejects the view that sc
 [^5]: **Primary source.** National Center for Science Education. "Intelligent Design Trial: Kitzmiller v. Dover." https://ncse.ngo/creationism/legal/intelligent-design-trial-kitzmiller-v-dover
 [^6]: **Primary source.** National Center for Science Education. (2010). "NCSE's Scott receives Public Welfare Medal." https://ncse.ngo/ncses-scott-receives-public-welfare-medal
 [^7]: **Primary source.** Scott, E. C. (1998). "Science and religion, methodology, and humanism." *Reports of the National Center for Science Education*, 18(2). https://ncse.ngo/science-and-religion-methodology-and-humanism
-[^8]: **Expert commentary.** Coyne, J. A. (2009, February 4). "Seeing and Believing." *The New Republic*. https://newrepublic.com/article/63388/seeing-and-believing
