@@ -17,8 +17,8 @@ let cached = null;
 
 // Each profile is a Markdown file in content/skeptics/, and its filename is
 // its URL slug. The writing guide's rules for profiles are enforced here: a
-// bad toolkit slug or too few sources throws
-// rather than publishing a page that breaks them.
+// bad toolkit slug or too few sources throws rather than publishing a page
+// that breaks them.
 export async function listSkeptics() {
   // Re-read on every request in dev, since `node --watch` doesn't watch content files.
   if (cached && config.nodeEnv === 'production') return cached;

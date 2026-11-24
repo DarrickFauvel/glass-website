@@ -3,7 +3,7 @@ name: "Emily Rosa"
 born: 1987 # estimated from her age in 1996 and 1998, so shown as c. 1987
 bornApproximate: true
 role: "Student researcher"
-summary: "At nine, she designed a science fair test of whether therapeutic touch practitioners could feel a human energy field. The results ran in JAMA, and her test is still a model of how simple a fair test can be."
+summary: "At nine, she designed a science fair test of whether therapeutic touch practitioners could feel a human energy field. The results ran in JAMA, and her test showed how simple a fair test can be."
 tools: [falsifiability, the-burden-of-proof, the-body-of-evidence-beats-a-single-study]
 aiAssisted: true
 picture:
@@ -29,7 +29,7 @@ What happened next is the most useful part for anyone learning to reason about c
 
 The authors also suspected that the practitioners agreed to take part because the tester was a child "who displayed no skepticism."[^1] It's a good reminder that a test doesn't have to be complicated, as long as it's fair and the claim is clear.
 
-In 2011, former *JAMA* editor George Lundberg wrote that the study's science had stood the test of time for 13 years.[^3]
+In 2011, former *JAMA* editor George Lundberg wrote that the study's science had stood the test of time for 13 years, while acknowledging that "there was not a uniform reader response."[^3]
 
 
 [^1]: **Peer-reviewed study.** Rosa, L., Rosa, E., Sarner, L., & Barrett, S. (1998). "A close look at therapeutic touch." *JAMA*, 279(13), 1005–1010. https://doi.org/10.1001/jama.279.13.1005

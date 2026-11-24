@@ -1,8 +1,8 @@
 ---
 name: "Neil deGrasse Tyson"
-born: 1958 # VERIFY: birth year not confirmed from a fetched source (Britannica and AMNH blocked)
+born: 1958
 role: "Astrophysicist and science communicator"
-summary: "The director of the Hayden Planetarium took up Carl Sagan's Cosmos, and stood by the evidence when his museum stopped counting Pluto among the planets."
+summary: "The director of the Hayden Planetarium took up Carl Sagan's Cosmos, and grouped Pluto with the icy bodies of the outer solar system six years before astronomers reclassified it."
 aiAssisted: true
 picture:
   src: /images/skeptics/neil-degrasse-tyson.jpg

@@ -1,6 +1,6 @@
 ---
 name: "Richard Wiseman"
-born: 1966 # VERIFY: birth year not confirmed from a fetched source
+born: 1966
 role: "Psychologist and former magician"
 summary: "A magician turned psychologist tests paranormal claims with careful experiments, from a supposedly psychic dog to a royal ghost, and shows the public how the tests work."
 tools: [anecdotal-evidence, the-body-of-evidence-beats-a-single-study]

@@ -2,7 +2,7 @@
 name: "Eugenie Scott"
 born: 1945
 role: "Anthropologist and science educator"
-summary: "A physical anthropologist who spent more than 26 years defending the teaching of evolution, and who helped keep “intelligent design” out of public school science classes."
+summary: "A physical anthropologist who spent more than 26 years defending the teaching of evolution, and whose organization advised the plaintiffs in Kitzmiller v. Dover, the 2005 ruling against teaching intelligent design in public schools."
 tools: [false-dilemma, the-body-of-evidence-beats-a-single-study]
 aiAssisted: true
 picture:

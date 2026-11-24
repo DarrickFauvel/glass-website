@@ -1,8 +1,9 @@
 ---
 name: "Phil Plait"
-born: 1964 # VERIFY: birth year not confirmed from a fetched source
+born: 1964
 role: "Astronomer and science writer"
 summary: "A Hubble astronomer known as the Bad Astronomer took apart a TV special claiming the Moon landings were faked, point by point, and went on to lead James Randi's foundation."
+tools: [the-burden-of-proof]
 aiAssisted: true
 picture:
   src: /images/skeptics/phil-plait.jpg
